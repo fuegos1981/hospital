@@ -1,8 +1,8 @@
-DROP database IF EXISTS hostitaldb;
+DROP database IF EXISTS hospitaldb;
 
-CREATE database hostitaldb;
+CREATE database hospitaldb;
 
-USE hostitaldb;
+USE hospitaldb;
 
 CREATE TABLE roles (
 id INT PRIMARY KEY auto_increment,
