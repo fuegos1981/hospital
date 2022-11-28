@@ -14,8 +14,9 @@ public class Doctor {
 
     @Override
     public String toString() {
-        return person +", category=" + category;
+        return person +", " + category;
     }
+
     public int getId() {
         return id;
     }

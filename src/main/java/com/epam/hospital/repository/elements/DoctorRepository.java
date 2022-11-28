@@ -63,8 +63,8 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
         List<Doctor> list = new ArrayList<>();
         while(rs.next()){
             Person person = RepositoryUtils.getPerson(rs);
-            Doctor doctor = Doctor.createDoctor(person, new Category());
-            doctor.setId(rs.getInt(2));
+            Doctor doctor = Doctor.createDoctor(person, Category.createCategory(rs.getString(7)));
+            doctor.setId(rs.getInt(1));
             list.add(doctor);
         }
         return list;

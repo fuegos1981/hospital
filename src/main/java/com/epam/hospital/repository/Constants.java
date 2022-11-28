@@ -18,13 +18,14 @@ public class Constants {
     //doctor
     public static final String GET_DOCTOR_BY_ID = "select doctor.id, person_id, last_Name,first_Name, birthday,gender.name, category.name  from doctor " +
             "join person on person.id=doctor.person_id " +
-            "join category on category.id=doctor.category " +
-            "join gender on person.gender_id=gender.id where patient.id= ?";
+            "join category on category.id=doctor.category_id " +
+            "join gender on person.gender_id=gender.id where doctor.id= ?";
 
     public static final String GET_ALL_DOCTORS = "select doctor.id, person_id, last_Name,first_Name, birthday, gender.name, category.name from doctor " +
-            "join person on person.id=patient.person_id " +
-            "join category on category.id=doctor.category " +
+            "join person on person.id=doctor.person_id " +
+            "join category on category.id=doctor.category_id " +
             "join gender on person.gender_id=gender.id";
+
     public static final String ADD_DOCTOR = "INSERT INTO doctor (person_id, category_id) VALUES (?,?)";
     public static final String DELETE_DOCTOR = "DELETE from doctor where id= ?";
 }

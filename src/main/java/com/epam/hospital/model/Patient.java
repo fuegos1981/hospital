@@ -10,6 +10,11 @@ public class Patient {
        return  patient;
     }
 
+    @Override
+    public String toString() {
+        return person.toString();
+    }
+
     public int getId() {
         return id;
     }

@@ -10,6 +10,11 @@ public class Category {
         return category;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
