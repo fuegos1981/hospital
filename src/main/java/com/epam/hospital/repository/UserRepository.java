@@ -1,7 +1,7 @@
 package com.epam.hospital.repository;
 
-import com.epam.hospital.db.entity.Role;
-import com.epam.hospital.db.entity.User;
+import com.epam.hospital.model.Role;
+import com.epam.hospital.model.User;
 
 import java.sql.*;
 import java.util.Objects;

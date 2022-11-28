@@ -1,10 +1,21 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 public class Doctor {
     private int id;
     private Person person;
     private Category category;
 
+    public static Doctor createDoctor(Person person, Category category) {
+        Doctor doctor = new Doctor();
+        doctor.setPerson(person);
+        doctor.setCategory(category);
+        return  doctor;
+    }
+
+    @Override
+    public String toString() {
+        return person +", category=" + category;
+    }
     public int getId() {
         return id;
     }

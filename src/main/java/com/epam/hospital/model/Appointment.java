@@ -1,4 +1,4 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 import java.util.Date;
 import java.util.List;

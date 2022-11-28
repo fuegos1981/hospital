@@ -1,9 +1,8 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 public class Medication {
     private int id;
     private String name;
-    private String nameRu;
 
     public int getId() {
         return id;
@@ -19,14 +18,6 @@ public class Medication {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNameRu() {
-        return nameRu;
-    }
-
-    public void setNameRu(String nameRu) {
-        this.nameRu = nameRu;
     }
 
     public static Medication createMedication(String name){

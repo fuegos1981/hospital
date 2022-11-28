@@ -1,9 +1,8 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 public class Category {
     private int id;
     private String name;
-    private String nameRu;
 
     public static Category createCategory(String name){
         Category category = new Category();
@@ -19,10 +18,6 @@ public class Category {
         this.name = name;
     }
 
-    public void setNameRu(String nameRu) {
-        this.nameRu = nameRu;
-    }
-
     public int getId() {
         return id;
     }
@@ -31,7 +26,4 @@ public class Category {
         return name;
     }
 
-    public String getNameRu() {
-        return nameRu;
-    }
 }

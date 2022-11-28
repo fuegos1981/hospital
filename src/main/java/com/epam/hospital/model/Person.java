@@ -1,4 +1,4 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 import java.util.Date;
 
@@ -7,12 +7,22 @@ public class Person {
     private String lastName;
     private String firstName;
     private Date birthday;
+    private String email;
     private Gender gender;
 
-    public static Person createPerson(String lastName, String firstName){
+    @Override
+    public String toString() {
+        return lastName +" "+ firstName;
+    }
+
+    public static Person createPerson(String lastName, String firstName, Date birthday, String email, Gender gender){
         Person person = new Person();
         person.lastName=lastName;
         person.firstName=firstName;
+        person.birthday = birthday;
+        person.email = email;
+        person.gender = gender;
+
         return person;
     }
 

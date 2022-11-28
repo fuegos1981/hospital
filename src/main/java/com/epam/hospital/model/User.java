@@ -1,4 +1,4 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 public class User {
     private int id;

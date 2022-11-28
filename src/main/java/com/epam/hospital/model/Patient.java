@@ -1,8 +1,14 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 public class Patient {
     private int id;
     private Person person;
+
+    public static Patient createPatient(Person person) {
+       Patient patient = new Patient();
+       patient.setPerson(person);
+       return  patient;
+    }
 
     public int getId() {
         return id;

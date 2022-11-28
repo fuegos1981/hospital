@@ -1,9 +1,8 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 public class Procedure {
     private int id;
     private String name;
-    private String nameRu;
 
     public static Procedure createProcedure(String name){
         Procedure procedure = new Procedure();
@@ -27,11 +26,4 @@ public class Procedure {
         this.name = name;
     }
 
-    public String getNameRu() {
-        return nameRu;
-    }
-
-    public void setNameRu(String nameRu) {
-        this.nameRu = nameRu;
-    }
 }

@@ -8,42 +8,41 @@ CREATE TABLE roles (
 id INT PRIMARY KEY auto_increment,
 	name VARCHAR(50) UNIQUE
 );
+CREATE TABLE status (
+id INT PRIMARY KEY auto_increment,
+	name VARCHAR(50) UNIQUE
+);
 
 CREATE TABLE gender (
 id INT PRIMARY KEY auto_increment,
-	name VARCHAR(50) UNIQUE,
-    name_ru VARCHAR(50) UNIQUE
+	name VARCHAR(50) UNIQUE
 );
-
 CREATE TABLE person (
 id INT PRIMARY KEY auto_increment,
 	last_name VARCHAR(50),
     first_name VARCHAR(50),
     birthday date,
+    email VARCHAR(50),
     gender_id INT,
 	foreign key (gender_id) references gender(id)
 );
 
 CREATE TABLE category (
 id INT PRIMARY KEY auto_increment,
-	name VARCHAR(50) UNIQUE,
-    name_ru VARCHAR(50) UNIQUE
+	name VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE diagnosis (
 id INT PRIMARY KEY auto_increment,
-	name VARCHAR(50) UNIQUE,
-    name_ru VARCHAR(50) UNIQUE
+	name VARCHAR(50) UNIQUE
 );
 CREATE TABLE procedures (
 id INT PRIMARY KEY auto_increment,
-	name VARCHAR(50) UNIQUE,
-    name_ru VARCHAR(50) UNIQUE
+	name VARCHAR(50) UNIQUE
 );
 CREATE TABLE medication (
 id INT PRIMARY KEY auto_increment,
-	name VARCHAR(50) UNIQUE,
-    name_ru VARCHAR(50) UNIQUE
+	name VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE operation (
@@ -79,9 +78,23 @@ CREATE TABLE appointment (
 	date_create datetime,
     diagnosis_id INT,
     patient_id INT,
+    doctor_id INT,
+    status_id INT,
     foreign key (diagnosis_id) references diagnosis(id),
+    foreign key (patient_id) references patient(id),
+    foreign key (doctor_id) references doctor(id),
+    foreign key (status_id) references status(id)
+);
+CREATE TABLE schedule (
+	id INT PRIMARY KEY auto_increment,
+	doctor_id INT,
+    patient_id INT,
+    visit_time datetime,
+    foreign key (doctor_id) references doctor(id),
     foreign key (patient_id) references patient(id)
 );
+
+
 
 CREATE TABLE appointment_procedure (
 	appointment_id INT REFERENCES appointment(id) on delete cascade,
@@ -105,102 +118,146 @@ CREATE TABLE appointment_operation (
     description VARCHAR(200),
 	UNIQUE (appointment_id, operation_id)
 );
-INSERT INTO roles (name) VALUES ('Admin');
+
+INSERT INTO roles (name) VALUES ('admin');
 INSERT INTO roles (name) VALUES ('doctor');
 INSERT INTO roles (name) VALUES ('nurse');
 
-INSERT INTO gender (name, name_ru) VALUES ('male','мужской');
-INSERT INTO gender (name, name_ru) VALUES ('female','женский');
+INSERT INTO status (name) VALUES ('new');
+INSERT INTO status (name) VALUES ('in progress');
+INSERT INTO status (name) VALUES ('done');
+INSERT INTO status (name) VALUES ('canceled');
 
-INSERT INTO person (last_name, first_name, birthday, gender_id) VALUES ('Petrov', 'Sergey','1980-10-1',1);
-INSERT INTO person (last_name, first_name, birthday, gender_id) VALUES ('Andreeva', 'Inna','1985-2-11',1);
-INSERT INTO person (last_name, first_name, birthday, gender_id) VALUES ('Belova', 'Maria','1991-12-5',1);
-INSERT INTO person (last_name, first_name, birthday, gender_id) VALUES ('Korban', 'Vitaliy','1995-3-7',1);
+INSERT INTO users (login, password, role_id) VALUES ('admin', '111',1);
+INSERT INTO users (login, password, role_id) VALUES ('doctor', '111',2);
+INSERT INTO users (login, password, role_id) VALUES ('nurse', '111',3);
 
-INSERT INTO category (name, name_ru) VALUES ('pediatrician','педиатр');
-INSERT INTO category (name, name_ru) VALUES ('traumatologist','травматолог');
-INSERT INTO category (name, name_ru) VALUES ('surgeon','хирург');
+INSERT INTO gender (name) VALUES ('male');
+INSERT INTO gender (name) VALUES ('female');
 
-INSERT INTO category (name, name_ru) VALUES ('Anesthesiologist','анестезиолог');
-INSERT INTO category (name, name_ru) VALUES ('Cardiologist','кардиолог');
-INSERT INTO category (name, name_ru) VALUES ('Orthopedist','ортопед');
-INSERT INTO category (name, name_ru) VALUES ('Gastroenterologist','гастроэнтеролог');
-INSERT INTO category (name, name_ru) VALUES ('Dermatologist','дерматолог');
-INSERT INTO category (name, name_ru) VALUES ('Gynecologist','гинеколог');
-INSERT INTO category (name, name_ru) VALUES ('Urologist','уролог');
-INSERT INTO category (name, name_ru) VALUES ('Ophthalmologist','офтальмолог');
-INSERT INTO category (name, name_ru) VALUES ('Therapist','физиотерапевт');
-INSERT INTO category (name, name_ru) VALUES ('Nurse','медсестра');
 
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Petrov', 'Sergey','1980-10-1','ff@ab.com',1);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Andreeva', 'Inna','1985-2-11','ff@ab.com',2);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Belova', 'Maria','1991-10-5','ff@ab.com',2);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Korban', 'Vitaliy','1995-3-7','ff@ab.com',1);
+
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Sergeev', 'Ivan','1990-10-1','ff@ab.com',1);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Sergeeva', 'Anna','1988-2-11','ff@ab.com',2);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Belov', 'Ivan','1995-11-15','ff@ab.com',1);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Korban', 'Andrey','1994-8-9','ff@ab.com',1);
+
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Lebedev', 'Mark','1973-11-2','ff@ab.com',1);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Lebedeva', 'Vera','1985-3-22','ff@ab.com',2);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Ivanov', 'Sergey','1993-10-10','ff@ab.com',1);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Korban', 'Evgeniy','1994-8-9','ff@ab.com',1);
+
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Ignat', 'Petr','1978-1-5','ff@ab.com',1);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Ignat', 'Vera','1978-2-21','ff@ab.com',2);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Arno', 'Sergey','1992-10-14','ff@ab.com',1);
+INSERT INTO person (last_name, first_name, birthday, email, gender_id) VALUES ('Muhin', 'Oleg','1995-9-9','ff@ab.com',1);
+
+INSERT INTO category (name) VALUES ('pediatrician');
+INSERT INTO category (name) VALUES ('traumatologist');
+INSERT INTO category (name) VALUES ('surgeon');
+
+INSERT INTO category (name) VALUES ('Anesthesiologist');
+INSERT INTO category (name) VALUES ('Cardiologist');
+INSERT INTO category (name) VALUES ('Orthopedist');
+INSERT INTO category (name) VALUES ('Gastroenterologist');
+INSERT INTO category (name) VALUES ('Dermatologist');
+INSERT INTO category (name) VALUES ('Gynecologist');
+INSERT INTO category (name) VALUES ('Urologist');
+INSERT INTO category (name) VALUES ('Ophthalmologist');
+INSERT INTO category (name) VALUES ('Therapist');
+INSERT INTO category (name) VALUES ('Nurse');
 INSERT INTO doctor (person_id, category_id) VALUES (1,2);
 INSERT INTO doctor (person_id, category_id) VALUES (2,3);
+INSERT INTO doctor (person_id, category_id) VALUES (3,2);
+INSERT INTO doctor (person_id, category_id) VALUES (4,3);
 
-INSERT INTO patient (person_id) VALUES (3);
-INSERT INTO patient (person_id) VALUES (4);
+INSERT INTO patient (person_id) VALUES (5);
+INSERT INTO patient (person_id) VALUES (6);
+INSERT INTO patient (person_id) VALUES (7);
+INSERT INTO patient (person_id) VALUES (8);
+INSERT INTO patient (person_id) VALUES (9);
+INSERT INTO patient (person_id) VALUES (10);
+INSERT INTO patient (person_id) VALUES (11);
+INSERT INTO patient (person_id) VALUES (12);
+INSERT INTO patient (person_id) VALUES (13);
+INSERT INTO patient (person_id) VALUES (14);
+INSERT INTO patient (person_id) VALUES (15);
+INSERT INTO patient (person_id) VALUES (16);
 
-INSERT INTO diagnosis (name, name_ru) VALUES ('rhinitis', 'ринит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('tonsillitis', 'тонзиллит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('quinsy', 'ангина');
-INSERT INTO diagnosis (name, name_ru) VALUES ('bronchitis', 'бронхит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('pneumonia', 'пневмония');
-INSERT INTO diagnosis (name, name_ru) VALUES ('tuberculosis', 'туберкулез');
-INSERT INTO diagnosis (name, name_ru) VALUES ('cancer', 'рак');
-INSERT INTO diagnosis (name, name_ru) VALUES ('tumour', 'опухоль');
-INSERT INTO diagnosis (name, name_ru) VALUES ('diabetes', 'диабет');
-INSERT INTO diagnosis (name, name_ru) VALUES ('anaemia', 'анемия');
-INSERT INTO diagnosis (name, name_ru) VALUES ('migraine', 'мигрень');
-INSERT INTO diagnosis (name, name_ru) VALUES ('hypertension', 'гипертония');
-INSERT INTO diagnosis (name, name_ru) VALUES ('arthritis', 'артрит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('rheumatism', 'ревматизм');
-INSERT INTO diagnosis (name, name_ru) VALUES ('cyst', 'киста');
-INSERT INTO diagnosis (name, name_ru) VALUES ('myoma', 'миома');
-INSERT INTO diagnosis (name, name_ru) VALUES ('meningitis', ' менингит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('asthma', 'астма');
-INSERT INTO diagnosis (name, name_ru) VALUES ('allergy', 'аллергия');
-INSERT INTO diagnosis (name, name_ru) VALUES ('stroke', 'инсульт');
-INSERT INTO diagnosis (name, name_ru) VALUES ('heart attack', 'сердечный приступ');
-INSERT INTO diagnosis (name, name_ru) VALUES ('myocardial infarction', 'инфаркт миокарда');
-INSERT INTO diagnosis (name, name_ru) VALUES ('leukemia', 'лейкоз');
-INSERT INTO diagnosis (name, name_ru) VALUES ('hepatitis', 'гепатит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('renal failure', 'почечная недостаточность');
-INSERT INTO diagnosis (name, name_ru) VALUES ('diphtheria', 'дифтерия');
-INSERT INTO diagnosis (name, name_ru) VALUES ('herpes', 'герпес');
-INSERT INTO diagnosis (name, name_ru) VALUES ('psoriasis', 'псориаз');
-INSERT INTO diagnosis (name, name_ru) VALUES ('brain concussion', 'сотрясение мозга');
-INSERT INTO diagnosis (name, name_ru) VALUES ('insomnia', 'бессонница');
-INSERT INTO diagnosis (name, name_ru) VALUES ('infertility', 'бесплодие');
-INSERT INTO diagnosis (name, name_ru) VALUES ('blindness', 'слепота');
-INSERT INTO diagnosis (name, name_ru) VALUES ('deafness', 'глухота');
-INSERT INTO diagnosis (name, name_ru) VALUES ('flat-footedness', 'плоскостопие');
-INSERT INTO diagnosis (name, name_ru) VALUES ('appendicitis', 'аппендицит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('stomach ulcer', 'язва желудка');
-INSERT INTO diagnosis (name, name_ru) VALUES ('gastritis', 'гастрит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('cirrhosis', 'цирроз');
-INSERT INTO diagnosis (name, name_ru) VALUES ('epilepsy', 'эпилепсия');
-INSERT INTO diagnosis (name, name_ru) VALUES ('acne', 'угри');
-INSERT INTO diagnosis (name, name_ru) VALUES ('myopia', 'близорукость');
-INSERT INTO diagnosis (name, name_ru) VALUES ('long sight', 'дальнозоркость');
-INSERT INTO diagnosis (name, name_ru) VALUES ('conjunctivitis', 'конъюнктивит');
-INSERT INTO diagnosis (name, name_ru) VALUES ('dysentery', 'дизентерия');
-INSERT INTO diagnosis (name, name_ru) VALUES ('mumps', 'свинка');
-INSERT INTO diagnosis (name, name_ru) VALUES ('chicken pox', 'ветрянка');
-INSERT INTO diagnosis (name, name_ru) VALUES ('measles', 'корь');
-INSERT INTO diagnosis (name, name_ru) VALUES ('German measles', 'краснуха');
-INSERT INTO diagnosis (name, name_ru) VALUES ('malaria', 'малярия');
-INSERT INTO diagnosis (name, name_ru) VALUES ('cholera', 'холера');
+INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (1, 5,'2022-11-28');
+INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (1, 6,'2022-11-29');
+INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (2, 8,'2022-11-28');
+INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (2, 8,'2022-11-29');
 
 
-INSERT INTO procedures (name, name_ru) VALUES ('Urine sample', 'анализ мочи');
-INSERT INTO procedures (name, name_ru) VALUES ('Blood sample', 'анализ крови');
-INSERT INTO procedures (name, name_ru) VALUES ('massage', 'массаж');
-INSERT INTO procedures (name, name_ru) VALUES ('Magnetotherapy', 'магнитотерапия');
+INSERT INTO diagnosis (name) VALUES ('rhinitis');
+INSERT INTO diagnosis (name) VALUES ('tonsillitis');
+INSERT INTO diagnosis (name) VALUES ('quinsy');
+INSERT INTO diagnosis (name) VALUES ('bronchitis');
+INSERT INTO diagnosis (name) VALUES ('pneumonia');
+INSERT INTO diagnosis (name) VALUES ('tuberculosis');
+INSERT INTO diagnosis (name) VALUES ('cancer');
+INSERT INTO diagnosis (name) VALUES ('tumour');
+INSERT INTO diagnosis (name) VALUES ('diabetes');
+INSERT INTO diagnosis (name) VALUES ('anaemia');
+INSERT INTO diagnosis (name) VALUES ('migraine');
+INSERT INTO diagnosis (name) VALUES ('hypertension');
+INSERT INTO diagnosis (name) VALUES ('arthritis');
+INSERT INTO diagnosis (name) VALUES ('rheumatism');
+INSERT INTO diagnosis (name) VALUES ('cyst');
+INSERT INTO diagnosis (name) VALUES ('myoma');
+INSERT INTO diagnosis (name) VALUES ('meningitis');
+INSERT INTO diagnosis (name) VALUES ('asthma');
+INSERT INTO diagnosis (name) VALUES ('allergy');
+INSERT INTO diagnosis (name) VALUES ('stroke');
+INSERT INTO diagnosis (name) VALUES ('heart attack');
+INSERT INTO diagnosis (name) VALUES ('myocardial infarction');
+INSERT INTO diagnosis (name) VALUES ('leukemia');
+INSERT INTO diagnosis (name) VALUES ('hepatitis');
+INSERT INTO diagnosis (name) VALUES ('renal failure');
+INSERT INTO diagnosis (name) VALUES ('diphtheria');
+INSERT INTO diagnosis (name) VALUES ('herpes');
+INSERT INTO diagnosis (name) VALUES ('psoriasis');
+INSERT INTO diagnosis (name) VALUES ('brain concussion');
+INSERT INTO diagnosis (name) VALUES ('insomnia');
+INSERT INTO diagnosis (name) VALUES ('infertility');
+INSERT INTO diagnosis (name) VALUES ('blindness');
+INSERT INTO diagnosis (name) VALUES ('deafness');
+INSERT INTO diagnosis (name) VALUES ('flat-footedness');
+INSERT INTO diagnosis (name) VALUES ('appendicitis');
+INSERT INTO diagnosis (name) VALUES ('stomach ulcer');
+INSERT INTO diagnosis (name) VALUES ('gastritis');
+INSERT INTO diagnosis (name) VALUES ('cirrhosis');
+INSERT INTO diagnosis (name) VALUES ('epilepsy');
+INSERT INTO diagnosis (name) VALUES ('acne');
+INSERT INTO diagnosis (name) VALUES ('myopia');
+INSERT INTO diagnosis (name) VALUES ('long sight');
+INSERT INTO diagnosis (name) VALUES ('conjunctivitis');
+INSERT INTO diagnosis (name) VALUES ('dysentery');
+INSERT INTO diagnosis (name) VALUES ('mumps');
+INSERT INTO diagnosis (name) VALUES ('chicken pox');
+INSERT INTO diagnosis (name) VALUES ('measles');
+INSERT INTO diagnosis (name) VALUES ('German measles');
+INSERT INTO diagnosis (name) VALUES ('malaria');
+INSERT INTO diagnosis (name) VALUES ('cholera');
 
-INSERT INTO medication (name, name_ru) VALUES ('loperamide', 'лоперамид');
-INSERT INTO medication (name, name_ru) VALUES ('sodium chloride', 'хлорид натрия');
-INSERT INTO medication (name, name_ru) VALUES ('folic acid', 'фолиевая кислота');
-INSERT INTO medication (name, name_ru) VALUES ('biotin', 'биотин');
+
+INSERT INTO procedures (name) VALUES ('Urine sample');
+INSERT INTO procedures (name) VALUES ('Blood sample');
+INSERT INTO procedures (name) VALUES ('massage');
+INSERT INTO procedures (name) VALUES ('Magnetotherapy');
+
+INSERT INTO medication (name) VALUES ('loperamide');
+INSERT INTO medication (name) VALUES ('sodium chloride');
+INSERT INTO medication (name) VALUES ('folic acid');
+INSERT INTO medication (name) VALUES ('biotin');
 
 INSERT INTO operation (name) VALUES ('пластика нижней губы');
 INSERT INTO operation (name) VALUES ('пневмотомия');
 INSERT INTO operation (name) VALUES ('Удаление кисты');
 INSERT INTO operation (name) VALUES ('Мастектомия');
+

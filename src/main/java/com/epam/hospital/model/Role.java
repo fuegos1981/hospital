@@ -1,4 +1,4 @@
-package com.epam.hospital.db.entity;
+package com.epam.hospital.model;
 
 public class Role {
     private int id;
