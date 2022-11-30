@@ -23,7 +23,7 @@ public class UserRepository {
             stmt.setString(1,login);
             try (ResultSet rs=stmt.executeQuery()){
                 while(rs.next()){
-                    return new User(rs.getString(2),rs.getString(3), Role.createRole(rs.getString(4)));
+                    return new User(rs.getString(2),rs.getString(3), Role.createInstance(rs.getString(4)));
 
                 }
             }

@@ -1,6 +1,6 @@
 package com.epam.hospital.model;
 
-public class Medication {
+public class Medication implements SimpleModel{
     private int id;
     private String name;
 
@@ -20,7 +20,7 @@ public class Medication {
         this.name = name;
     }
 
-    public static Medication createMedication(String name){
+    public static Medication createInstance(String name){
         Medication medication = new Medication();
         medication.name=name;
         return medication;

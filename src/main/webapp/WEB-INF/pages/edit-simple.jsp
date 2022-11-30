@@ -1,3 +1,5 @@
+<%@ page import="com.epam.hospital.model.Patient"%>
+<%@ page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language ="java"%>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -5,7 +7,7 @@
 
 <html>
     <head>
-    <title>Login hospital</title>
+    <title>edit patient</title>
     <style>
         <%@include file="/WEB-INF/styles/main.css"%>
     </style>
@@ -17,22 +19,15 @@
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
-                            <form id="base-form" class="form" action="main" method="post">
-                                <h3 class="text-center text-info">Login</h3>
+                            <form id="base-form" class="form" action="edit-simple" method="post">
+                                <h3 class="text-center text-info">Create patient</h3>
                                 <div class="form-group">
-                                    <label for="username" class="text-info">Username:</label><br>
-                                    <input type="text" name="username" id="username" class="form-control">
+                                    <%
+                                        String name = (String)request.getAttribute("name");
+                                    %>
+                                    <label for="simple" class="text-info"><%=name%>:</label><br>
+                                    <input type="text" name="simple" id="simple" class="form-control">
                                 </div>
-                                <div class="form-group">
-                                    <label for="password" class="text-info">Password:</label><br>
-                                    <input type="password" name="password" id="password" class="form-control">
-
-                                </div>
-                                <%
-                                    String error = (String)request.getAttribute("error");
-                                    if (error==null) error="";
-                                %>
-                                <label  class="text-info"><%=error%></label>
                                 <div class="form-group">
                                     <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
                                 </div>

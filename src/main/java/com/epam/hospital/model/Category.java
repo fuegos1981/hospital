@@ -1,10 +1,10 @@
 package com.epam.hospital.model;
 
-public class Category {
+public class Category implements SimpleModel{
     private int id;
     private String name;
 
-    public static Category createCategory(String name){
+    public static Category createInstance(String name){
         Category category = new Category();
         category.name=name;
         return category;
@@ -15,6 +15,7 @@ public class Category {
         return name;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

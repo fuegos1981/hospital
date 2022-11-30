@@ -1,10 +1,10 @@
 package com.epam.hospital.model;
 
-public class Procedure {
+public class Procedure implements SimpleModel{
     private int id;
     private String name;
 
-    public static Procedure createProcedure(String name){
+    public static Procedure createInstance(String name){
         Procedure procedure = new Procedure();
         procedure.name=name;
         return procedure;

@@ -4,7 +4,7 @@ public class Role {
     private int id;
     private String name;
 
-    public static Role createRole(String name){
+    public static Role createInstance(String name){
         Role role = new Role();
         role.name=name;
         return role;

@@ -1,10 +1,10 @@
 package com.epam.hospital.model;
 
-public class Diagnosis {
+public class Diagnosis implements SimpleModel{
     private int id;
     private String name;
 
-    public static Diagnosis createDiagnosis(String name){
+    public static Diagnosis createInstance(String name){
         Diagnosis diagnosis = new Diagnosis();
         diagnosis.name=name;
         return diagnosis;

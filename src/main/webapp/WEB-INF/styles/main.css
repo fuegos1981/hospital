@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #17a2b8;
+  height: 100vh;
+}
+#base .container #base-row #base-column #base-box
+{
+  margin-top: 60px;
+  max-width: 600px;
+  height: 320px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
+#base .container #base-row #base-column #base-box #base-form {
+  padding: 20px;
+}
+#base .container #base-row #base-column #base-box #base-form #register-link {
+  margin-top: -85px;
+}
