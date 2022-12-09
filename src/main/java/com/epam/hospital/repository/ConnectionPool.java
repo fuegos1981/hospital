@@ -27,7 +27,8 @@ public class ConnectionPool {
         config.setJdbcUrl(p.getProperty("url"));
         config.setUsername(p.getProperty("user"));
         config.setPassword(p.getProperty("password"));
-        config.setDriverClassName("com.mysql.jdbc.Driver");
+        //config.setDriverClassName("com.mysql.jdbc.Driver");
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

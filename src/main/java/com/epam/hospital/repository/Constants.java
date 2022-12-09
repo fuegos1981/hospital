@@ -30,6 +30,12 @@ public class Constants {
     public static final String ADD_DOCTOR = "INSERT INTO doctor (person_id, category_id) VALUES (?,?)";
     public static final String DELETE_DOCTOR = "DELETE from doctor where id= ?";
 
+    //schedule
+    public static final String GET_SCHEDULE_BY_ID = "select * from schedule where id= ?";
+    public static final String GET_ALL_SCHEDULE = "select * from schedule order by id";
+    public static final String ADD_SCHEDULE = "INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (?,?,?)";
+    public static final String DELETE_SCHEDULE = "DELETE from schedule where id= ?";
+
     //category
     public static final String GET_CATEGORY_BY_NAME = "select * from category where name= ?";
     public static final String GET_ALL_CATEGORIES = "select * from category order by name";

@@ -1,11 +1,13 @@
 package com.epam.hospital.service.impl;
 
 import com.epam.hospital.model.Patient;
+import com.epam.hospital.model.Person;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.elements.PatientRepository;
 import com.epam.hospital.service.Service;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +21,10 @@ public class PatientService implements Service<Patient> {
         return Objects.requireNonNullElseGet(patientService, PatientService::new);
     }
     @Override
-    public boolean create(Patient patient) throws DBException {
+    public boolean create(Patient patient) throws DBException, ValidateException {
+        if (patient.getPerson().getLastName().matches("")){
+            throw new ValidateException("invalid");
+        }
         return patientRepository.create(patient);
     }
 
@@ -39,7 +44,22 @@ public class PatientService implements Service<Patient> {
     }
 
     @Override
-    public List getAll() throws DBException, SQLException {
-        return patientRepository.getAllPatients();
+    public List<Patient> getAll(String sortRule) throws DBException, SQLException {
+        return sort(patientRepository.getAllPatients(),sortRule);
+    }
+
+    public List<Patient> sort(List<Patient> list, String sortRule){
+        if (sortRule != null && !sortRule.equals(" "))  {
+            String[] s = sortRule.split(" ");
+            Comparator<Patient> comp;
+            if (s[0].equals("name"))
+                comp = Comparator.comparing(e -> e.getPerson().toString());
+            else
+                comp = Comparator.comparing(e -> e.getPerson().getBirthday());
+            if (s[1].equals("desc"))
+                comp =comp.reversed();
+            list.sort(comp);
+        }
+        return list;
     }
 }

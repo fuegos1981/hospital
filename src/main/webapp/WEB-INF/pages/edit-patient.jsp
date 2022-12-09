@@ -20,6 +20,7 @@
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
                             <form id="base-form" class="form" action="create-patient" method="post">
+                                <input type="hidden" name="command" value="create_patient" />
                                 <h3 class="text-center text-info">Create patient</h3>
                                 <div class="form-group">
                                     <label for="lastName" class="text-info">Last name:</label><br>

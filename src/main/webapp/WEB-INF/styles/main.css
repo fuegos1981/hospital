@@ -12,6 +12,15 @@ body {
   border: 1px solid #9C9C9C;
   background-color: #EAEAEA;
 }
+
+#base1 .container .row
+{
+  margin-top: 60px;
+  max-width: 1200px;
+  height: 800px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
 #base .container #base-row #base-column #base-box #base-form {
   padding: 20px;
 }

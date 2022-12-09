@@ -1,6 +1,6 @@
 package com.epam.hospital.model;
 
-public class Operation implements SimpleModel{
+public class Operation implements SimpleModel,Medical{
     private int id;
     private String name;
 

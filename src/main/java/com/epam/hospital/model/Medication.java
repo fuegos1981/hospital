@@ -1,6 +1,6 @@
 package com.epam.hospital.model;
 
-public class Medication implements SimpleModel{
+public class Medication implements SimpleModel,Medical{
     private int id;
     private String name;
 

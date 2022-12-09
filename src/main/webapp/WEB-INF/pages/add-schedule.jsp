@@ -19,7 +19,8 @@
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
-                            <form id="base-form" class="form" action="addDoctorToPatient" method="post">
+                            <form id="base-form" class="form" action="addSchedule" method="post">
+                                <input type="hidden" name="command" value="add_doctor_to_patient" />
                                 <h3 class="text-center text-info">Add doctor</h3>
                                 <div class="form-group">
                                     <label for="patient" class="text-info">patient:</label><br>
@@ -43,7 +44,7 @@
                                     </select>
                                 <div class="form-group">
                                     <label for="visit_time" class="text-info">Visit time:</label><br>
-                                    <input type="date" name="visit_time" id="visit_time" class="form-control">
+                                    <input type="datetime-local" name="visit_time" id="visit_time" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">

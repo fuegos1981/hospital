@@ -6,13 +6,13 @@ public class Schedule {
     private int id;
     private Doctor doctor;
     private Patient patient;
-    private Date date;
+    private Date dateVisit;
 
-    public static Schedule createSchedule(Doctor doctor, Patient patient,Date date){
+    public static Schedule createSchedule(Doctor doctor, Patient patient,Date dateVisit){
         Schedule schedule = new Schedule();
         schedule.doctor=doctor;
         schedule.patient=patient;
-        schedule.date = date;
+        schedule.dateVisit = dateVisit;
         return schedule;
     }
 
@@ -28,8 +28,8 @@ public class Schedule {
         this.patient = patient;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateVisit(Date dateVisit) {
+        this.dateVisit = dateVisit;
     }
 
     public int getId() {
@@ -44,7 +44,7 @@ public class Schedule {
         return patient;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateVisit() {
+        return dateVisit;
     }
 }

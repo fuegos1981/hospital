@@ -4,8 +4,6 @@ import com.epam.hospital.model.User;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.UserRepository;
 import com.epam.hospital.service.Service;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +15,7 @@ public class UserService implements Service<User> {
         this.userRepository = UserRepository.getUserRepository();
     }
 
-    public static Service getUserService(){
+    public static Service<User> getUserService(){
         return Objects.requireNonNullElseGet(userService, UserService::new);
     }
 
@@ -27,7 +25,7 @@ public class UserService implements Service<User> {
     }
 
     @Override
-    public User readById(int id) throws DBException, SQLException {
+    public User readById(int id) throws DBException{
         return null;
     }
 
@@ -46,7 +44,7 @@ public class UserService implements Service<User> {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll(String sortRule) {
         return null;
     }
 }

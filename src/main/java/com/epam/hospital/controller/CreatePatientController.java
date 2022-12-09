@@ -13,32 +13,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Date;
 @WebServlet("/create-patient")
 public class CreatePatientController extends HttpServlet {
     private static Service<Patient> patientService;
 
     @Override
-    public void init() throws ServletException {
+    public void init(){
         patientService = PatientService.getPatientService();
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+/*
         try {
             Person person = Person.createPerson(req.getParameter("lastName"),req.getParameter("firstName"),
                     new Date(req.getParameter("birthday")),req.getParameter("email"), Gender.MALE);
-            patientService.create(Patient.createPatient(person));
-                req.setAttribute("patients",patientService.getAll());
-                req.getRequestDispatcher("WEB-INF/pages/adminInterface.jsp").forward(req,resp);
-        } catch (DBException | SQLException e) {
+           // patientService.create(Patient.createPatient(person));
+            resp.sendRedirect("/hospital/administrator");
+        } catch (DBException e) {
             req.setAttribute("message", e.getMessage());
             resp.setStatus(404);
             resp.sendRedirect("/hospital/error");
         }
-
+*/
     }
 
     @Override

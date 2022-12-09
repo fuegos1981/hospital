@@ -6,6 +6,7 @@ import com.epam.hospital.repository.elements.DoctorRepository;
 import com.epam.hospital.service.Service;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,23 @@ public class DoctorService implements Service<Doctor> {
     }
 
     @Override
-    public List<Doctor> getAll() throws DBException, SQLException {
+    public List<Doctor> getAll(String sortRule) throws DBException, SQLException {
         return doctorRepository.getAllDoctors();
+
+    }
+    public List<Doctor> sort(List<Doctor> list, String sortRule){
+        if (sortRule != null && !sortRule.equals(" ")){
+            String[] s = sortRule.split(" ");
+            Comparator<Doctor> comp;
+            if (s[0].equals("name"))
+                comp = Comparator.comparing(e -> e.getPerson().toString());
+            else
+                comp = Comparator.comparing(e -> e.getCategory().toString());
+            if (s[1].equals("desc"))
+                comp =comp.reversed();
+            list.sort(comp);
+        }
+        return list;
+
     }
 }

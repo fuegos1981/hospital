@@ -8,8 +8,7 @@ public class Appointment {
     private Date dateCreate;
     private Diagnosis diagnosis;
     private Patient patient;
-    private List<Procedure> listProsedure;
-    private List<Medication> listMedication;
-    private List<Operation> listOperation;
+    private Doctor doctor;
+    private List<AppointmentCard> listCard;
 
 }

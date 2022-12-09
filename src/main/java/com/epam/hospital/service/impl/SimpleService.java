@@ -39,7 +39,7 @@ public class SimpleService implements Service<SimpleModel> {
     }
 
     @Override
-    public List<SimpleModel> getAll() throws DBException, SQLException {
+    public List<SimpleModel> getAll(String sortRule) throws DBException, SQLException {
         return simpleRepository.getAll();
     }
 }
