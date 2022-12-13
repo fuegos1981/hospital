@@ -13,13 +13,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns={"/"})
+@WebServlet(urlPatterns = {"/"})
 public class Controller extends HttpServlet {
     private static MessageManager currentMessageLocale;
 
     @Override
     public void init() {
-        //userService = UserService.getUserService();
     }
 
     @Override
@@ -59,12 +58,17 @@ public class Controller extends HttpServlet {
 
     private void getCurrentLocale(HttpServletRequest req) {
         HttpSession session = req.getSession(true);
-        String currentLocale =(String) session.getAttribute("locale");
-        if (currentLocale==null){
-            currentLocale ="en-US";
-            session.setAttribute("locale", currentLocale);
+        if (req.getParameter(ControllerConstants.SUBMIT_US) != null) {
+            session.setAttribute(ControllerConstants.LOCALE, ControllerConstants.LOCALE_US);
+        } else if (req.getParameter(ControllerConstants.SUBMIT_UA) != null) {
+            session.setAttribute(ControllerConstants.LOCALE, ControllerConstants.LOCALE_UA);
         }
-        currentMessageLocale = currentLocale.equals("en-US")?MessageManager.EN:MessageManager.UA;
+        String currentLocale = (String) session.getAttribute(ControllerConstants.LOCALE);
+        if (currentLocale == null || currentLocale.isEmpty()) {
+            currentLocale = ControllerConstants.LOCALE_US;
+            session.setAttribute(ControllerConstants.LOCALE, currentLocale);
+        }
+        currentMessageLocale = currentLocale.equals(ControllerConstants.LOCALE_US) ? MessageManager.EN : MessageManager.UA;
     }
 
 }

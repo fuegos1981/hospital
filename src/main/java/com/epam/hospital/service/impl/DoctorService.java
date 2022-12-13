@@ -41,7 +41,7 @@ public class DoctorService implements Service<Doctor> {
 
     @Override
     public List<Doctor> getAll(String sortRule) throws DBException, SQLException {
-        return doctorRepository.getAllDoctors();
+        return sort(doctorRepository.getAllDoctors(),sortRule);
 
     }
     public List<Doctor> sort(List<Doctor> list, String sortRule){

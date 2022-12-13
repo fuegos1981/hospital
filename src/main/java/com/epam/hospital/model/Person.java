@@ -15,6 +15,10 @@ public class Person {
         return lastName +" "+ firstName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public static Person createPerson(String lastName, String firstName, Date birthday, String email, Gender gender){
         Person person = new Person();
         person.lastName=lastName;

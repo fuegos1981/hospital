@@ -18,7 +18,7 @@ public enum CommandEnum {
     PATIENT_INFO {
         {this.command = new PatientInfoCommand();}
     },
-    CREATE_PATIENT {
+    EDIT_PATIENT {
         {this.command = new CreatePatientCommand();}
     };
     ActionCommand command;

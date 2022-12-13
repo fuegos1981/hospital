@@ -1,6 +1,6 @@
-<%@ page import="com.epam.hospital.model.Patient"%>
-<%@ page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language ="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -13,14 +13,19 @@
     </style>
     </head>
     <body>
+     <c:if test="${not empty locale }">
+                <fmt:setLocale value="${locale}" scope="session" />
+     </c:if>
+     <fmt:setBundle basename="pagecontent"/>
+     <c:import url="/WEB-INF/pages/header.jsp" />
         <div id="base">
-            <h3 class="text-center text-white pt-5">HOSPITAL</h3>
+            <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
             <div class="container">
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
-                            <form id="base-form" class="form" action="create-patient" method="post">
-                                <input type="hidden" name="command" value="create_patient" />
+                            <form id="base-form" class="form" action="editPatient" method="post">
+                                <input type="hidden" name="command" value="edit_patient" />
                                 <h3 class="text-center text-info">Create patient</h3>
                                 <div class="form-group">
                                     <label for="lastName" class="text-info">Last name:</label><br>
@@ -32,7 +37,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="birthday" class="text-info">birthday:</label><br>
-                                    <input type="date" name="birthday" id="birthday" class="form-control">
+                                    <input type="date" name="birthday" id="birthday" class="form-control" lang ="${locale}">
                                 </div>
                                 <div class="form-group">
                                     <input type="radio" name="gender"  value="male" checked ="checked"/> male

@@ -1,10 +1,8 @@
 package com.epam.hospital.repository;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Date;
 import java.util.List;
 
 public abstract class GlobalRepository<T> {
@@ -35,7 +33,7 @@ public abstract class GlobalRepository<T> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DBException("Trouble with method read by object ", e);
+            throw new DBException("Trouble with method findAll object "+e.getMessage(), e);
         }
     }
 
@@ -46,7 +44,7 @@ public abstract class GlobalRepository<T> {
         PreparedStatement stmt = null;
         try {
             con = connectionPool.getConnection();
-            stmt = con.prepareStatement(query);
+            stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             addFilters(stmt, filters);
             int count = stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
@@ -91,9 +89,15 @@ public abstract class GlobalRepository<T> {
         for (Object obj : filters) {
             if (obj instanceof String) {
                 stmt.setString(step, (String) obj);
+            }
+            else if (obj instanceof Date) {
+                Date date = (Date)obj;
+                java.sql.Date sqlPackageDate = new java.sql.Date(date.getTime());
+                stmt.setDate(step, sqlPackageDate);
             } else {
                 stmt.setInt(step, (Integer) obj);
             }
+            step++;
         }
     }
 

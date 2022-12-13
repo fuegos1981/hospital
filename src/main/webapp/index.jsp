@@ -14,9 +14,12 @@
         </style>
     </head>
     <body>
-    <fmt:requestEncoding value="UTF-8" />
-    <fmt:setLocale value="${locale}" scope="session" />
-    <fmt:setBundle basename="pagecontent"/>
+        <fmt:requestEncoding value="UTF-8" />
+        <c:if test="${not empty locale }">
+            <fmt:setLocale value="${locale}" scope="session" />
+        </c:if>
+        <fmt:setBundle basename="pagecontent"/>
+        <form id="base-form" class="form" action="login" method="post">
         <c:import url="/WEB-INF/pages/header.jsp" />
         <div id="base">
             <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
@@ -24,26 +27,26 @@
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
-                            <form id="base-form" class="form" action="login" method="post">
                             <input type="hidden" name="command" value="login" />
-                                <h3 class="text-center text-info"><fmt:message key="authentication"/></h3>
-                                <div class="form-group">
-                                    <label for="username" class="text-info"><fmt:message key="username"/>:</label><br>
-                                    <input type="text" name="username" id="username" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password" class="text-info"><fmt:message key="password"/>:</label><br>
-                                    <input type="password" name="password" id="password" class="form-control">
-                                </div>
-                                <label  class="text-danger"><c:out value="${requestScope.error}" ></c:out></label>
-                                <div class="form-group">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='login_submit'/>">
-                                </div>
-                            </form>
+                            <br>
+                            <h3 class="text-center text-info"><fmt:message key="authentication"/></h3>
+                            <div class="form-group">
+                                <label for="username" class="text-info"><fmt:message key="username"/>:</label><br>
+                                <input type="text" name="username" id="username" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text-info"><fmt:message key="password"/>:</label><br>
+                                <input type="password" name="password" id="password" class="form-control"/>
+                            </div>
+                            <label  class="text-danger"><c:out value="${requestScope.error}" ></c:out></label>
+                            <div class="form-group">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='login_submit'/>"/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </form>
     </body>
 </html>

@@ -1,4 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language ="java"%>
+<%@ page isErrorPage="true" contentType="text/html;charset=UTF-8" language ="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -13,16 +15,16 @@
 <html>
     <body>
         <div id="base">
-            <%
-                String name = (String)request.getAttribute("message");
-            %>
-            <h3 class="text-center text-white pt-5">HOSPITAL</h3>
+            <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
             <div class="container">
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
                             <div class="form-group">
-                                <label class="text-danger"><%=message%>:</label><br>
+                                <label class="text-danger"> Request from ${pageContext.errorData.requestURI} is failed</label><br>
+                                <label class="text-danger"> ${pageContext.errorData.statusCode}</label><br>
+                                <label class="text-danger"> ${pageContext.errorData.throwable}</label><br>
+                                <label class="text-danger"> ${message}</label><br>
                             </div>
                         </div>
                     </div>

@@ -10,6 +10,6 @@ public class LogoutCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
         request.getSession().invalidate();
-        return "index.jsp";
+        return "/index.jsp";
     }
 }

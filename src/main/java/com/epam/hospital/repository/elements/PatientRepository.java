@@ -33,19 +33,10 @@ public class PatientRepository extends GlobalRepository<Patient>{
         return patientRepository.findAll(Constants.GET_ALL_PATIENTS);
     }
 
-    private Person getPerson(ResultSet rs) throws SQLException {
-        Person person = Person.createPerson(rs.getString(3),
-                rs.getString(4),
-                rs.getDate(5),
-                rs.getString(6),
-                Gender.valueOf(rs.getString(6).toUpperCase()));
-        person.setId(rs.getInt(2));
-        return person;
-    }
 
     public boolean create(Patient patient) throws DBException {
         Person person = patient.getPerson();
-        Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), person.getGender().toString()};
+        Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), Gender.getID(person.getGender())};
         int idPerson = patientRepository.insert(Constants.ADD_PERSON, objects);
         if (idPerson>=0){
             person.setId(idPerson);
@@ -61,9 +52,9 @@ public class PatientRepository extends GlobalRepository<Patient>{
     @Override
     protected Patient readByResultSet(ResultSet rs) throws SQLException {
         while(rs.next()){
-            Person person = getPerson(rs);
+            Person person = RepositoryUtils.getPerson(rs);
             Patient patient = Patient.createPatient(person);
-            patient.setId(rs.getInt(2));
+            patient.setId(rs.getInt(1));
             return patient;
         }
         return null;
@@ -73,9 +64,9 @@ public class PatientRepository extends GlobalRepository<Patient>{
     protected List<Patient> findByResultSet(ResultSet rs) throws SQLException {
         List<Patient> list = new ArrayList<>();
         while(rs.next()){
-            Person person = getPerson(rs);
+            Person person = RepositoryUtils.getPerson(rs);
             Patient patient = Patient.createPatient(person);
-            patient.setId(rs.getInt(2));
+            patient.setId(rs.getInt(1));
             list.add(patient);
         }
         return list;

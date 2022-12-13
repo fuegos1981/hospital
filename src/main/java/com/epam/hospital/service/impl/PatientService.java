@@ -1,10 +1,10 @@
 package com.epam.hospital.service.impl;
 
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.model.Person;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.elements.PatientRepository;
 import com.epam.hospital.service.Service;
+import com.epam.hospital.service.ServiceConstants;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -14,6 +14,7 @@ import java.util.Objects;
 public class PatientService implements Service<Patient> {
     private static PatientService patientService;
     private PatientRepository patientRepository;
+
     private PatientService() {
         this.patientRepository = patientRepository.getRepository();
     }
@@ -48,18 +49,21 @@ public class PatientService implements Service<Patient> {
         return sort(patientRepository.getAllPatients(),sortRule);
     }
 
-    public List<Patient> sort(List<Patient> list, String sortRule){
-        if (sortRule != null && !sortRule.equals(" "))  {
-            String[] s = sortRule.split(" ");
-            Comparator<Patient> comp;
-            if (s[0].equals("name"))
-                comp = Comparator.comparing(e -> e.getPerson().toString());
-            else
-                comp = Comparator.comparing(e -> e.getPerson().getBirthday());
-            if (s[1].equals("desc"))
-                comp =comp.reversed();
-            list.sort(comp);
+    public List<Patient> sort(List<Patient> list, String sortRule) {
+
+        if (sortRule == null || sortRule.equals(" ")) {
+            sortRule = ServiceConstants.NAME_ASC;
         }
+        String[] s = sortRule.split(" ");
+        Comparator<Patient> comp;
+        if (s[0].equals(ServiceConstants.NAME))
+            comp = Comparator.comparing(e -> e.getPerson().toString());
+        else
+            comp = Comparator.comparing(e -> e.getPerson().getBirthday());
+        if (s[1].equals(ServiceConstants.DESC))
+            comp = comp.reversed();
+        list.sort(comp);
+
         return list;
     }
 }
