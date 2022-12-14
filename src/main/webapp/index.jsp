@@ -32,13 +32,13 @@
                             <h3 class="text-center text-info"><fmt:message key="authentication"/></h3>
                             <div class="form-group">
                                 <label for="username" class="text-info"><fmt:message key="username"/>:</label><br>
-                                <input type="text" name="username" id="username" class="form-control">
+                                <input type="text" name="username" id="username" class="form-control" value="${username}">
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info"><fmt:message key="password"/>:</label><br>
                                 <input type="password" name="password" id="password" class="form-control"/>
                             </div>
-                            <label  class="text-danger"><c:out value="${requestScope.error}" ></c:out></label>
+                            <label  class="text-danger"><c:out value="${message}" ></c:out></label>
                             <div class="form-group">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='login_submit'/>"/>
                             </div>

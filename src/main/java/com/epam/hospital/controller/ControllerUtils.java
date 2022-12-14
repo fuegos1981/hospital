@@ -1,9 +1,15 @@
 package com.epam.hospital.controller;
 
+import com.epam.hospital.model.Gender;
+import com.epam.hospital.model.Person;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ControllerUtils {
 
@@ -26,5 +32,28 @@ public class ControllerUtils {
             }
         }
         return messages;
+    }
+    public static Date getDateByString(String string) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(string);
+    }
+    public static Person getPerson(HttpServletRequest request) throws ParseException {
+        return Person.createPerson(request.getParameter("lastName"),
+                request.getParameter("firstName"),
+                ControllerUtils.getDateByString(request.getParameter("birthday")),
+                request.getParameter("email"),
+                Gender.MALE);
+    }
+
+    public static void RemoveAttributes(HttpServletRequest request, String...atrs){
+        for (String atr:atrs) {
+           request.removeAttribute(atr);
+        }
+    }
+
+    public static void setAttributes(HttpServletRequest request, String...atrs){
+        for (String atr:atrs) {
+            request.setAttribute(atr,request.getParameter(atr));
+        }
     }
 }

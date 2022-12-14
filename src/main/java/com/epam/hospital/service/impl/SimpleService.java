@@ -13,10 +13,13 @@ public class SimpleService implements Service<SimpleModel> {
     private static SimpleService simpleService;
     private SimpleRepository simpleRepository;
     private SimpleService() {
-        this.simpleRepository = simpleRepository.getRepository();
     }
-    public static SimpleService getSimpleService(){
-        return Objects.requireNonNullElseGet(simpleService, SimpleService::new);
+    public static SimpleService getSimpleService(String className){
+
+            simpleService = new SimpleService();
+            simpleService.simpleRepository = SimpleRepository.getRepository(className);
+
+        return simpleService;
     }
     @Override
     public boolean create(SimpleModel simpleModel) throws DBException {

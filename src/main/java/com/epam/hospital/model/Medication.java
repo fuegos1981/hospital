@@ -16,6 +16,7 @@ public class Medication implements SimpleModel,Medical{
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }

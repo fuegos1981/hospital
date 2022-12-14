@@ -51,7 +51,7 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     protected Doctor readByResultSet(ResultSet rs) throws SQLException {
         while(rs.next()){
             Person person = RepositoryUtils.getPerson(rs);
-            Doctor doctor = Doctor.createDoctor(person,Category.createInstance(rs.getString(4)));
+            Doctor doctor = Doctor.createDoctor(person,Category.createInstance(rs.getString(8)));
             doctor.setId(rs.getInt(2));
             return doctor;
         }
@@ -63,7 +63,7 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
         List<Doctor> list = new ArrayList<>();
         while(rs.next()){
             Person person = RepositoryUtils.getPerson(rs);
-            Doctor doctor = Doctor.createDoctor(person, Category.createInstance(rs.getString(7)));
+            Doctor doctor = Doctor.createDoctor(person, Category.createInstance(rs.getString(8)));
             doctor.setId(rs.getInt(1));
             list.add(doctor);
         }

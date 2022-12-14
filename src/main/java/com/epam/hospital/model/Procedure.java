@@ -21,7 +21,7 @@ public class Procedure implements SimpleModel,Medical{
     public String getName() {
         return name;
     }
-
+    @Override
     public void setName(String name) {
         this.name = name;
     }

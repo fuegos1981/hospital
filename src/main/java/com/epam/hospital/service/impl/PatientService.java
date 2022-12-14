@@ -8,6 +8,7 @@ import com.epam.hospital.service.ServiceConstants;
 
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,8 +24,17 @@ public class PatientService implements Service<Patient> {
     }
     @Override
     public boolean create(Patient patient) throws DBException, ValidateException {
+        boolean isError =false;
+        StringBuilder sb = new StringBuilder("invalid: ");
+        if (patient.getPerson().getBirthday().after(new Date())){
+            sb.append("birthday");
+            isError=true;
+        }
         if (patient.getPerson().getLastName().matches("")){
-            throw new ValidateException("invalid");
+
+        }
+        if (isError){
+            throw new ValidateException(sb.toString());
         }
         return patientRepository.create(patient);
     }

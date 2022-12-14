@@ -18,7 +18,7 @@
      </c:if>
      <fmt:setBundle basename="pagecontent"/>
      <c:import url="/WEB-INF/pages/header.jsp" />
-        <div id="base-edit-patient">
+        <div id="base">
             <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
             <div class="container">
                 <div id="base-row" class="row justify-content-center align-items-center">
@@ -26,28 +26,38 @@
                         <div id="base-box" class="col-md-12">
                             <form id="base-form" class="form" action="editPatient" method="post">
                                 <input type="hidden" name="command" value="edit_patient" />
-                                <h3 class="text-center text-info">Create patient</h3>
+                                <h3 class="text-center text-info">Create doctor</h3>
                                 <div class="form-group">
                                     <label for="lastName" class="text-info"><fmt:message key="last_name"/>:</label><br>
-                                    <input type="text" name="lastName" id="lastName" class="form-control" value="${lastName}"/>
+                                    <input type="text" name="lastName" id="lastName" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="firstName" class="text-info"><fmt:message key="first_name"/>:</label><br>
-                                    <input type="text" name="firstName" id="firstName" class="form-control" value="${firstName}"/>
+                                    <input type="text" name="firstName" id="firstName" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="birthday" class="text-info"><fmt:message key="birthday"/>:</label><br>
-                                    <input type="date" name="birthday" id="birthday" class="form-control" lang ="${locale}" value="${birthday}">
+                                    <input type="date" name="birthday" id="birthday" class="form-control" lang ="${locale}">
                                 </div>
                                 <div class="form-group">
-                                    <input type="radio" name="gender"  value="male" ${requestScope['gender'] == 'male'? 'checked':''}/><fmt:message key="male"/>
-                                    <input type="radio" name="gender"  value="female" ${requestScope['gender'] == 'female'? 'checked':''}/><fmt:message key="female"/>
+                                    <input type="radio" name="gender"  value="male" checked ="checked"/><fmt:message key="male"/>
+                                    <input type="radio" name="gender"  value="female"/><fmt:message key="female"/>
                                 </div>
 
-                                <div class="form-group">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='create_patient'/>">
-                                    <label  class="text-danger"><c:out value="${message}" ></c:out></label>
-                                </div>
+                                <a class="btn btn-info btn-md" href="/hospital/editSimple?command=edit_simple&name=category"><fmt:message key="add"/></a>
+                                <select class="form-control" name="category_id" id="categories">
+                                    <option><fmt:message key="select_category"/>...</option>
+                                    <c:forEach var="category" items="${categories}">
+                                        <option value="${category.getId()}">
+                                            <c:out value="${category.toString()}"/>
+                                        </option>
+                                    </c:forEach>
+                                </select>
+
+                             <div class="form-group">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='create_doctor'/>">
+                                <label  class="text-danger"><c:out value="${message}" ></c:out></label>
+                             </div>
                             </form>
                         </div>
                     </div>

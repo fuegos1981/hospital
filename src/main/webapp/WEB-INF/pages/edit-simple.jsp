@@ -21,17 +21,16 @@
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
-                            <form id="base-form" class="form" action="edit-simple" method="post">
-                                <h3 class="text-center text-info">Create patient</h3>
+                            <form id="base-form" class="form" action="editSimple" method="post">
+                            <input type="hidden" name="command" value="edit_simple" />
+                            <input type="hidden" name="name" value="${name}" />
+                                <h3 class="text-center text-info"><fmt:message key="create"/> <fmt:message key="${name}"/></h3>
                                 <div class="form-group">
-                                    <%
-                                        String name = (String)request.getAttribute("name");
-                                    %>
-                                    <label for="simple" class="text-info"><%=name%>:</label><br>
+                                    <label for="simple" class="text-info"><fmt:message key="${name}"/>:</label><br>
                                     <input type="text" name="simple" id="simple" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='create'/>">
                                 </div>
                             </form>
                         </div>

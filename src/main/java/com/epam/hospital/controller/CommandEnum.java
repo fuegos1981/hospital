@@ -18,6 +18,12 @@ public enum CommandEnum {
     PATIENT_INFO {
         {this.command = new PatientInfoCommand();}
     },
+    EDIT_SIMPLE {
+        {this.command = new EditSimpleCommand();}
+    },
+    EDIT_DOCTOR {
+        {this.command = new CreateDoctorCommand();}
+    },
     EDIT_PATIENT {
         {this.command = new CreatePatientCommand();}
     };

@@ -11,6 +11,11 @@ public class Operation implements SimpleModel,Medical{
     }
 
     @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
     public void setId(int id) {
         this.id = id;
     }
