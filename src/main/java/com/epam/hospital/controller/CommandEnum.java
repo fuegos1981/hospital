@@ -24,6 +24,9 @@ public enum CommandEnum {
     EDIT_DOCTOR {
         {this.command = new CreateDoctorCommand();}
     },
+    EDIT_APPOINTMENT {
+        {this.command = new CreateAppointmentCommand();}
+    },
     EDIT_PATIENT {
         {this.command = new CreatePatientCommand();}
     };

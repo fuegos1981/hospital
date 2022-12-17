@@ -1,5 +1,3 @@
-<%@ page import="com.epam.hospital.model.Doctor"%>
-<%@ page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language ="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -9,53 +7,71 @@
 
 <html>
     <head>
-    <title>edit patient</title>
-    <style>
-        <%@include file="/WEB-INF/styles/main.css"%>
-    </style>
+        <title>edit patient</title>
+        <style>
+            <%@include file="/WEB-INF/styles/main.css"%>
+        </style>
     </head>
     <body>
-        <div id="base">
-            <h3 class="text-center text-white pt-5">HOSPITAL</h3>
-            <div class="container">
+        <fmt:requestEncoding value="UTF-8" />
+        <c:if test="${not empty locale }">
+            <fmt:setLocale value="${locale}" scope="session" />
+        </c:if>
+        <fmt:setBundle basename="pagecontent"/>
+        <form id="base-form" class="form" action="addSchedule" method="post">
+            <c:import url="/WEB-INF/pages/header.jsp" />
+            <div id="base">
+                <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
+                <div class="container">
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
-                            <form id="base-form" class="form" action="addSchedule" method="post">
-                                <input type="hidden" name="command" value="add_doctor_to_patient" />
-                                <h3 class="text-center text-info">Add doctor</h3>
-                                <div class="form-group">
-                                    <label for="patient" class="text-info">patient:</label><br>
-                                    <%
-                                        String name = (String)request.getAttribute("name");
-                                    %>
-                                    <input type="text" name="patient" id="patient" class="form-control" value="<%=name%>"/>
-                                </div>
+                            <input type="hidden" name="command" value="add_schedule" />
+                            <input type="hidden" name="is_patient" value="${is_patient}" />
+                            <input type="hidden" name="id" value="${id}" />
+                            <h3 class="text-center text-info"><fmt:message key="add_visit"/></h3>
+                            <c:choose>
+                                <c:when test="${is_patient}" >
+                                    <div class="form-group">
+                                        <label for="patient" class="text-info"><fmt:message key="patient"/>:</label><br>
+                                        <input type="text" name="name" id="name" class="form-control" value="${name}"/>
+                                    </div>
                                     <select class="form-control" name="doctor_id" id="doctors">
-                                          <option>Select doctors...</option>
-                                          <%
-                                               for (Doctor doctor: (List<Doctor>)request.getAttribute("doctors")){
-                                               String s = doctor.toString();
-                                          %>
-                                                <option value="<%=doctor.getId()%>">
-                                                	<%=s%>
-                                                </option>
-                                          <%
-                                              }
-                                          %>
+                                        <option>Select doctors...</option>
+                                        <c:forEach var="doctor" items="${doctors}" varStatus="status">
+                                            <option value="${doctor.getId()}">
+                                                <c:out value="${doctor.toString()}"/>
+                                            </option>
+                                        </c:forEach>
                                     </select>
-                                <div class="form-group">
-                                    <label for="visit_time" class="text-info">Visit time:</label><br>
-                                    <input type="datetime-local" name="visit_time" id="visit_time" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
-                                </div>
-                            </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="form-group">
+                                        <label for="doctor" class="text-info"><fmt:message key="doctor"/>:</label><br>
+                                        <input type="text" name="name" id="doctor" class="form-control" value="${name}"/>
+                                    </div>
+                                    <select class="form-control" name="patient_id" id="patients">
+                                        <option>Select patients...</option>
+                                        <c:forEach var="patient" items="${patients}" varStatus="status">
+                                            <option value="${patient.getId()}">
+                                                <c:out value="${patient.toString()}"/>
+                                            </option>
+                                        </c:forEach>
+                                    </select>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="form-group">
+                                <label for="visit_time" class="text-info">Visit time:</label><br>
+                                <input type="datetime-local" name="visit_time" id="visit_time" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                <label  class="text-danger"><c:out value="${message}" ></c:out></label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </body>
 </html>

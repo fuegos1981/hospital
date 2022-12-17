@@ -14,6 +14,9 @@
 </head>
 <html>
     <body>
+        <fmt:requestEncoding value="UTF-8" />
+        <fmt:setLocale value="${locale}" scope="session" />
+        <fmt:setBundle basename="pagecontent"/>
         <div id="base">
             <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
             <div class="container">

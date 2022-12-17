@@ -13,8 +13,6 @@ import java.util.List;
 
 public class ScheduleRepository extends GlobalRepository<Schedule> {
     private static ScheduleRepository  scheduleRepository;
-    private static PatientRepository  patientRepository;
-    private static DoctorRepository  doctorRepository;
 
     private ScheduleRepository() {
     }
@@ -37,26 +35,30 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
     public boolean create(Schedule schedule) throws DBException {
 
         Object[] objects = {schedule.getDoctor().getId(), schedule.getPatient().getId(), schedule.getDateVisit()};
-        return scheduleRepository.insert(Constants.ADD_SCHEDULE, objects)>=0;
+        return scheduleRepository.insert(Constants.ADD_SCHEDULE,null, objects)>=0;
     }
     public boolean delete(Schedule schedule) throws DBException {
-        return scheduleRepository.delete(Constants.DELETE_DOCTOR, schedule.getId());
+        return scheduleRepository.delete(Constants.DELETE_DOCTOR,null, schedule.getId());
     }
 
     @Override
     protected Schedule readByResultSet(ResultSet rs) throws SQLException {
         if(rs.next()){
-            Doctor doctor = null;
-            Patient patient= null;
-            try {
-                doctor = DoctorRepository.getRepository().readByID(rs.getInt(1));
-                patient =PatientRepository.getRepository().readByID(rs.getInt(2));
-            } catch (DBException e) {
-                e.printStackTrace();
-            }
-            return Schedule.createSchedule(doctor, patient, rs.getDate(3));
+            return getSchedule(rs);
         }
         return null;
+    }
+
+    private Schedule getSchedule(ResultSet rs) throws SQLException {
+        Doctor doctor = null;
+        Patient patient= null;
+        try {
+            doctor = DoctorRepository.getRepository().readByID(rs.getInt(2));
+            patient =PatientRepository.getRepository().readByID(rs.getInt(3));
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+        return Schedule.createSchedule(doctor, patient, rs.getDate(4));
     }
 
 
@@ -64,8 +66,7 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
     protected List<Schedule> findByResultSet(ResultSet rs) throws SQLException {
         List<Schedule> list = new ArrayList<>();
         while(rs.next()){
-            list.add(readByResultSet(rs));
-
+            list.add(getSchedule(rs));
         }
         return list;
     }

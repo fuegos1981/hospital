@@ -1,14 +1,9 @@
 package com.epam.hospital.repository.elements;
-import com.epam.hospital.model.Patient;
-import com.epam.hospital.model.Person;
 import com.epam.hospital.model.SimpleModel;
-import com.epam.hospital.model.Category;
 import com.epam.hospital.repository.ConnectionPool;
 import com.epam.hospital.repository.Constants;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.GlobalRepository;
-
-import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,11 +36,11 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
     }
 
     public boolean create(SimpleModel simpleModel) throws DBException {
-        int idT = simpleRepository.insert(queries[2], simpleModel.toString());
-        return idT >=0;
+        int id = simpleRepository.insert(queries[2], null,simpleModel.toString());
+        return id >=0;
     }
     public boolean delete(SimpleModel simpleModel) throws DBException {
-        return simpleRepository.delete(queries[3], simpleModel.toString());
+        return simpleRepository.delete(queries[3], null,simpleModel.toString());
     }
     @Override
     protected SimpleModel readByResultSet(ResultSet rs) throws SQLException {

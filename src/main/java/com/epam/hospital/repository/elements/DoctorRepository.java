@@ -35,16 +35,16 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     public boolean create(Doctor doctor) throws DBException {
         Person person = doctor.getPerson();
         Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), person.getGender().toString()};
-        int idPerson = doctorRepository.insert(Constants.ADD_PERSON, objects);
+        int idPerson = doctorRepository.insert(Constants.ADD_PERSON,null, objects);
         if (idPerson>=0){
             person.setId(idPerson);
-            int idDoctor = doctorRepository.insert(Constants.ADD_DOCTOR, idPerson,doctor.getCategory().getId());
+            int idDoctor = doctorRepository.insert(Constants.ADD_DOCTOR,null, idPerson,doctor.getCategory().getId());
             return idDoctor >=0;
         }
         return false;
     }
     public boolean delete(Doctor doctor) throws DBException {
-        return doctorRepository.delete(Constants.DELETE_DOCTOR, doctor.getId());
+        return doctorRepository.delete(Constants.DELETE_DOCTOR,null, doctor.getId());
     }
 
     @Override

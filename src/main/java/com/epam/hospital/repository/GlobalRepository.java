@@ -4,6 +4,7 @@ package com.epam.hospital.repository;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public abstract class GlobalRepository<T> {
     protected static ConnectionPool connectionPool;
@@ -22,7 +23,7 @@ public abstract class GlobalRepository<T> {
 
     }
 
-    protected abstract T readByResultSet(ResultSet rs) throws SQLException;
+    protected abstract T readByResultSet(ResultSet rs) throws SQLException,DBException;
 
     public List<T> findAll(String query, Object... filters) throws DBException {
         try (Connection con = ConnectionPool.getConnection();
@@ -37,9 +38,9 @@ public abstract class GlobalRepository<T> {
         }
     }
 
-    protected abstract List<T> findByResultSet(ResultSet rs) throws SQLException;
+    protected abstract List<T> findByResultSet(ResultSet rs) throws SQLException,DBException;
 
-    public int insert(String query, Object... filters) throws DBException {
+    public int insert(String query,Map<String, List<Object[]>> batch, Object... filters) throws DBException {
         Connection con = null;
         PreparedStatement stmt = null;
         try {
@@ -49,7 +50,9 @@ public abstract class GlobalRepository<T> {
             int count = stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
-                return rs.getInt(1);
+                int id = rs.getInt(1);
+                addBatch(con,batch,id);
+                return id;
             }
             return -1;
         } catch (SQLException e) {
@@ -61,7 +64,7 @@ public abstract class GlobalRepository<T> {
         }
     }
 
-    protected boolean delete(String query, Object... filters) throws DBException {
+    protected boolean delete(String query,Map<String, List<Object[]>> batch, Object... filters) throws DBException {
         Connection con = null;
         PreparedStatement stmt = null;
         try {
@@ -69,6 +72,7 @@ public abstract class GlobalRepository<T> {
             con.setAutoCommit(false);
             con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             boolean res = true;
+            addBatch(con,batch,0);
             stmt = con.prepareStatement(query);
             addFilters(stmt, filters);
             if (stmt.executeUpdate() == 0) res = false;
@@ -118,6 +122,23 @@ public abstract class GlobalRepository<T> {
                 con.rollback();
             } catch (SQLException ex) {
                 ex.printStackTrace();
+            }
+        }
+    }
+
+    private void addBatch(Connection connection, Map<String, List<Object[]>> batch, int id) throws SQLException {
+        if (batch!=null) {
+            for (Map.Entry<String, List<Object[]>> el : batch.entrySet()) {
+                PreparedStatement statement = connection.prepareStatement(el.getKey());
+                for (Object[] filters:   el.getValue()) {
+                    //Первый элемент в фильтре если есть должен быть id основного объекта
+                    if (id!=0&&filters[0]==Integer.valueOf(0)){
+                        filters[0]=id;
+                    }
+                    addFilters(statement,filters);
+                    statement.addBatch();
+                }
+                int[] updateCounts = statement.executeBatch();
             }
         }
     }

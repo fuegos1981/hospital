@@ -16,9 +16,9 @@ public class EditSimpleCommand implements ActionCommand {
 
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
-        SimpleService simpleService= SimpleService.getSimpleService(ControllerConstants.Name);
-        String name_Class = request.getParameter(ControllerConstants.Name);
-        request.setAttribute(ControllerConstants.Name,name_Class);
+        SimpleService simpleService= SimpleService.getSimpleService(ControllerConstants.NAME);
+        String name_Class = request.getParameter(ControllerConstants.NAME);
+        request.setAttribute(ControllerConstants.NAME,name_Class);
         try {
             if (name_Class==null||request.getParameter("simple")==null){
                 return ControllerConstants.PAGE_EDIT_SIMPLE;

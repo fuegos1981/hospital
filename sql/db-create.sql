@@ -78,13 +78,43 @@ CREATE TABLE appointment (
 	date_create datetime,
     diagnosis_id INT,
     patient_id INT,
-    doctor_id INT,
+    doctor_id INT, 
     status_id INT,
     foreign key (diagnosis_id) references diagnosis(id),
     foreign key (patient_id) references patient(id),
     foreign key (doctor_id) references doctor(id),
     foreign key (status_id) references status(id)
 );
+CREATE TABLE appointment_procedure (
+id INT PRIMARY KEY auto_increment,
+	appointment_id INT REFERENCES appointment(id) ,
+	procedure_id INT REFERENCES procedures(id),
+    description VARCHAR(200),
+    UNIQUE (appointment_id, procedure_id),
+    foreign key (appointment_id) references appointment(id),
+    foreign key (procedure_id) references procedures(id)
+);
+
+CREATE TABLE appointment_medication (
+id INT PRIMARY KEY auto_increment,
+	appointment_id INT REFERENCES appointment(id) ,
+	medication_id INT REFERENCES medication(id),
+    description VARCHAR(200),
+    UNIQUE (appointment_id, medication_id),
+    foreign key (appointment_id) references appointment(id),
+    foreign key (medication_id) references medication(id)
+);
+
+CREATE TABLE appointment_operation (
+id INT PRIMARY KEY auto_increment,
+	appointment_id INT REFERENCES appointment(id) ,
+	operation_id INT REFERENCES operation(id),
+    description VARCHAR(200),
+    UNIQUE (appointment_id, operation_id),
+    foreign key (appointment_id) references appointment(id),
+    foreign key (operation_id) references operation(id)
+);
+
 CREATE TABLE schedule (
 	id INT PRIMARY KEY auto_increment,
 	doctor_id INT,
@@ -96,28 +126,7 @@ CREATE TABLE schedule (
 
 
 
-CREATE TABLE appointment_procedure (
-	appointment_id INT REFERENCES appointment(id) on delete cascade,
-	procedure_id INT REFERENCES procedures(id) on delete cascade,
-    description VARCHAR(200),
-    date_start date,
-    date_end date,
-	UNIQUE (appointment_id, procedure_id)
-);
 
-CREATE TABLE appointment_medication (
-	appointment_id INT REFERENCES appointment(id) on delete cascade,
-	medication_id INT REFERENCES medication(id) on delete cascade,
-    description VARCHAR(200),
-	UNIQUE (appointment_id, medication_id)
-);
-
-CREATE TABLE appointment_operation (
-	appointment_id INT REFERENCES appointment(id) on delete cascade,
-	operation_id INT REFERENCES operation(id) on delete cascade,
-    description VARCHAR(200),
-	UNIQUE (appointment_id, operation_id)
-);
 
 INSERT INTO roles (name) VALUES ('admin');
 INSERT INTO roles (name) VALUES ('doctor');
@@ -261,3 +270,24 @@ INSERT INTO operation (name) VALUES ('пневмотомия');
 INSERT INTO operation (name) VALUES ('Удаление кисты');
 INSERT INTO operation (name) VALUES ('Мастектомия');
 
+INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id) VALUES ('2022-10-12', '2', '3', '4');
+INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id) VALUES ('2022-10-14', '2', '3', '4');
+INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id) VALUES ('2022-10-15', '3', '3', '1');
+
+INSERT INTO appointment_medication (appointment_id, medication_id, description) VALUES ('1', '2', 'aaaaa');
+INSERT INTO appointment_medication (appointment_id, medication_id, description) VALUES ('1', '3', 'bbbbbb');
+INSERT INTO appointment_medication (appointment_id, medication_id, description) VALUES ('2', '3', 'dddddd');
+INSERT INTO appointment_medication (appointment_id, medication_id, description) VALUES ('2', '4', 'ffffff');
+INSERT INTO appointment_medication (appointment_id, medication_id, description) VALUES ('3', '1', 'ttyuiioi');
+
+INSERT INTO appointment_procedure (appointment_id, procedure_id, description) VALUES ('1', '2', 'rrrrrr');
+INSERT INTO appointment_procedure (appointment_id, procedure_id, description) VALUES ('1', '3', 'tttttt');
+INSERT INTO appointment_procedure (appointment_id, procedure_id, description) VALUES ('2', '3', 'yyyyyyyy');
+INSERT INTO appointment_procedure (appointment_id, procedure_id, description) VALUES ('2', '4', 'uuuuuu');
+INSERT INTO appointment_procedure (appointment_id, procedure_id, description) VALUES ('3', '1', 'uutrei');
+
+INSERT INTO appointment_operation (appointment_id, operation_id, description) VALUES ('1', '2', 'ooooo');
+INSERT INTO appointment_operation (appointment_id, operation_id, description) VALUES ('1', '3', 'rrrrr');
+INSERT INTO appointment_operation (appointment_id, operation_id, description) VALUES ('2', '3', 'wwwww');
+INSERT INTO appointment_operation (appointment_id, operation_id, description) VALUES ('2', '4', 'ddddd');
+INSERT INTO appointment_operation (appointment_id, operation_id, description) VALUES ('3', '1', 'llllll');
