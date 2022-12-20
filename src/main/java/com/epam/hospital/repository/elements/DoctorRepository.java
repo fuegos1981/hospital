@@ -1,10 +1,7 @@
 package com.epam.hospital.repository.elements;
 
 import com.epam.hospital.model.*;
-import com.epam.hospital.repository.ConnectionPool;
-import com.epam.hospital.repository.Constants;
-import com.epam.hospital.repository.DBException;
-import com.epam.hospital.repository.GlobalRepository;
+import com.epam.hospital.repository.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,13 +25,13 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     public Doctor readByID(int id) throws DBException, SQLException {
         return doctorRepository.read(Constants.GET_DOCTOR_BY_ID,id);
     }
-    public List<Doctor> getAllDoctors() throws DBException, SQLException {
+    public List<Doctor> getAllDoctors() throws DBException {
         return doctorRepository.findAll(Constants.GET_ALL_DOCTORS);
     }
 
     public boolean create(Doctor doctor) throws DBException {
         Person person = doctor.getPerson();
-        Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), person.getGender().toString()};
+        Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), person.getEmail(), Gender.getID(person.getGender())};
         int idPerson = doctorRepository.insert(Constants.ADD_PERSON,null, objects);
         if (idPerson>=0){
             person.setId(idPerson);
@@ -50,10 +47,7 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     @Override
     protected Doctor readByResultSet(ResultSet rs) throws SQLException {
         while(rs.next()){
-            Person person = RepositoryUtils.getPerson(rs);
-            Doctor doctor = Doctor.createDoctor(person,Category.createInstance(rs.getString(8)));
-            doctor.setId(rs.getInt(2));
-            return doctor;
+            return getDoctor(rs);
         }
         return null;
     }
@@ -62,11 +56,15 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     protected List<Doctor> findByResultSet(ResultSet rs) throws SQLException {
         List<Doctor> list = new ArrayList<>();
         while(rs.next()){
-            Person person = RepositoryUtils.getPerson(rs);
-            Doctor doctor = Doctor.createDoctor(person, Category.createInstance(rs.getString(8)));
-            doctor.setId(rs.getInt(1));
-            list.add(doctor);
+            list.add(getDoctor(rs));
         }
         return list;
+    }
+
+    private Doctor getDoctor(ResultSet rs) throws SQLException {
+        Person person = RepositoryUtils.getPerson(rs);
+        Doctor doctor = Doctor.createDoctor(person, Category.createInstance(rs.getString(Fields.CATEGORY_NAME)));
+        doctor.setId(rs.getInt(Fields.ID));
+        return doctor;
     }
 }

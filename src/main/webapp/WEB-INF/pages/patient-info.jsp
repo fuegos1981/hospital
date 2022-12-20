@@ -22,7 +22,7 @@
             <div id="base1">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
                 <div class="container">
-                    <div class="row">
+                    <div class="row row-patient">
                         <div id ="patient_table_info" class="col-md-12">
                             <table class="table table-bordered table-hover table-striped">
                                 <tr>

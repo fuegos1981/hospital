@@ -36,7 +36,7 @@ public class PatientRepository extends GlobalRepository<Patient>{
 
     public boolean create(Patient patient) throws DBException {
         Person person = patient.getPerson();
-        Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), Gender.getID(person.getGender())};
+        Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), person.getEmail(), Gender.getID(person.getGender())};
         int idPerson = patientRepository.insert(Constants.ADD_PERSON,null, objects);
         if (idPerson>=0){
             person.setId(idPerson);

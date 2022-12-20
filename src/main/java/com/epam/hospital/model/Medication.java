@@ -4,6 +4,11 @@ public class Medication implements SimpleModel,Medical{
     private int id;
     private String name;
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public int getId() {
         return id;
     }

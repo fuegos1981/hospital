@@ -16,10 +16,14 @@ import java.util.Date;
 
 
 public class CreateAppointmentCommand implements ActionCommand {
-    private final static Service<Doctor> doctorService = DoctorService.getDoctorService();
-    private final static Service<Patient> patientService = PatientService.getPatientService();
-    private final static SimpleService diagnosisService = SimpleService.getSimpleService(Constants.DIAGNOSIS);
-    private final static Service<Appointment> appointmentService = AppointmentService.getAppointmentService();
+    private final Service<Doctor> doctorService = DoctorService.getDoctorService();
+    private final Service<Patient> patientService = PatientService.getPatientService();
+    private final SimpleService diagnosisService = SimpleService.getSimpleService(Constants.DIAGNOSIS);
+    private final SimpleService medicationService = SimpleService.getSimpleService(Constants.MEDICATION);
+    private final SimpleService procedureService = SimpleService.getSimpleService(Constants.PROCEDURE);
+    private final SimpleService operationService = SimpleService.getSimpleService(Constants.OPERATION);
+
+    private final Service<Appointment> appointmentService = AppointmentService.getAppointmentService();
 
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
@@ -35,6 +39,9 @@ public class CreateAppointmentCommand implements ActionCommand {
             if (request.getParameter(ControllerConstants.SUBMIT) == null ) {
                 request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null));
                 request.setAttribute(ControllerConstants.DIAGNOSISES, diagnosisService.getAll(null));
+                request.setAttribute(ControllerConstants.MEDICATIONES, medicationService.getAll(null));
+                request.setAttribute(ControllerConstants.PROCEDURES, procedureService.getAll(null));
+                request.setAttribute(ControllerConstants.OPERATIONES, operationService.getAll(null));
                 return ControllerConstants.PAGE_EDIT_APPOINTMENT;
             }
             else{

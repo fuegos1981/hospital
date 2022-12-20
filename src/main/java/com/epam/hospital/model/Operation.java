@@ -4,6 +4,11 @@ public class Operation implements SimpleModel,Medical{
     private int id;
     private String name;
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public static Operation createInstance(String name){
         Operation operation = new Operation();
         operation.name=name;
@@ -23,5 +28,10 @@ public class Operation implements SimpleModel,Medical{
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

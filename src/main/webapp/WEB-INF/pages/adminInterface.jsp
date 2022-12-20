@@ -11,9 +11,6 @@
             <%@include file="/WEB-INF/styles/main.css"%>
         </style>
 
-        <script>
-            <%@include file="/WEB-INF/main.js"%>
-        </script>
     </head>
     <body>
         <fmt:requestEncoding value="UTF-8" />
@@ -35,11 +32,11 @@
                                     <a class="btn btn-info btn-md" href="/hospital/editPatient?command=edit_patient"><fmt:message key="create_patient"/></a>
                                 </div>
                                 <div class="form-group">
-                                       <input type="submit" name="submit" class="btn btn-info btn-md" value="sort">
-                                        <input type="radio" name="sortPatient"  value="name asc" ${requestScope['sortPatient'] == 'name asc'? 'checked':''}/><fmt:message key="name_asc"/>
-                                        <input type="radio" name="sortPatient"  value="name desc" ${requestScope['sortPatient'] == 'name desc'? 'checked':''}/><fmt:message key="name_desc"/>
-                                        <input type="radio" name="sortPatient"  value="birthday asc" ${requestScope['sortPatient'] == 'birthday asc'? 'checked':''}/><fmt:message key="birthday_asc"/>
-                                        <input type="radio" name="sortPatient"  value="birthday desc" ${requestScope['sortPatient'] == 'birthday desc'? 'checked':''}/><fmt:message key="birthday_desc"/>
+                                       <input id = "sub" type="submit" name="submit" class="btn btn-info btn-md" value="sort">
+                                        <input type="radio" name="sortPatient" onClick="clickSort()"  value="name asc" ${requestScope['sortPatient'] == 'name asc'? 'checked':''}/><fmt:message key="name_asc"/>
+                                        <input type="radio" name="sortPatient" onClick="clickSort()" value="name desc" ${requestScope['sortPatient'] == 'name desc'? 'checked':''}/><fmt:message key="name_desc"/>
+                                        <input type="radio" name="sortPatient" onClick="clickSort()" value="birthday asc" ${requestScope['sortPatient'] == 'birthday asc'? 'checked':''}/><fmt:message key="birthday_asc"/>
+                                        <input type="radio" name="sortPatient" onClick="clickSort()"  value="birthday desc" ${requestScope['sortPatient'] == 'birthday desc'? 'checked':''}/><fmt:message key="birthday_desc"/>
                                 </div>
                                 <table id = "AllPatients" class="table table-bordered table-hover table-striped">
                                     <tr>
@@ -50,8 +47,7 @@
                                     </tr>
                                     <c:forEach var="patient" items="${patients}" varStatus="status">
                                         <tr>
-
-                                              <td><c:out value="${status.count}" /></th>
+                                              <td><c:out value="${status.count+10*(current_page_patients-1)}" /></th>
                                               <td><c:out value="${patient.getPerson().toString()}"/></td>
                                               <td><c:out value="${patient.getPerson().getBirthday()}"/></td>
                                               <td><a href ="/hospital/readPatient?id=${patient.getId()}&command=patient_info"><fmt:message key="read"/></td>
@@ -60,14 +56,14 @@
                                     </c:forEach>
                                 </table>
                                 <div class btn-group btn group-xs>
-                                    <ul class = "pagination pagination-sm">
-                                        <li class="disabled"><input type="button" name="pat_1" class="btn btn-info btn-md" value='<fmt:message key="begin"/>'/></li>
+                                    <ul id="pagination_patient" class = "pagination pagination-sm">
+                                        <li class="disabled"><input type="button" onClick="clickPagePatient(1)" name="pat" class="btn btn-info btn-md" value='<fmt:message key="begin"/>'/></li>
                                        <c:forEach varStatus="status" begin="1" end ="${countPagePatient}">
-                                            <li class="active"><input type="button" name="pat_${status.count}" class="btn btn-info btn-md" value='${status.count}'/></li>
+                                            <li class="active"><input type="button" onClick="clickPagePatient(${status.count})" name="pat" class="btn btn-info btn-md" value='${status.count}'/></li>
                                        </c:forEach>
-                                        <li><input type="button" name="pat_${requestScope['countPagePatient']}" class="btn btn-info btn-md" value='<fmt:message key="end"/>'/></li>
+                                        <li><input type="button" onClick="clickPagePatient(${requestScope['countPagePatient']})" name="pat" class="btn btn-info btn-md" value='<fmt:message key="end"/>'/></li>
                                     </ul>
-                                    <input type="hidden" id ="pat_comment" name="current_page_patients" value="${currentPagePatient}" />
+                                    <input type="hidden" id ="pat_comment" name="current_page_patients" value="${current_page_patients}" />
                                 </div>
                             </div>
                             <div class="table-responsive  col-md-6">
@@ -76,11 +72,10 @@
                                <a class="btn btn-info btn-md" href="/hospital/editPatient?command=edit_doctor"><fmt:message key="create_doctor"/></a>
                                </div>
                             <div class="form-group">
-                              <input type="submit" name="submit" class="btn btn-info btn-md" value="sort">
-                              <input type="radio" name="sortDoctor"  value="name asc" ${requestScope['sortDoctor'] == 'name asc'? 'checked':''}/><fmt:message key="name_asc"/>
-                              <input type="radio" name="sortDoctor"  value="name desc" ${requestScope['sortDoctor'] == 'name desc'? 'checked':''}/><fmt:message key="name_desc"/>
-                              <input type="radio" name="sortDoctor"  value="category asc" ${requestScope['sortDoctor'] == 'category asc'? 'checked':''}/><fmt:message key="category_asc"/>
-                              <input type="radio" name="sortDoctor"  value="category desc" ${requestScope['sortDoctor'] == 'category desc'? 'checked':''}/><fmt:message key="category_desc"/>
+                              <input type="radio" name="sortDoctor" onClick="clickSort()"  value="name asc" ${requestScope['sortDoctor'] == 'name asc'? 'checked':''}/><fmt:message key="name_asc"/>
+                              <input type="radio" name="sortDoctor" onClick="clickSort()"  value="name desc" ${requestScope['sortDoctor'] == 'name desc'? 'checked':''}/><fmt:message key="name_desc"/>
+                              <input type="radio" name="sortDoctor" onClick="clickSort()"  value="category asc" ${requestScope['sortDoctor'] == 'category asc'? 'checked':''}/><fmt:message key="category_asc"/>
+                              <input type="radio" name="sortDoctor" onClick="clickSort()"  value="category desc" ${requestScope['sortDoctor'] == 'category desc'? 'checked':''}/><fmt:message key="category_desc"/>
                             </div>
                             <table id = "AllDoctors" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -99,6 +94,16 @@
                                     </tr>
                                 </c:forEach>
                             </table>
+                            <div class btn-group btn group-xs>
+                                <ul id="pagination_doctor" class = "pagination pagination-sm">
+                                    <li class="disabled"><input type="button" onClick="clickPageDoctor(1)" name="doc" class="btn btn-info btn-md" value='<fmt:message key="begin"/>'/></li>
+                                    <c:forEach varStatus="status" begin="1" end ="${countPageDoctor}">
+                                        <li class="active"><input type="button" onClick="clickPageDoctor(${status.count})" name="doc" class="btn btn-info btn-md" value='${status.count}'/></li>
+                                    </c:forEach>
+                                    <li><input type="button" onClick="clickPageDoctor(${requestScope['countPageDoctor']})" name="doc" class="btn btn-info btn-md" value='<fmt:message key="end"/>'/></li>
+                                </ul>
+                                <input type="hidden" id ="pat_comment_doctor" name="current_page_doctors" value="${current_page_doctors}" />
+                            </div>
                         </div>
                         </div>
                     </div>
@@ -106,4 +111,7 @@
             </div>
         </form>
     </body>
+    <script>
+        <%@include file="/WEB-INF/main.js"%>
+    </script>
 </html>

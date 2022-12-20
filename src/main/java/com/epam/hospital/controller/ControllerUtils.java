@@ -2,6 +2,7 @@ package com.epam.hospital.controller;
 
 import com.epam.hospital.model.Gender;
 import com.epam.hospital.model.Person;
+import com.epam.hospital.repository.Fields;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public class ControllerUtils {
 
@@ -27,8 +27,7 @@ public class ControllerUtils {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             messages.add("Number cookies : " + cookies.length);
-            for (int i = 0; i < cookies.length; i++) {
-                Cookie c = cookies[i];
+            for (Cookie c : cookies) {
                 messages.add(c.getName() + " = " + c.getValue());
             }
         }
@@ -46,11 +45,11 @@ public class ControllerUtils {
     }
 
     public static Person getPerson(HttpServletRequest request) throws ParseException {
-        return Person.createPerson(request.getParameter("lastName"),
-                request.getParameter("firstName"),
-                ControllerUtils.getDateByString(request.getParameter("birthday"), false),
-                request.getParameter("email"),
-                Gender.MALE);
+        return Person.createPerson(request.getParameter(ControllerConstants.LAST_NAME),
+                request.getParameter(ControllerConstants.FIRST_NAME),
+                ControllerUtils.getDateByString(request.getParameter(Fields.PERSON_BIRTHDAY), false),
+                request.getParameter(Fields.PERSON_EMAIL),
+                Gender.valueOf((request.getParameter(ControllerConstants.GENDER).toUpperCase())));
     }
 
     public static void RemoveAttributes(HttpServletRequest request, String... atrs) {
@@ -70,6 +69,33 @@ public class ControllerUtils {
         if (name!=null){
             name =name.replace(ControllerConstants.PERC, " ");
             request.setAttribute(ControllerConstants.NAME, name);
+        }
+    }
+
+    public static void setGender(HttpServletRequest request) {
+        String gender = request.getParameter(ControllerConstants.GENDER);
+        gender=(gender==null)?ControllerConstants.MALE:gender;
+        request.setAttribute(ControllerConstants.GENDER,gender);
+    }
+
+    public static int[] setMasForPagination(HttpServletRequest request, int countList, String currentCountName, String countPageName){
+
+        int currentPage;
+        if (request.getParameter(currentCountName)==null||request.getParameter(currentCountName).isEmpty()){
+            currentPage=1;
+        }
+        else {
+            currentPage = Integer.parseInt(request.getParameter(currentCountName));
+        }
+
+        int countPage = (countList<ControllerConstants.MAX_COUNT_ON_PAGE)?1:(int)Math.ceil(1.00*countList/ControllerConstants.MAX_COUNT_ON_PAGE);
+        request.setAttribute(countPageName, countPage);
+        request.setAttribute(currentCountName,currentPage);
+        if (countList<=ControllerConstants.MAX_COUNT_ON_PAGE){
+            return null;
+        }
+        else{
+            return new int[]{(currentPage-1)*ControllerConstants.MAX_COUNT_ON_PAGE,Math.min(currentPage*ControllerConstants.MAX_COUNT_ON_PAGE,countList)};
         }
     }
 }

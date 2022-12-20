@@ -1,33 +1,39 @@
 package com.epam.hospital.service.impl;
 
+import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.model.SimpleModel;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.elements.SimpleRepository;
 import com.epam.hospital.service.Service;
+import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 public class SimpleService implements Service<SimpleModel> {
-    private static SimpleService simpleService;
+    //private SimpleService simpleService;
     private SimpleRepository simpleRepository;
+    private String classNameParam;
     private SimpleService() {
     }
     public static SimpleService getSimpleService(String className){
 
-            simpleService = new SimpleService();
-            simpleService.simpleRepository = SimpleRepository.getRepository(className);
+        SimpleService simpleService = new SimpleService();
+        simpleService.classNameParam =className;
+        simpleService.simpleRepository = SimpleRepository.getRepository(className);
 
         return simpleService;
     }
     @Override
-    public boolean create(SimpleModel simpleModel) throws DBException {
+    public boolean create(SimpleModel simpleModel) throws DBException, ValidateException {
+        ServiceUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
         return simpleRepository.create(simpleModel);
     }
 
     @Override
     public SimpleModel readById(int id) throws DBException, SQLException {
+        simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.readByID(id);
     }
 

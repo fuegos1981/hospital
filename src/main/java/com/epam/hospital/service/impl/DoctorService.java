@@ -1,9 +1,12 @@
 package com.epam.hospital.service.impl;
 
+import com.epam.hospital.controller.ControllerConstants;
+import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.elements.DoctorRepository;
 import com.epam.hospital.service.Service;
+import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -20,7 +23,9 @@ public class DoctorService implements Service<Doctor> {
         return Objects.requireNonNullElseGet(doctorService, DoctorService::new);
     }
     @Override
-    public boolean create(Doctor doctor) throws DBException {
+    public boolean create(Doctor doctor) throws DBException, ValidateException {
+        ServiceUtils.nameValidate(ControllerConstants.LAST_NAME,doctor.getPerson().getLastName());
+        ServiceUtils.nameValidate(ControllerConstants.FIRST_NAME,doctor.getPerson().getFirstName());
         return doctorRepository.create(doctor);
     }
 

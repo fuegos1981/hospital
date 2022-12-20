@@ -3,6 +3,7 @@ package com.epam.hospital.controller.commands;
 import com.epam.hospital.MessageManager;
 import com.epam.hospital.controller.ActionCommand;
 import com.epam.hospital.controller.ControllerConstants;
+import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.repository.DBException;
@@ -18,7 +19,13 @@ public class AdminCommand implements ActionCommand {
     private final static Service<Patient> patientService;
     private final static Service<Doctor> doctorService;
     private final static String NAME_ASC = "name asc";
-    private final int maxCountPatient = 10;
+    private final static String SORT_DOCTOR = "sortDoctor";
+    private final static String SORT_PATIENT = "sortPatient";
+    private final static String CURRENT_PAGE_DOCTORS = "current_page_doctors";
+    private final static String CURRENT_PAGE_PATIENTS = "current_page_patients";
+    private final static String COUNT_PAGE_DOCTOR = "countPageDOCTOR";
+    private final static String COUNT_PAGE_PATIENT = "countPagePatient";
+
     static {
         doctorService = DoctorService.getDoctorService();
         patientService = PatientService.getPatientService();
@@ -26,13 +33,6 @@ public class AdminCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
         try {
-            String submit = request.getParameter("submit");
-            if (submit!=null&&submit.equals("createPatient")){
-                return ControllerConstants.PAGE_EDIT_PATIENT;
-            }
-            if (submit!=null&&submit.equals("createDoctor")){
-                return ControllerConstants.PAGE_EDIT_DOCTOR;
-            }
             fillPatients(request);
             fillDoctors(request);
             return ControllerConstants.PAGE_ADMIN;
@@ -43,38 +43,36 @@ public class AdminCommand implements ActionCommand {
     }
 
     private void fillDoctors(HttpServletRequest request) throws DBException, SQLException {
-        String sortDoctor = request.getParameter("sortDoctor");
+        String sortDoctor = request.getParameter(SORT_DOCTOR);
         sortDoctor=(sortDoctor==null)?NAME_ASC:sortDoctor;
-        request.setAttribute("sortDoctor",sortDoctor);
-        request.setAttribute(ControllerConstants.DOCTORS,doctorService.getAll(sortDoctor));
+        request.setAttribute(SORT_DOCTOR,sortDoctor);
+        List<Doctor> doctors =doctorService.getAll(sortDoctor);
+        request.setAttribute(ControllerConstants.DOCTORS,doctors);
+
+        int[] res =ControllerUtils.setMasForPagination(request, doctors.size(),CURRENT_PAGE_DOCTORS,COUNT_PAGE_DOCTOR);
+        if(res==null){
+            request.setAttribute(ControllerConstants.DOCTORS,doctors);
+        }
+        else {
+            request.setAttribute(ControllerConstants.DOCTORS, doctors.subList(res[0], res[1]));
+        }
+
     }
 
     private void fillPatients(HttpServletRequest request) throws DBException, SQLException {
-        String sortPatient = request.getParameter("sortPatient");
+        String sortPatient = request.getParameter(SORT_PATIENT);
 
         sortPatient=(sortPatient==null)?NAME_ASC:sortPatient;
-        request.setAttribute("sortPatient",sortPatient);
-        int currentPagePatient;
-        if (request.getParameter("currentPagePatient")==null){
-            currentPagePatient=1;
-        }
-        else {
-            currentPagePatient = Integer.parseInt(request.getParameter("currentPagePatient"));
-        }
+        request.setAttribute(SORT_PATIENT,sortPatient);
         List<Patient> patients =patientService.getAll(sortPatient);
-        int countPatients= patients.size();
-        int countPagePatient = (countPatients<10)?1:(int)Math.ceil(1.00*countPatients/10);
-        request.setAttribute("countPagePatient", countPagePatient);
-        if (patients.size()<=maxCountPatient){
+
+        int[] res = ControllerUtils.setMasForPagination(request, patients.size(),CURRENT_PAGE_PATIENTS,COUNT_PAGE_PATIENT);
+        if(res==null){
             request.setAttribute(ControllerConstants.PATIENTS,patients);
         }
-        else{
-            int start = (currentPagePatient-1)*10;
-            int end = Math.min(currentPagePatient*10-1,patients.size()-1);
-            request.setAttribute(ControllerConstants.PATIENTS,patients.subList(start, end));
+        else {
+            request.setAttribute(ControllerConstants.PATIENTS, patients.subList(res[0], res[1]));
         }
-        request.setAttribute("currentPagePatient",currentPagePatient);
-
-
     }
+
 }

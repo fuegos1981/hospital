@@ -13,14 +13,42 @@ body {
   background-color: #EAEAEA;
 }
 
+#base2 .container #base-row #base-column #base-box
+{
+  margin-top: 60px;
+  max-width: 600px;
+  height: 550px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
+
+#base1 {
+display: flex;
+flex-flow: column nowrap;
+}
+
+#base1 .container {
+flex-grow: 1;
+margin-bottom: 60px;
+}
+
 #base1 .container .row
 {
   margin-top: 60px;
   max-width: 1200px;
-  height: 800px;
+  min-height: 800px;
   border: 1px solid #9C9C9C;
   background-color: #EAEAEA;
 }
+#sub{
+    display: none;
+}
+
+#base1 .container .row-patient
+{
+    align-content: flex-start;
+}
+
 
 #base-edit-patient .container #base-row #base-column #base-box
 {

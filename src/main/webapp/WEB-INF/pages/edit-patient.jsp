@@ -36,6 +36,10 @@
                                     <input type="text" name="firstName" id="firstName" class="form-control" value="${firstName}"/>
                                 </div>
                                 <div class="form-group">
+                                    <label for="email" class="text-info"><fmt:message key="email"/>:</label><br>
+                                    <input type="email" name="email" id="email" class="form-control" value="${email}"/>
+                                </div>
+                                <div class="form-group">
                                     <label for="birthday" class="text-info"><fmt:message key="birthday"/>:</label><br>
                                     <input type="date" name="birthday" id="birthday" class="form-control" lang ="${locale}" value="${birthday}">
                                 </div>

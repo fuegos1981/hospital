@@ -26,4 +26,8 @@ public class Diagnosis implements SimpleModel{
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

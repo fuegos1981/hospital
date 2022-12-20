@@ -26,4 +26,8 @@ public class Procedure implements SimpleModel,Medical{
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

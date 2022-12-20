@@ -1,5 +1,3 @@
-<%@ page import="com.epam.hospital.model.Patient"%>
-<%@ page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language ="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -15,6 +13,11 @@
     </style>
     </head>
     <body>
+        <c:if test="${not empty locale }">
+            <fmt:setLocale value="${locale}" scope="session" />
+        </c:if>
+        <fmt:setBundle basename="pagecontent"/>
+        <c:import url="/WEB-INF/pages/header.jsp" />
         <div id="base">
             <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
             <div class="container">
@@ -27,10 +30,11 @@
                                 <h3 class="text-center text-info"><fmt:message key="create"/> <fmt:message key="${name}"/></h3>
                                 <div class="form-group">
                                     <label for="simple" class="text-info"><fmt:message key="${name}"/>:</label><br>
-                                    <input type="text" name="simple" id="simple" class="form-control">
+                                    <input type="text" name="simple" id="simple" class="form-control" value="${simple}"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='create'/>">
+                                    <label  class="text-danger"><c:out value="${message}" ></c:out></label>
                                 </div>
                             </form>
                         </div>
