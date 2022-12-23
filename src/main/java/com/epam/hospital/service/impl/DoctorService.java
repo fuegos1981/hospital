@@ -1,21 +1,19 @@
 package com.epam.hospital.service.impl;
 
-import com.epam.hospital.controller.ControllerConstants;
-import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.repository.DBException;
+import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.elements.DoctorRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 public class DoctorService implements Service<Doctor> {
     private static DoctorService doctorService;
-    private DoctorRepository doctorRepository;
+    private static DoctorRepository doctorRepository;
     private DoctorService() {
         this.doctorRepository = doctorRepository.getRepository();
     }
@@ -24,14 +22,21 @@ public class DoctorService implements Service<Doctor> {
     }
     @Override
     public boolean create(Doctor doctor) throws DBException, ValidateException {
-        ServiceUtils.nameValidate(ControllerConstants.LAST_NAME,doctor.getPerson().getLastName());
-        ServiceUtils.nameValidate(ControllerConstants.FIRST_NAME,doctor.getPerson().getFirstName());
+        ServiceUtils.nameValidate(Fields.LAST_NAME,doctor.getLastName());
+        ServiceUtils.nameValidate(Fields.FIRST_NAME,doctor.getFirstName());
         return doctorRepository.create(doctor);
     }
 
     @Override
-    public Doctor readById(int id) throws DBException, SQLException {
-        return  doctorRepository.readByID(id);
+    public Doctor readById(Integer id) throws DBException, SQLException, ValidateException {
+        if (id == null) {
+            throw new ValidateException("incorrect_doctor");
+        }
+        else
+            return  doctorRepository.readByID(id);
+    }
+    public Doctor readByLogin(String login) throws DBException{
+        return  doctorRepository.readByLogin(login);
     }
 
     @Override
@@ -45,23 +50,10 @@ public class DoctorService implements Service<Doctor> {
     }
 
     @Override
-    public List<Doctor> getAll(String sortRule) throws DBException, SQLException {
-        return sort(doctorRepository.getAllDoctors(),sortRule);
-
+    public List<Doctor> getAll(int[] limit, String sortRule) throws DBException, SQLException {
+        return doctorRepository.getAllDoctors(limit,sortRule);
     }
-    public List<Doctor> sort(List<Doctor> list, String sortRule){
-        if (sortRule != null && !sortRule.equals(" ")){
-            String[] s = sortRule.split(" ");
-            Comparator<Doctor> comp;
-            if (s[0].equals("name"))
-                comp = Comparator.comparing(e -> e.getPerson().toString());
-            else
-                comp = Comparator.comparing(e -> e.getCategory().toString());
-            if (s[1].equals("desc"))
-                comp =comp.reversed();
-            list.sort(comp);
-        }
-        return list;
-
+    public int getSize() throws DBException {
+        return doctorRepository.getSize();
     }
 }

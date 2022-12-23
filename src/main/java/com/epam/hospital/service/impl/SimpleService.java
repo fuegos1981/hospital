@@ -32,7 +32,8 @@ public class SimpleService implements Service<SimpleModel> {
     }
 
     @Override
-    public SimpleModel readById(int id) throws DBException, SQLException {
+    public SimpleModel readById(Integer id) throws DBException, SQLException, ValidateException {
+
         simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.readByID(id);
     }
@@ -48,7 +49,10 @@ public class SimpleService implements Service<SimpleModel> {
     }
 
     @Override
-    public List<SimpleModel> getAll(String sortRule) throws DBException, SQLException {
+    public List<SimpleModel> getAll(int[] limit, String sortRule) throws DBException, SQLException {
         return simpleRepository.getAll();
+    }
+    public int getSize() throws DBException {
+        return simpleRepository.getSize();
     }
 }

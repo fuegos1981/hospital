@@ -1,9 +1,12 @@
 package com.epam.hospital.service.impl;
 
 import com.epam.hospital.model.Schedule;
+import com.epam.hospital.repository.Constants;
 import com.epam.hospital.repository.DBException;
+import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.elements.ScheduleRepository;
 import com.epam.hospital.service.Service;
+import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,18 +27,22 @@ public class ScheduleService implements Service<Schedule> {
     }
 
     @Override
-    public boolean create(Schedule schedule) throws DBException {
+    public boolean create(Schedule schedule) throws DBException, ValidateException {
+        ServiceUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
+
         return scheduleRepository.create(schedule);
     }
 
     @Override
-    public Schedule readById(int id) throws DBException, SQLException {
+    public Schedule readById(Integer id) throws DBException, SQLException, ValidateException {
+        if (id==null) throw new ValidateException("schedule");
         return scheduleRepository.readByID(id);
     }
 
     @Override
-    public boolean update(Schedule schedule) throws DBException {
-        return scheduleRepository.create(schedule);
+    public boolean update(Schedule schedule) throws DBException, ValidateException {
+        ServiceUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
+        return scheduleRepository.updateSchedule(schedule);
     }
 
     @Override
@@ -44,15 +51,21 @@ public class ScheduleService implements Service<Schedule> {
     }
 
     @Override
-    public List<Schedule> getAll(String sortRule) throws DBException, SQLException {
+    public List<Schedule> getAll(int[] limit,String sortRule) throws DBException, SQLException {
         return scheduleRepository.getAllSchedules();
 
     }
-    public List<Schedule> getScheduleByPatientId(int id) throws DBException, SQLException {
-        return scheduleRepository.getAllSchedules().stream()
-                .filter(schedule -> schedule.getPatient().getId()==id)
-                .collect(Collectors.toList());
 
+    public List<Schedule> getScheduleByPatientId(int id) throws DBException, SQLException {
+        return scheduleRepository.readByPatientID(id);
+
+    }
+    public List<Schedule> getScheduleByDoctorId(int id) throws DBException, SQLException {
+        return scheduleRepository.readByDoctorID(id);
+
+    }
+    public int getSize() throws DBException {
+        return scheduleRepository.getSize();
     }
 
 }

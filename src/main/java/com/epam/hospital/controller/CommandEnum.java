@@ -27,6 +27,9 @@ public enum CommandEnum {
     EDIT_APPOINTMENT {
         {this.command = new CreateAppointmentCommand();}
     },
+    DELETE_SCHEDULE {
+        {this.command = new DeleteScheduleCommand();}
+    },
     EDIT_PATIENT {
         {this.command = new CreatePatientCommand();}
     };

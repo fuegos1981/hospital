@@ -9,15 +9,41 @@ public class Appointment {
     private Diagnosis diagnosis;
     private Patient patient;
     private Doctor doctor;
-    private List<AppointmentCard> listCard;
+    private String medication;
+    private String procedure;
+    private String operation;
 
-    public static Appointment createAppointment(Date dateCreate,Diagnosis diagnosis,Patient patient, Doctor doctor) {
+    public static Appointment createAppointment(Date dateCreate, Diagnosis diagnosis, Patient patient, Doctor doctor) {
         Appointment appointment = new Appointment();
         appointment.setDateCreate(dateCreate);
         appointment.setDiagnosis(diagnosis);
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
         return appointment;
+    }
+
+    public String getMedication() {
+        return medication;
+    }
+
+    public void setMedication(String medication) {
+        this.medication = medication;
+    }
+
+    public String getProcedure() {
+        return procedure;
+    }
+
+    public void setProcedure(String procedure) {
+        this.procedure = procedure;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 
     public void setId(int id) {
@@ -40,10 +66,6 @@ public class Appointment {
         this.doctor = doctor;
     }
 
-    public void setListCard(List<AppointmentCard> listCard) {
-        this.listCard = listCard;
-    }
-
     public int getId() {
         return id;
     }
@@ -64,7 +86,4 @@ public class Appointment {
         return doctor;
     }
 
-    public List<AppointmentCard> getListCard() {
-        return listCard;
-    }
 }

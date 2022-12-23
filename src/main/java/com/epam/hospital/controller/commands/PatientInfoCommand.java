@@ -11,6 +11,7 @@ import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.AppointmentService;
 import com.epam.hospital.service.impl.PatientService;
 import com.epam.hospital.service.impl.ScheduleService;
+import com.epam.hospital.service.impl.ValidateException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -31,6 +32,9 @@ public class PatientInfoCommand implements ActionCommand {
             return ControllerConstants.PAGE_PATIENT_INFO;
         } catch (DBException | SQLException e) {
             request.setAttribute("message", e.getMessage());
+            return ControllerConstants.PAGE_ERROR;
+        } catch (ValidateException e) {
+            request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_ERROR;
         }
 

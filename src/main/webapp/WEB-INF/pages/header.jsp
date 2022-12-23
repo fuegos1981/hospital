@@ -17,9 +17,12 @@
         </c:if>
     <fmt:setBundle basename="pagecontent"/>
     <div class="form-group">
-        <input type="submit" name="submit_us" class="btn btn-info btn-md" value='<fmt:message key="us"/>'>
-        <input type="submit" name="submit_ua" class="btn btn-info btn-md" value='<fmt:message key="ua"/>'>
-        <a class="btn btn-info btn-md" href="controller?command=logout"><fmt:message key="logout"/></a>
+        <input type="submit" name="submit_us" class="btn btn-info btn-md" value='<fmt:message key="en"/>'/>
+        <input type="submit" name="submit_ua" class="btn btn-info btn-md" value='<fmt:message key="ua"/>'/>
+
+            <a class="btn btn-info btn-md" href="/hospital/main?command=admin"><fmt:message key="main"/></a>
+            <a class="btn btn-info btn-md" href="controller?command=logout"><fmt:message key="logout"/></a>
+
     </div>
     </body>
 </html>

@@ -45,9 +45,12 @@ public class Controller extends HttpServlet {
             throwables.printStackTrace();
         }
         if (page != null) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            // вызов страницы ответа на запрос
-            dispatcher.forward(req, resp);
+            if (page.contains(".jsp")) {
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+                dispatcher.forward(req, resp);
+            }
+            else resp.sendRedirect(page);
+
         } else {
             // установка страницы c cообщением об ошибке
             req.setAttribute("message", "Проблема не  указана команда на странице");

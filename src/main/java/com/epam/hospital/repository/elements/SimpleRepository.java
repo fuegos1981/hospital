@@ -17,7 +17,6 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
     public static SimpleRepository getRepository(String className){
 
         simpleRepository = new SimpleRepository();
-        connectionPool = ConnectionPool.getInstance();
         simpleRepository.setClassNameParam(className);
 
         return simpleRepository;
@@ -37,11 +36,11 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
     }
 
     public boolean create(SimpleModel simpleModel) throws DBException {
-        int id = simpleRepository.insert(queries[2], null,simpleModel.toString());
+        int id = simpleRepository.insert(queries[2], simpleModel.toString());
         return id >=0;
     }
     public boolean delete(SimpleModel simpleModel) throws DBException {
-        return simpleRepository.delete(queries[3], null,simpleModel.toString());
+        return simpleRepository.delete(queries[3], simpleModel.toString());
     }
     @Override
     protected SimpleModel readByResultSet(ResultSet rs) throws SQLException {
@@ -50,6 +49,9 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
         }
         return null;
 
+    }
+    public int getSize() throws DBException {
+        return simpleRepository.readSize(queries[4]);
     }
 
 

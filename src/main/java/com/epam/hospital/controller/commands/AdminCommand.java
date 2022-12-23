@@ -23,7 +23,7 @@ public class AdminCommand implements ActionCommand {
     private final static String SORT_PATIENT = "sortPatient";
     private final static String CURRENT_PAGE_DOCTORS = "current_page_doctors";
     private final static String CURRENT_PAGE_PATIENTS = "current_page_patients";
-    private final static String COUNT_PAGE_DOCTOR = "countPageDOCTOR";
+    private final static String COUNT_PAGE_DOCTOR = "countPageDoctor";
     private final static String COUNT_PAGE_PATIENT = "countPagePatient";
 
     static {
@@ -46,33 +46,19 @@ public class AdminCommand implements ActionCommand {
         String sortDoctor = request.getParameter(SORT_DOCTOR);
         sortDoctor=(sortDoctor==null)?NAME_ASC:sortDoctor;
         request.setAttribute(SORT_DOCTOR,sortDoctor);
-        List<Doctor> doctors =doctorService.getAll(sortDoctor);
+        int[] limit = ControllerUtils.setMasForPagination(request, doctorService.getSize(),CURRENT_PAGE_DOCTORS,COUNT_PAGE_DOCTOR);
+        List<Doctor> doctors =doctorService.getAll(limit,sortDoctor);
         request.setAttribute(ControllerConstants.DOCTORS,doctors);
-
-        int[] res =ControllerUtils.setMasForPagination(request, doctors.size(),CURRENT_PAGE_DOCTORS,COUNT_PAGE_DOCTOR);
-        if(res==null){
-            request.setAttribute(ControllerConstants.DOCTORS,doctors);
-        }
-        else {
-            request.setAttribute(ControllerConstants.DOCTORS, doctors.subList(res[0], res[1]));
-        }
 
     }
 
     private void fillPatients(HttpServletRequest request) throws DBException, SQLException {
         String sortPatient = request.getParameter(SORT_PATIENT);
-
         sortPatient=(sortPatient==null)?NAME_ASC:sortPatient;
         request.setAttribute(SORT_PATIENT,sortPatient);
-        List<Patient> patients =patientService.getAll(sortPatient);
-
-        int[] res = ControllerUtils.setMasForPagination(request, patients.size(),CURRENT_PAGE_PATIENTS,COUNT_PAGE_PATIENT);
-        if(res==null){
-            request.setAttribute(ControllerConstants.PATIENTS,patients);
-        }
-        else {
-            request.setAttribute(ControllerConstants.PATIENTS, patients.subList(res[0], res[1]));
-        }
+        int[] limit = ControllerUtils.setMasForPagination(request, patientService.getSize(),CURRENT_PAGE_PATIENTS,COUNT_PAGE_PATIENT);
+        List<Patient> patients =patientService.getAll(limit,sortPatient);
+        request.setAttribute(ControllerConstants.PATIENTS,patients);
     }
 
 }

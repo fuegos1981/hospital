@@ -1,7 +1,5 @@
 package com.epam.hospital.controller;
 
-import com.epam.hospital.model.Gender;
-import com.epam.hospital.model.Person;
 import com.epam.hospital.repository.Fields;
 
 import javax.servlet.http.Cookie;
@@ -44,14 +42,6 @@ public class ControllerUtils {
         return sdf.parse(string.replace("T"," "));
     }
 
-    public static Person getPerson(HttpServletRequest request) throws ParseException {
-        return Person.createPerson(request.getParameter(ControllerConstants.LAST_NAME),
-                request.getParameter(ControllerConstants.FIRST_NAME),
-                ControllerUtils.getDateByString(request.getParameter(Fields.PERSON_BIRTHDAY), false),
-                request.getParameter(Fields.PERSON_EMAIL),
-                Gender.valueOf((request.getParameter(ControllerConstants.GENDER).toUpperCase())));
-    }
-
     public static void RemoveAttributes(HttpServletRequest request, String... atrs) {
         for (String atr : atrs) {
             request.removeAttribute(atr);
@@ -70,6 +60,14 @@ public class ControllerUtils {
             name =name.replace(ControllerConstants.PERC, " ");
             request.setAttribute(ControllerConstants.NAME, name);
         }
+    }
+
+    public static Integer parseID(HttpServletRequest request, String idName) {
+        String idStr= request.getParameter(idName);
+        if (idStr==null|| idStr.isEmpty())
+            return null;
+        else
+        return Integer.valueOf(idStr);
     }
 
     public static void setGender(HttpServletRequest request) {

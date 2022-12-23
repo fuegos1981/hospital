@@ -32,31 +32,33 @@
                                     <th colspan ="1"><fmt:message key="operation"/></th>
                                 </tr>
                                 <tr>
-                                    <td><c:out value="${patient.getPerson().toString()}"/></td>
-                                    <td><c:out value="${patient.getPerson().getBirthday()}"/></td>
-                                    <td><c:out value="${patient.getPerson().getEmail()}"/></td>
-                                    <td><a href ="/edit-patient?id=${patient.getId()}&command=edit_patient"/><fmt:message key="edit"/></td>
+                                    <td><c:out value="${patient.toString()}"/></td>
+                                    <td><c:out value="${patient.getBirthday()}"/></td>
+                                    <td><c:out value="${patient.getEmail()}"/></td>
+                                    <td><a href ="/hospital/editPatient?id=${patient.getId()}&command=edit_patient"/><fmt:message key="edit"/></td>
                                 </tr>
                             </table>
                         </div>
                         <div class="table-responsive col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true" method="post"><fmt:message key="add_visit"/></a>
+                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true"><fmt:message key="add_visit"/></a>
                             </div>
                             <table id = "AllSchedule" class="table table-bordered table-hover table-striped">
                                 <tr>
                                     <th><fmt:message key="num"/></th>
                                     <th><fmt:message key="name"/></th>
                                     <th><fmt:message key="visit"/></th>
-                                    <th colspan ="1">Operation</th>
+                                    <th colspan ="2">Operation</th>
                                 </tr>
                                 <c:forEach var="schedule" items="${schedules}" varStatus="status">
                                     <tr>
                                         <td><c:out value="${status.count}"/></td>
                                         <td><c:out value="${schedule.getDoctor().toString()}"/></td>
-                                        <td><c:out value="${schedule.getDateVisit()}"/></td>
-                                        <td><td><a href ="/hospital/addSchedule?id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true" method="post"><fmt:message key="add_visit"/></td>
+
+                                        <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd hh:mm" /></td>
+                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&visit_time=<fmt:formatDate value='${schedule.getDateVisit()}' pattern = 'yyyy-MM-dd hh:mm' />&doctor_id=${schedule.getDoctor().getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true"/><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/deleteSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&command=delete_schedule"/><fmt:message key="delete"/></td>
                                     </tr>
                                 </c:forEach>
                             </table>
@@ -79,7 +81,7 @@
                                     <tr>
                                         <td><c:out value="${status.count}"/></td>
                                         <td><c:out value="${appointment.getDateCreate()}"/></th>
-                                        <td><c:out value="${appointment.getDoctor().getPerson().toString()}"/></td>
+                                        <td><c:out value="${appointment.getDoctor().getLastName()+' '+ appointment.getDoctor().getFirstName()}"/></td>
                                         <td><c:out value="${appointment.doctor.getCategory()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosis()}"/></td>
                                         <td><a href ="/read-appointment?id=${appointment.getId()}">Read</td>

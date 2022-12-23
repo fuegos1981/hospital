@@ -6,7 +6,6 @@ import com.epam.hospital.repository.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AppointmentRepository extends GlobalRepository<Appointment> {
     private static AppointmentRepository  appointmentRepository;
@@ -18,7 +17,7 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
     public static AppointmentRepository getRepository(){
         if (appointmentRepository==null)  {
             appointmentRepository = new AppointmentRepository();
-            connectionPool = ConnectionPool.getInstance();
+            //connectionPool = ConnectionPool.getInstance();
         }
         return appointmentRepository;
     }
@@ -31,8 +30,8 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
     }
 
     public boolean create(Appointment appointment) throws DBException {
-        Map<String, List<Object[]>> batch = getBatch(appointment);
-        int idAppointment = appointmentRepository.insert(Constants.ADD_APPOINTMENT,batch,
+
+        int idAppointment = appointmentRepository.insert(Constants.ADD_APPOINTMENT,
                 appointment.getDateCreate(),
                 appointment.getDiagnosis().getId(),
                 appointment.getPatient().getId(),
@@ -42,49 +41,13 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
         return idAppointment>0;
     }
 
-    private Map<String, List<Object[]>> getBatch(Appointment appointment) {
-        Map<String,List<Object[]>> batch = new HashMap<>();
-        List<AppointmentCard> listMed = appointment.getListCard().stream()
-                .filter(e->e.getMedical() instanceof Medication)
-                .collect(Collectors.toList());
-        List<AppointmentCard> listProc = appointment.getListCard().stream()
-                .filter(e->e.getMedical() instanceof Procedure)
-                .collect(Collectors.toList());
-        List<AppointmentCard> listOper = appointment.getListCard().stream()
-                .filter(e->e.getMedical() instanceof Operation)
-                .collect(Collectors.toList());
-        if (listMed.size()>0){
-            batch.put(Constants.ADD_CARD_MEDICATION,getListObjects(listMed));
-        }
-        if (listProc.size()>0){
-            batch.put(Constants.ADD_CARD_PROCEDURE,getListObjects(listProc));
-        }
-        if (listOper.size()>0){
-            batch.put(Constants.ADD_CARD_MEDICATION,getListObjects(listOper));
-        }
-        return batch;
-    }
-
-    private static List<Object[]> getListObjects(List<AppointmentCard> ListCards){
-        List<Object[]> list = new ArrayList<>();
-        for (AppointmentCard appointmentCard:   ListCards) {
-            list.add(new Object[]{appointmentCard.getAppointment().getId()
-                    ,appointmentCard.getMedical().getId()
-                    ,appointmentCard.getDescription()});
-        }
-        return list;
-    }
 
     public boolean delete(Appointment appointment) throws DBException {
-        Map<String,List<Object[]>> batch = new HashMap<>();
         List<Object[]> listFilters = new ArrayList<>();
         listFilters.add(new Object[]{appointment.getId()});
 
-        batch.put(Constants.DELETE_CARD_MEDICATION_BY_APPOINTMENT, listFilters);
-        batch.put(Constants.DELETE_CARD_PROCEDURE_BY_APPOINTMENT,listFilters);
-        batch.put(Constants.DELETE_CARD_OPERATION_BY_APPOINTMENT,listFilters);
 
-        return appointmentRepository.delete(Constants.DELETE_APPOINTMENT, batch, appointment.getId());
+        return appointmentRepository.delete(Constants.DELETE_APPOINTMENT, appointment.getId());
     }
 
     @Override
@@ -116,5 +79,8 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
 
     public List<Appointment> readAppointmentByPatientID(int patientId) throws DBException {
         return appointmentRepository.findAll(Constants.GET_ALL_APPOINTMENTS_BY_PATIENT, patientId);
+    }
+    public int getSize() throws DBException {
+        return appointmentRepository.readSize(Constants.GET_SIZE_APPOINTMENT);
     }
 }

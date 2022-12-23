@@ -35,11 +35,12 @@
                                     <div class="form-group">
                                         <label for="patient" class="text-info"><fmt:message key="patient"/>:</label><br>
                                         <input type="text" name="name" id="name" class="form-control" value="${name}"/>
+                                        <input type="hidden" name="patient_id" value="${patient_id}" />
                                     </div>
                                     <select class="form-control" name="doctor_id" id="doctors">
-                                        <option>Select doctors...</option>
+                                        <option value="">Select doctors...</option>
                                         <c:forEach var="doctor" items="${doctors}" varStatus="status">
-                                            <option value="${doctor.getId()}">
+                                            <option value="${doctor.getId()}" ${doctor_id == doctor.getId()? 'selected':''}>
                                                 <c:out value="${doctor.toString()}"/>
                                             </option>
                                         </c:forEach>
@@ -49,11 +50,12 @@
                                     <div class="form-group">
                                         <label for="doctor" class="text-info"><fmt:message key="doctor"/>:</label><br>
                                         <input type="text" name="name" id="doctor" class="form-control" value="${name}"/>
+                                        <input type="hidden" name="doctor_id" value="${doctor_id}" />
                                     </div>
                                     <select class="form-control" name="patient_id" id="patients">
-                                        <option>Select patients...</option>
+                                        <option value="">Select patients...</option>
                                         <c:forEach var="patient" items="${patients}" varStatus="status">
-                                            <option value="${patient.getId()}">
+                                            <option value="${patient.getId()}" ${patient_id == patient.getId()? 'selected':''}>
                                                 <c:out value="${patient.toString()}"/>
                                             </option>
                                         </c:forEach>
@@ -62,7 +64,7 @@
                             </c:choose>
                             <div class="form-group">
                                 <label for="visit_time" class="text-info">Visit time:</label><br>
-                                <input type="datetime-local" name="visit_time" id="visit_time" class="form-control">
+                                <input type="datetime-local" name="visit_time" id="visit_time" class="form-control" value="${visit_time}">
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">

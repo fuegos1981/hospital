@@ -41,9 +41,13 @@ function clickPagePatient(el){
 function clickPageDoctor(el){
    document.getElementById("pat_comment_doctor").value = (el);
    document.getElementById("sub").click();
-
-
 }
+function DeleteRowCard(){
+    var td = event.target.parentNode;
+    var tr = td.parentNode; // the row to be removed
+    tr.parentNode.removeChild(tr);
+}
+
 function clickSort(){
    document.getElementById("sub").click();
 }
@@ -65,7 +69,7 @@ function addRowMedication() {
 
            '</td>'+
            '<td><input type="text" name="description" class="form-control"  value="${description}"></td>'+
-           '<td><a href ="/delete-card?id=${card.getId()}>">delete</td>'+
+           '<td><input type="button" value="Delete row" onclick="DeleteRowCard()"/></td>'+
            '</tr>';
 
           $('#AllCards').append(multiStr);
@@ -89,7 +93,7 @@ function addRowProcedure() {
 
              '</td>'+
              '<td><input type="text" name="description" class="form-control"  value="${description}"></td>'+
-             '<td><a href ="/delete-card?id=${card.getId()}>">delete</td>'+
+             '<td><input type="button" value="Delete row" onclick="DeleteRowCard()"/></td>'+
              '</tr>';
 
             $('#AllCards').append(multiStr);
@@ -113,7 +117,7 @@ function addRowOperation() {
 
              '</td>'+
              '<td><input type="text" name="description" class="form-control"  value="${description}"></td>'+
-             '<td><a href ="/delete-card?id=${card.getId()}>">delete</td>'+
+             '<td><input type="button" value="Delete row" onclick="DeleteRowCard()"/></td>'+
              '</tr>';
 
             $('#AllCards').append(multiStr);

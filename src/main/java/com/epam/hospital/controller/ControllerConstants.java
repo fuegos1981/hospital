@@ -15,19 +15,17 @@ public class ControllerConstants{
     public static final String DOCTOR_ID = "doctor_id";
     public static final String PATIENT_ID = "patient_id";
     public static final String DIAGNOSISES = "diagnosises";
-    public static final String MEDICATIONES = "medicationes";
-    public static final String PROCEDURES = "procedures";
-    public static final String OPERATIONES = "operationes";
     public static final String DIAGNOSIS_ID = "diagnosis_id";
     public static final String MESSAGE = "message";
     public static final String ROLE = "role";
-    public static final String LAST_NAME = "lastName";
-    public static final String FIRST_NAME = "firstName";
+    public static final String NURSE = "nurse";
     public static final String GENDER = "gender";
     public static final String MALE = "male";
     public static final String ERROR_LOG_PASS = "error_log_pass";
     public static final String CATEGORY_ID = "category_id";
     public static final String CATEGORIES = "categories";
+    public static final String ROLE_ID = "role_id";
+    public static final String ROLES = "roles";
     public static final String SIMPLE = "simple";
 
 

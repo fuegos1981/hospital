@@ -24,7 +24,7 @@ public class AppointmentService implements Service<Appointment> {
     }
 
     @Override
-    public Appointment readById(int id) throws DBException, SQLException {
+    public Appointment readById(Integer id) throws DBException, SQLException, ValidateException {
         return  appointmentRepository.readByID(id);
     }
 
@@ -39,12 +39,19 @@ public class AppointmentService implements Service<Appointment> {
     }
 
     @Override
-    public List<Appointment> getAll(String sortRule) throws DBException, SQLException {
+    public List<Appointment> getAll(int[] limit,String sortRule) throws DBException, SQLException {
         return appointmentRepository.getAllAppointments();
+    }
+
+    @Override
+    public int getSize() throws DBException {
+       return appointmentRepository.getSize();
     }
 
     public List<Appointment> readAppointmentsByPatientID(int id) throws DBException, SQLException {
         return  appointmentRepository.readAppointmentByPatientID(id);
     }
+
+
 
 }

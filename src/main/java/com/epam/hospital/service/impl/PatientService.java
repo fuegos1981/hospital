@@ -1,10 +1,13 @@
 package com.epam.hospital.service.impl;
 
 import com.epam.hospital.model.Patient;
+import com.epam.hospital.repository.Constants;
 import com.epam.hospital.repository.DBException;
+import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.elements.PatientRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceConstants;
+import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -24,29 +27,27 @@ public class PatientService implements Service<Patient> {
     }
     @Override
     public boolean create(Patient patient) throws DBException, ValidateException {
-        boolean isError =false;
-        StringBuilder sb = new StringBuilder("invalid: ");
-        if (patient.getPerson().getBirthday().after(new Date())){
-            sb.append("birthday");
-            isError=true;
-        }
-        if (patient.getPerson().getLastName().matches("")){
+        ServiceUtils.nameValidate(Fields.LAST_NAME,patient.getLastName());
+        ServiceUtils.nameValidate(Fields.FIRST_NAME,patient.getFirstName());
+        ServiceUtils.birthdayValidate(Fields.PATIENT_BIRTHDAY,patient.getBirthday());
 
-        }
-        if (isError){
-            throw new ValidateException(sb.toString());
-        }
         return patientRepository.create(patient);
     }
 
     @Override
-    public Patient readById(int id) throws DBException, SQLException {
-        return patientRepository.readByID(id);
+    public Patient readById(Integer id) throws DBException, SQLException, ValidateException {
+        if(id==null)
+            throw new ValidateException("incorrect_patient");
+        else
+            return patientRepository.readByID(id);
     }
 
     @Override
-    public boolean update(Patient patient) throws DBException {
-        return patientRepository.create(patient);
+    public boolean update(Patient patient) throws DBException, ValidateException {
+        ServiceUtils.nameValidate(Fields.LAST_NAME,patient.getLastName());
+        ServiceUtils.nameValidate(Fields.FIRST_NAME,patient.getFirstName());
+        ServiceUtils.birthdayValidate(Fields.PATIENT_BIRTHDAY,patient.getBirthday());
+        return patientRepository.updatePatient(patient);
     }
 
     @Override
@@ -55,25 +56,11 @@ public class PatientService implements Service<Patient> {
     }
 
     @Override
-    public List<Patient> getAll(String sortRule) throws DBException, SQLException {
-        return sort(patientRepository.getAllPatients(),sortRule);
+    public List<Patient> getAll(int[] limit,String sortRule) throws DBException, SQLException {
+        return patientRepository.getAllPatients(limit, sortRule);
+    }
+    public int getSize() throws DBException {
+        return patientRepository.getSize();
     }
 
-    public List<Patient> sort(List<Patient> list, String sortRule) {
-
-        if (sortRule == null || sortRule.equals(" ")) {
-            sortRule = ServiceConstants.NAME_ASC;
-        }
-        String[] s = sortRule.split(" ");
-        Comparator<Patient> comp;
-        if (s[0].equals(ServiceConstants.NAME))
-            comp = Comparator.comparing(e -> e.getPerson().toString());
-        else
-            comp = Comparator.comparing(e -> e.getPerson().getBirthday());
-        if (s[1].equals(ServiceConstants.DESC))
-            comp = comp.reversed();
-        list.sort(comp);
-
-        return list;
-    }
 }

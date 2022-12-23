@@ -4,12 +4,12 @@ package com.epam.hospital.repository;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public abstract class GlobalRepository<T> {
-    protected static ConnectionPool connectionPool;
+
+
     public T read(String query, Object... filters) throws DBException {
-        try (Connection con = connectionPool.getConnection();
+        try (Connection con = ConnectionPool.getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
             addFilters(stmt, filters);
 
@@ -19,6 +19,24 @@ public abstract class GlobalRepository<T> {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DBException("Trouble with method read by object ", e);
+        }
+
+    }
+
+    public int readSize(String query, Object... filters) throws DBException {
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
+             addFilters(stmt, filters);
+             try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }else
+                    throw new DBException("Trouble with method readSize by object ");
+
+             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DBException("Trouble with method readSize by object ", e);
         }
 
     }
@@ -40,46 +58,63 @@ public abstract class GlobalRepository<T> {
 
     protected abstract List<T> findByResultSet(ResultSet rs) throws SQLException,DBException;
 
-    public int insert(String query,Map<String, List<Object[]>> batch, Object... filters) throws DBException {
+    public int insert(String query,Object... filters) throws DBException {
         Connection con = null;
         PreparedStatement stmt = null;
         try {
-            con = connectionPool.getConnection();
+            con = ConnectionPool.getConnection();
             stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             addFilters(stmt, filters);
-            int count = stmt.executeUpdate();
+            stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
-                int id = rs.getInt(1);
-                addBatch(con,batch,id);
-                return id;
+                return rs.getInt(1);
             }
             return -1;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DBException("Trouble with method insertUser! ", e);
+            throw new DBException("Trouble with method insert! ", e);
         } finally {
             close(stmt);
             close(con);
         }
     }
 
-    protected boolean delete(String query,Map<String, List<Object[]>> batch, Object... filters) throws DBException {
+    public boolean update(String query, Object... filters) throws DBException {
         Connection con = null;
         PreparedStatement stmt = null;
         try {
-            con = connectionPool.getConnection();
+            con = ConnectionPool.getConnection();
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            stmt = con.prepareStatement(query);
+            addFilters(stmt, filters);
+            boolean res = stmt.executeUpdate() != 0;
+            con.commit();
+            return res;
+        } catch (SQLException e) {
+            rollback(con);
+            throw new DBException("Trouble with method update! ", e);
+        } finally {
+            close(stmt);
+            close(con);
+        }
+    }
+
+    protected boolean delete(String query, Object... filters) throws DBException {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        try {
+            con = ConnectionPool.getConnection();
             con.setAutoCommit(false);
             con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             boolean res = true;
-            addBatch(con,batch,0);
             stmt = con.prepareStatement(query);
             addFilters(stmt, filters);
             if (stmt.executeUpdate() == 0) res = false;
             con.commit();
             return res;
         } catch (SQLException e) {
-            e.printStackTrace();
             rollback(con);
             throw new DBException("Trouble with method delete! ", e);
         } finally {
@@ -126,20 +161,4 @@ public abstract class GlobalRepository<T> {
         }
     }
 
-    private void addBatch(Connection connection, Map<String, List<Object[]>> batch, int id) throws SQLException {
-        if (batch!=null) {
-            for (Map.Entry<String, List<Object[]>> el : batch.entrySet()) {
-                PreparedStatement statement = connection.prepareStatement(el.getKey());
-                for (Object[] filters:   el.getValue()) {
-                    //Первый элемент в фильтре если есть должен быть id основного объекта
-                    if (id!=0&&filters[0]==Integer.valueOf(0)){
-                        filters[0]=id;
-                    }
-                    addFilters(statement,filters);
-                    statement.addBatch();
-                }
-                int[] updateCounts = statement.executeBatch();
-            }
-        }
-    }
 }

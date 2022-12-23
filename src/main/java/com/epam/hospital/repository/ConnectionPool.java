@@ -46,6 +46,7 @@ public class ConnectionPool {
     }
 
     public static Connection getConnection() throws SQLException {
+        getInstance();
         return dataSource.getConnection();
     }
 }

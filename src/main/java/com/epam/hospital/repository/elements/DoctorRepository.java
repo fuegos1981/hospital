@@ -17,7 +17,6 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     public static DoctorRepository getRepository(){
         if (doctorRepository==null)  {
             doctorRepository = new DoctorRepository();
-            connectionPool = ConnectionPool.getInstance();
         }
         return doctorRepository;
     }
@@ -25,23 +24,43 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     public Doctor readByID(int id) throws DBException, SQLException {
         return doctorRepository.read(Constants.GET_DOCTOR_BY_ID,id);
     }
-    public List<Doctor> getAllDoctors() throws DBException {
-        return doctorRepository.findAll(Constants.GET_ALL_DOCTORS);
+    public Doctor readByLogin(String login) throws DBException {
+        return doctorRepository.read(Constants.GET_DOCTOR_BY_LOGIN,login);
+    }
+    public int getSize() throws DBException {
+        return doctorRepository.readSize(Constants.GET_SIZE_DOCTOR);
+    }
+
+    public List<Doctor> getAllDoctors(int[] limit,String sortRule) throws DBException {
+
+        return doctorRepository.findAll(Constants.GET_ALL_DOCTORS+getSortRule(sortRule)+(limit==null?"":" limit " +limit[0]+","+limit[1]));
+    }
+
+    private String getSortRule(String sortRule) {
+        if (sortRule ==null||sortRule.equals("name asc"))
+            return " order by last_Name,first_Name";
+        else if (sortRule.equals("name desc"))
+            return " order by last_Name desc,first_Name desc";
+        else if (sortRule.equals("category asc"))
+            return " order by category_name,last_Name,first_Name";
+        else if (sortRule.equals("category desc"))
+            return " order by category_name desc,last_Name,first_Name";
+        else if (sortRule.equals("count patients asc"))
+            return " order by count_patients,last_Name,first_Name";
+        else if (sortRule.equals("count patients desc"))
+            return " order by count_patients desc, last_Name, first_Name";
+        return "";
     }
 
     public boolean create(Doctor doctor) throws DBException {
-        Person person = doctor.getPerson();
-        Object[] objects = {person.getLastName(), person.getFirstName(), person.getBirthday(), person.getEmail(), Gender.getID(person.getGender())};
-        int idPerson = doctorRepository.insert(Constants.ADD_PERSON,null, objects);
-        if (idPerson>=0){
-            person.setId(idPerson);
-            int idDoctor = doctorRepository.insert(Constants.ADD_DOCTOR,null, idPerson,doctor.getCategory().getId());
+
+        Object[] objects = {doctor.getLastName(), doctor.getFirstName(), doctor.getCategory().getId(),
+                doctor.getLogin(), doctor.getPassword(), Role.getID(doctor.getRole())};
+            int idDoctor = doctorRepository.insert(Constants.ADD_DOCTOR,objects);
             return idDoctor >=0;
-        }
-        return false;
     }
     public boolean delete(Doctor doctor) throws DBException {
-        return doctorRepository.delete(Constants.DELETE_DOCTOR,null, doctor.getId());
+        return doctorRepository.delete(Constants.DELETE_DOCTOR,doctor.getId());
     }
 
     @Override
@@ -62,9 +81,16 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     }
 
     private Doctor getDoctor(ResultSet rs) throws SQLException {
-        Person person = RepositoryUtils.getPerson(rs);
-        Doctor doctor = Doctor.createDoctor(person, Category.createInstance(rs.getString(Fields.CATEGORY_NAME)));
+
+        Doctor doctor = Doctor.createDoctor(rs.getString(Fields.LAST_NAME),
+                rs.getString(Fields.FIRST_NAME),
+                Category.createInstance(rs.getString(Fields.CATEGORY_NAME)));
+        doctor.setPassword(rs.getString(Fields.PASSWORD));
+        doctor.setLogin(rs.getString(Fields.LOGIN));
+        doctor.setRole(Role.valueOf(rs.getString(Fields.ROLE_NAME).toUpperCase()));
         doctor.setId(rs.getInt(Fields.ID));
         return doctor;
     }
+
+
 }

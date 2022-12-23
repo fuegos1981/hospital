@@ -1,28 +1,11 @@
 package com.epam.hospital.model;
 
-public class Role {
-    private int id;
-    private String name;
+public enum Role {
+        ADMIN, DOCTOR, NURSE;
 
-    public static Role createInstance(String name){
-        Role role = new Role();
-        role.name=name;
-        return role;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
+public static int  getID(Role role){
+        if (role==ADMIN) return 1;
+        else if (role==DOCTOR) return 2;
+        else return 3;
+        }
 }
