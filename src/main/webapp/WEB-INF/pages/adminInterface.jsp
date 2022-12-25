@@ -19,7 +19,7 @@
         </c:if>
         <fmt:setBundle basename="pagecontent"/>
 
-        <form id="base-form" class="form" action="main" method="post">
+        <form id="base-form" class="form" action="admin" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
             <input type="hidden" name="command" value="admin" />
             <div id="base1">
@@ -41,8 +41,8 @@
                                 <table id = "AllPatients" class="table table-bordered table-hover table-striped">
                                     <tr>
                                         <th><fmt:message key="num"/></th>
-                                        <th><fmt:message key="name"/></th>
-                                        <th><fmt:message key="date_of_birthday"/></th>
+                                        <th><fmt:message key="Name"/></th>
+                                        <th><fmt:message key="Birthday"/></th>
                                         <th colspan ="2"><fmt:message key="operation"/></th>
                                     </tr>
                                     <c:forEach var="patient" items="${patients}" varStatus="status">
@@ -51,7 +51,7 @@
                                               <td><c:out value="${patient.toString()}"/></td>
                                               <td><c:out value="${patient.getBirthday()}"/></td>
                                               <td><a href ="/hospital/readPatient?id=${patient.getId()}&command=patient_info"><fmt:message key="read"/></td>
-                                              <td><a href ="/hospital/addSchedule?patient_id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true" method="post"><fmt:message key="add_visit"/></td>
+                                              <td><a href ="/hospital/addSchedule?patient_id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true" method="post"><fmt:message key="visit"/></td>
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -82,7 +82,7 @@
                             <table id = "AllDoctors" class="table table-bordered table-hover table-striped">
                                 <tr>
                                   <th><fmt:message key="num"/></th>
-                                  <th><fmt:message key="name"/></th>
+                                  <th><fmt:message key="Name"/></th>
                                   <th><fmt:message key="category"/></th>
                                   <th colspan ="2"><fmt:message key="operation"/></th>
                               </tr>
@@ -92,7 +92,7 @@
                                         <td><c:out value="${doctor.getLastName()} ${doctor.getFirstName()}"/></td>
                                         <td><c:out value="${doctor.getCategory()}"/></td>
                                         <td><a href ="/read-doctor?id=${doctor.getId()}"><fmt:message key="read"/></td>
-                                        <td><a href ="/hospital/addSchedule?doctor_id=${doctor.getId()}&name=${doctor.toString()}&command=add_schedule&is_patient=false"><fmt:message key="add_visit"/></td>
+                                        <td><a href ="/hospital/addSchedule?doctor_id=${doctor.getId()}&name=${doctor.toString()}&command=add_schedule&is_patient=false"><fmt:message key="visit"/></td>
                                     </tr>
                                 </c:forEach>
                             </table>

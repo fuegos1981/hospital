@@ -29,41 +29,28 @@
                             <input type="hidden" name="command" value="add_schedule" />
                             <input type="hidden" name="is_patient" value="${is_patient}" />
                             <input type="hidden" name="id" value="${id}" />
+                            <br/>
                             <h3 class="text-center text-info"><fmt:message key="add_visit"/></h3>
-                            <c:choose>
-                                <c:when test="${is_patient}" >
-                                    <div class="form-group">
-                                        <label for="patient" class="text-info"><fmt:message key="patient"/>:</label><br>
-                                        <input type="text" name="name" id="name" class="form-control" value="${name}"/>
-                                        <input type="hidden" name="patient_id" value="${patient_id}" />
-                                    </div>
-                                    <select class="form-control" name="doctor_id" id="doctors">
-                                        <option value="">Select doctors...</option>
-                                        <c:forEach var="doctor" items="${doctors}" varStatus="status">
-                                            <option value="${doctor.getId()}" ${doctor_id == doctor.getId()? 'selected':''}>
-                                                <c:out value="${doctor.toString()}"/>
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="form-group">
-                                        <label for="doctor" class="text-info"><fmt:message key="doctor"/>:</label><br>
-                                        <input type="text" name="name" id="doctor" class="form-control" value="${name}"/>
-                                        <input type="hidden" name="doctor_id" value="${doctor_id}" />
-                                    </div>
-                                    <select class="form-control" name="patient_id" id="patients">
-                                        <option value="">Select patients...</option>
-                                        <c:forEach var="patient" items="${patients}" varStatus="status">
-                                            <option value="${patient.getId()}" ${patient_id == patient.getId()? 'selected':''}>
-                                                <c:out value="${patient.toString()}"/>
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </c:otherwise>
-                            </c:choose>
+                            <br/>
+                            <select class="form-control" name="doctor_id" id="doctors">
+                                <option value=""><fmt:message key="select_doctor"/>...</option>
+                                <c:forEach var="doctor" items="${doctors}" varStatus="status">
+                                    <option value="${doctor.getId()}" ${doctor_id == doctor.getId()? 'selected':''}>
+                                    <c:out value="${doctor.toString()}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                            <br>
+                            <select class="form-control" name="patient_id" id="patients">
+                                <option value=""><fmt:message key="select_patient"/>...</option>
+                                <c:forEach var="patient" items="${patients}" varStatus="status">
+                                    <option value="${patient.getId()}" ${patient_id == patient.getId()? 'selected':''}>
+                                        <c:out value="${patient.toString()}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
                             <div class="form-group">
-                                <label for="visit_time" class="text-info">Visit time:</label><br>
+                                <label for="visit_time" class="text-info"><fmt:message key="visit_time"/>:</label><br>
                                 <input type="datetime-local" name="visit_time" id="visit_time" class="form-control" value="${visit_time}">
                             </div>
                             <div class="form-group">

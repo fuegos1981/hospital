@@ -31,7 +31,7 @@
                                 <h3 class="text-center text-info"><fmt:message key="create"/> <fmt:message key="${name}"/></h3>
                                 <br/>
                                 <div class="form-group">
-                                    <label for="simple" class="text-info"><fmt:message key="name"/>:</label>
+                                    <label for="simple" class="text-info"><fmt:message key="Name"/>:</label>
                                     <input type="text" name="simple" id="simple" class="form-control" value="${simple}"/>
                                 </div>
                                 <br/>

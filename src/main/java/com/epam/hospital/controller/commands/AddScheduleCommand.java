@@ -35,11 +35,9 @@ public class AddScheduleCommand implements ActionCommand {
         ControllerUtils.setAttributes(request, Fields.ID,Fields.DOCTOR_ID,Fields.PATIENT_ID,Fields.VISIT_TIME,
                 "is_patient",ControllerConstants.NAME);
         try {
-            if (isPatient) {
-                request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
-            } else {
-                request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
-            }
+
+            request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
+            request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
             Date dateVisit = ControllerUtils.getDateByString(request.getParameter(Fields.VISIT_TIME), true);
 
             if (request.getParameter(ControllerConstants.SUBMIT)==null) {
@@ -56,7 +54,11 @@ public class AddScheduleCommand implements ActionCommand {
                     scheduleService.update(schedule);
                 }
                 //return new AdminCommand().execute(request, currentMessageLocale);
-                return "/hospital/readPatient?id="+patient.getId()+"&command=patient_info";
+                if (isPatient)
+                    return "/hospital/readPatient?id="+patient.getId()+"&command=patient_info";
+                else
+                    return "/hospital/medic?doctor_id="+doctor.getId()+"&command=medic";
+
             }
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));

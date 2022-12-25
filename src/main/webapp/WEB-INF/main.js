@@ -42,12 +42,16 @@ function clickPageDoctor(el){
    document.getElementById("pat_comment_doctor").value = (el);
    document.getElementById("sub").click();
 }
+function  myReadPatientInfo(el){
+    document.getElementById("sub").click();
+}
+/*
 function DeleteRowCard(){
     var td = event.target.parentNode;
     var tr = td.parentNode; // the row to be removed
     tr.parentNode.removeChild(tr);
 }
-
+*/
 function clickSort(){
    document.getElementById("sub").click();
 }

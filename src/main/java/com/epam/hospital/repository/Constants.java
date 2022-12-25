@@ -31,16 +31,19 @@ public class Constants {
     public static final String GET_SCHEDULE_BY_ID = "select * from schedule where id= ?";
     public static final String GET_SCHEDULE_BY_PATIENT_ID = "select * from schedule where patient_id= ?";
     public static final String GET_SCHEDULE_BY_DOCTOR_ID = "select * from schedule where doctor_id= ?";
-    public static final String GET_ALL_SCHEDULE = "select * from schedule order by id";
+    public static final String GET_ALL_SCHEDULE = "select * from schedule";
     public static final String ADD_SCHEDULE = "INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (?,?,?)";
     public static final String UPDATE_SCHEDULE = "UPDATE schedule Set doctor_id=?, patient_id=?, visit_time=? where id = ?";
     public static final String DELETE_SCHEDULE = "DELETE from schedule where id= ?";
     public static final String GET_SIZE_SCHEDULE = "SELECT COUNT(id) FROM schedule";
     //appointment
     public static final String GET_APPOINTMENT_BY_ID = "select * from appointment where id= ?";
-    public static final String GET_ALL_APPOINTMENTS = "select * from appointment order by id";
+    public static final String GET_ALL_APPOINTMENTS = "select * from appointment";
     public static final String GET_ALL_APPOINTMENTS_BY_PATIENT = "select * from appointment where patient_id= ?";
-    public static final String ADD_APPOINTMENT = "INSERT INTO appointment (date_create,diagnosis_id,patient_id, doctor_id) VALUES (?,?,?,?)";
+    public static final String ADD_APPOINTMENT = "INSERT INTO appointment " +
+            "(date_create,diagnosis_id,patient_id, doctor_id,medication, procedures,operation) VALUES (?,?,?,?,?,?,?)";
+    public static final String UPDATE_APPOINTMENT = "UPDATE appointment Set date_create=?,diagnosis_id=?, " +
+            "patient_id=?, doctor_id=?,  medication=?,procedures=?,operation=? where id = ?";
     public static final String DELETE_APPOINTMENT = "DELETE from appointment where id= ?";
     public static final String GET_SIZE_APPOINTMENT = "SELECT COUNT(id) FROM appointment";
 

@@ -1,17 +1,13 @@
 package com.epam.hospital.service.impl;
 
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.repository.Constants;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.elements.PatientRepository;
 import com.epam.hospital.service.Service;
-import com.epam.hospital.service.ServiceConstants;
 import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,6 +55,7 @@ public class PatientService implements Service<Patient> {
     public List<Patient> getAll(int[] limit,String sortRule) throws DBException, SQLException {
         return patientRepository.getAllPatients(limit, sortRule);
     }
+
     public int getSize() throws DBException {
         return patientRepository.getSize();
     }

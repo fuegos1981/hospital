@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ScheduleRepository extends GlobalRepository<Schedule> {
     private static ScheduleRepository  scheduleRepository;
@@ -44,7 +45,10 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
     public List<Schedule> getAllSchedules() throws DBException {
         return scheduleRepository.findAll(Constants.GET_ALL_SCHEDULE);
     }
-
+    public List<Schedule> getAllSchedules(Map<String, Integer> selection) throws DBException {
+        return scheduleRepository.findAll(Constants.GET_ALL_SCHEDULE+RepositoryUtils.getSelectionString(selection),
+                selection.values().toArray());
+    }
     public int getSize() throws DBException {
         return scheduleRepository.readSize(Constants.GET_SIZE_SCHEDULE);
     }
@@ -66,11 +70,8 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
     }
 
     private Schedule getSchedule(ResultSet rs) throws SQLException, DBException {
-        Doctor doctor = null;
-        Patient patient= null;
-
-            doctor = DoctorRepository.getRepository().readByID(rs.getInt(Fields.DOCTOR_ID));
-            patient =PatientRepository.getRepository().readByID(rs.getInt(Fields.PATIENT_ID));
+        Doctor doctor = DoctorRepository.getRepository().readByID(rs.getInt(Fields.DOCTOR_ID));
+        Patient patient =PatientRepository.getRepository().readByID(rs.getInt(Fields.PATIENT_ID));
         Schedule schedule=Schedule.createSchedule(doctor, patient, rs.getTimestamp(Fields.VISIT_TIME));
         schedule.setId(rs.getInt(Fields.ID));
         return schedule;

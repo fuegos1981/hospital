@@ -18,9 +18,9 @@ public class Fields {
     public static final String DOCTOR_ID = "doctor_id";
     public static final String ID = "id";
     public static final String APPOINTMENT_ID = "appointment_id";
-    public static final String MEDICAL_ID = "medical_id";
-    public static final String MEDICAL_NAME = "medical_name";
-    public static final String DESCRIPTION = "description";
+    public static final String MEDICATION = "medication";
+    public static final String PROCEDURE = "procedures";
+    public static final String OPERATION = "operation";
     public static final String TYPE = "type";
     public static final  String NAME = "name";
 }

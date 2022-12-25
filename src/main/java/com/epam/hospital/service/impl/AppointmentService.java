@@ -7,6 +7,7 @@ import com.epam.hospital.service.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class AppointmentService implements Service<Appointment> {
@@ -19,8 +20,17 @@ public class AppointmentService implements Service<Appointment> {
         return Objects.requireNonNullElseGet(appointmentService, AppointmentService::new);
     }
     @Override
-    public boolean create(Appointment appointment) throws DBException {
+    public boolean create(Appointment appointment) throws DBException, ValidateException{
+        validApp(appointment);
         return appointmentRepository.create(appointment);
+    }
+
+    private void validApp(Appointment appointment) throws ValidateException {
+        if (appointment.getPatient()==null) throw new ValidateException("patient");
+        if (appointment.getDoctor()==null) throw new ValidateException("doctor");
+        if (appointment.getDiagnosis()==null) throw new ValidateException("diagnosis");
+        if (appointment.getMedication().isEmpty()&& appointment.getProcedure().isEmpty()&& appointment.getOperation().isEmpty())
+            throw new ValidateException("description");
     }
 
     @Override
@@ -29,8 +39,9 @@ public class AppointmentService implements Service<Appointment> {
     }
 
     @Override
-    public boolean update(Appointment appointment) throws DBException {
-        return appointmentRepository.create(appointment);
+    public boolean update(Appointment appointment) throws DBException, ValidateException {
+        validApp(appointment);
+        return appointmentRepository.updateAppointment(appointment);
     }
 
     @Override
@@ -43,6 +54,9 @@ public class AppointmentService implements Service<Appointment> {
         return appointmentRepository.getAllAppointments();
     }
 
+    public List<Appointment> getAll(Map<String, Integer> selection) throws DBException, SQLException {
+        return appointmentRepository.getAllAppointments(selection);
+    }
     @Override
     public int getSize() throws DBException {
        return appointmentRepository.getSize();

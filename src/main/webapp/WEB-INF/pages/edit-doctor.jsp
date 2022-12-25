@@ -26,7 +26,7 @@
                     <div id="base-row" class="row justify-content-center align-items-center">
                         <div id="base-column" class="col-md-6">
                             <div id="base-box" class="col-md-12">
-                                <h3 class="text-center text-info">Create doctor</h3>
+                                <h3 class="text-center text-info"><fmt:message key="Doctor"/></h3>
                                 <div class="form-group">
                                     <label for="lastName" class="text-info"><fmt:message key="last_name"/>:</label><br>
                                     <input type="text" name="last_name" id="last_name" class="form-control" value="${lastName}">
@@ -53,7 +53,7 @@
                                 </select>
                                 <div class="form-group">
                                     <br/>
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='create_doctor'/>">
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='save'/>">
                                     <label  class="text-danger"><c:out value="${message}" ></c:out></label>
                                 </div>
                             </div>

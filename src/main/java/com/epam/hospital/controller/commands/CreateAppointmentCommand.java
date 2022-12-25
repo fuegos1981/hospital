@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
-
+import java.util.Optional;
 
 
 public class CreateAppointmentCommand implements ActionCommand {
@@ -27,9 +27,10 @@ public class CreateAppointmentCommand implements ActionCommand {
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
         ControllerUtils.setNameFromParameter(request);
-        request.setAttribute("title",id==null?"create_appointment":"edit_appointment");
-        ControllerUtils.setAttributes(request,ControllerConstants.ID,ControllerConstants.NAME);
+        //request.setAttribute("title",id==null?"create_appointment":"edit_appointment");
+        ControllerUtils.setAttributes(request,ControllerConstants.ID,ControllerConstants.NAME, ControllerConstants.PATIENT_ID);
         try {
+            request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
             request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
             request.setAttribute(ControllerConstants.DIAGNOSISES, diagnosisService.getAll(null,null));
             Appointment appointment= getAppointment(request,id);
@@ -37,11 +38,19 @@ public class CreateAppointmentCommand implements ActionCommand {
                 return ControllerConstants.PAGE_EDIT_APPOINTMENT;
             }
             else{
-                appointmentService.create(appointment);
+                if (id==null){
+                    appointmentService.create(appointment);
+                }
+                else{
+                    appointment.setId(id);
+                    appointmentService.update(appointment);
+                }
+
                 return "/hospital/readPatient?id="+appointment.getPatient().getId()+"&command=patient_info";
             }
         } catch (ValidateException e) {
-            request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
+            request.setAttribute(ControllerConstants.MESSAGE,
+                    currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_EDIT_APPOINTMENT;
         } catch (SQLException | DBException|ParseException e) {
             request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
@@ -57,13 +66,18 @@ public class CreateAppointmentCommand implements ActionCommand {
             request.setAttribute("not_first", "");
         }
         else {
+
             Integer diagnosisId= ControllerUtils.parseID(request,ControllerConstants.DIAGNOSIS_ID);
             Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
             Integer doctorId= ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);
+            ControllerUtils.setAttributes(request,ControllerConstants.DIAGNOSIS_ID,ControllerConstants.PATIENT_ID,ControllerConstants.DOCTOR_ID);
             appointment = Appointment.createAppointment(new Date(),
                     diagnosisId==null?null:(Diagnosis) diagnosisService.readById(diagnosisId),
                     patientId==null?null: patientService.readById(patientId),
                     doctorId==null?null: doctorService.readById(doctorId));
+            appointment.setMedication(Optional.ofNullable(request.getParameter(Fields.MEDICATION)).orElse(""));
+            appointment.setProcedure(Optional.ofNullable(request.getParameter(Fields.PROCEDURE)).orElse(""));
+            appointment.setOperation(Optional.ofNullable(request.getParameter(Fields.OPERATION)).orElse(""));
 
         }
         request.setAttribute("appointment", appointment);

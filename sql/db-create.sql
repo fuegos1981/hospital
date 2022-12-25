@@ -39,7 +39,7 @@ last_name VARCHAR(50),
 first_name VARCHAR(50),
 category_id INT,
 login VARCHAR(20) UNIQUE,
-password VARCHAR(20),
+password VARCHAR(50),
 role_id INT,
 	foreign key (role_id) references roles(id),
     foreign key (category_id) references category(id)
@@ -52,9 +52,9 @@ CREATE TABLE appointment (
     diagnosis_id INT,
     patient_id INT,
     doctor_id INT,
-	medication_description VARCHAR(200),
-    procedure_description VARCHAR(200),
-    operation_description VARCHAR(200),
+	medication VARCHAR(200),
+    procedures VARCHAR(200),
+    operation VARCHAR(200),
     foreign key (diagnosis_id) references diagnosis(id),
     foreign key (patient_id) references patient(id),
     foreign key (doctor_id) references doctor(id)
@@ -163,9 +163,9 @@ INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id
 INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Sergeev', 'Denis',1,'SergeevD','111',3);
 INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Kuzin', 'Dmitriy',3,'KuzinD','111',2);
 
-INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication_description) VALUES ('2022-10-12', '2', '3', '4','noshpa 3t in day, 7 days');
-INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication_description) VALUES ('2022-10-14', '2', '3', '4','loperamid 3t in day, 7 days');
-INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication_description) VALUES ('2022-10-15', '3', '3', '1', 'not use sugar');
+INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-12', '2', '3', '4','noshpa 3t in day, 7 days');
+INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-14', '2', '3', '4','loperamid 3t in day, 7 days');
+INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-15', '3', '3', '1', 'not use sugar');
 
 INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (1, 5,'2022-11-28');
 INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (1, 6,'2022-11-29');

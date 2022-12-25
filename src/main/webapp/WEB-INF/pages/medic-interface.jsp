@@ -15,10 +15,10 @@
         <fmt:requestEncoding value="UTF-8" />
         <fmt:setLocale value="${locale}" scope="session" />
         <fmt:setBundle basename="pagecontent"/>
-        <form id="base-form" class="form" action="readPatient" method="post">
+        <form id="base-form" class="form" action="medic" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
-            <input type="hidden" name="command" value="patient-info" />
-            <input type="hidden" name="patient_id" value="${patient_id}" />
+            <input type="hidden" name="command" value="medic" />
+            <input id = "sub" type="submit" name="submit" class="btn btn-info btn-md" value="sub">
             <div id="base1">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
                 <div class="container">
@@ -26,23 +26,33 @@
                         <div id ="patient_table_info" class="col-md-12">
                             <table class="table table-bordered table-hover table-striped">
                                 <tr>
-                                    <th><fmt:message key="Name"/></th>
-                                    <th><fmt:message key="Birthday"/></th>
-                                    <th><fmt:message key="Email"/></th>
-                                    <th colspan ="1"><fmt:message key="operation"/></th>
+                                    <th><fmt:message key="name"/></th>
+                                    <th colspan ="2"><fmt:message key="operation"/></th>
                                 </tr>
                                 <tr>
-                                    <td><c:out value="${patient.toString()}"/></td>
-                                    <td><c:out value="${patient.getBirthday()}"/></td>
-                                    <td><c:out value="${patient.getEmail()}"/></td>
-                                    <td><a href ="/hospital/editPatient?id=${patient.getId()}&command=edit_patient"/><fmt:message key="edit"/></td>
+                                    <td>
+                                        <select class="form-control" name="patient_id" id="patients" onchange="myReadPatientInfo(${patient.getId()})">
+                                            <option value=""><fmt:message key="select_patient"/>...</option>
+                                            <c:forEach var="patient" items="${patients}" varStatus="status">
+                                                <option value="${patient.getId()}" ${patient_id == patient.getId()? 'selected':''}>
+                                                    <c:out value="${patient.toString()}"/>
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                    <td>
+
+                                        <c:if test="${not empty patient}">
+                                            <a href ="/hospital/readPatient?id=${patient.getId()}&command=patient_info"/><fmt:message key="read"/>
+                                        </c:if>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="table-responsive col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true"><fmt:message key="add_visit"/></a>
+                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&doctor_id=${user_id}&command=add_schedule&is_patient=false"><fmt:message key="add_visit"/></a>
                             </div>
                             <table id = "AllSchedule" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -54,10 +64,10 @@
                                 <c:forEach var="schedule" items="${schedules}" varStatus="status">
                                     <tr>
                                         <td><c:out value="${status.count}"/></td>
-                                        <td><c:out value="${schedule.getDoctor().toString()}"/></td>
+                                        <td><c:out value="${schedule.getPatient().toString()}"/></td>
 
                                         <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd hh:mm" /></td>
-                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&visit_time=<fmt:formatDate value='${schedule.getDateVisit()}' pattern = 'yyyy-MM-dd hh:mm' />&doctor_id=${schedule.getDoctor().getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true"/><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&visit_time=<fmt:formatDate value='${schedule.getDateVisit()}' pattern = 'yyyy-MM-dd hh:mm' />&doctor_id=${schedule.getDoctor().getId()}&command=add_schedule&is_patient=false"/><fmt:message key="edit"/></td>
                                         <td><a href ="/hospital/deleteSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&command=delete_schedule"/><fmt:message key="delete"/></td>
                                     </tr>
                                 </c:forEach>
@@ -94,4 +104,7 @@
             </div>
         </form>
     </body>
+    <script>
+            <%@include file="/WEB-INF/main.js"%>
+        </script>
 </html>

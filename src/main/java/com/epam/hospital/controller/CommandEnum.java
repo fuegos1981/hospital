@@ -30,6 +30,9 @@ public enum CommandEnum {
     DELETE_SCHEDULE {
         {this.command = new DeleteScheduleCommand();}
     },
+    MEDIC {
+        {this.command = new MedicCommand();}
+    },
     EDIT_PATIENT {
         {this.command = new CreatePatientCommand();}
     };

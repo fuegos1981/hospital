@@ -5,6 +5,7 @@ import com.epam.hospital.service.impl.ValidateException;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface Service<T> {
     boolean create(T t) throws DBException, ValidateException;

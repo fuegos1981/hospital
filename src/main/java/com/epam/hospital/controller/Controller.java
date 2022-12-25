@@ -1,7 +1,12 @@
 package com.epam.hospital.controller;
 
 import com.epam.hospital.MessageManager;
+import com.epam.hospital.repository.ConnectionPool;
+import com.epam.hospital.repository.Constants;
 import com.epam.hospital.repository.DBException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,15 +15,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+
 
 @WebServlet(urlPatterns = {"/"})
 public class Controller extends HttpServlet {
     private static MessageManager currentMessageLocale;
-
+    private static Logger logger = LogManager.getLogger();
     @Override
     public void init() {
+
+        //String prefix = getServletContext().getRealPath("/");
+        //String filename = getInitParameter("init_log4j");
+        //if (filename != null) {
+        //    PropertyConfigurator.configure(prefix + filename);
+        //}
     }
 
     @Override
@@ -32,6 +45,7 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("hhhhh");
         getCurrentLocale(req);
         // определение команды, пришедшей из JSP
         ActionFactory client = new ActionFactory();

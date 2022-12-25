@@ -47,7 +47,8 @@ public class CreateDoctorCommand implements ActionCommand {
             }
 
         } catch (ValidateException e) {
-            request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
+            request.setAttribute(ControllerConstants.MESSAGE,
+                    currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_EDIT_DOCTOR;
 
         } catch (DBException | ParseException |SQLException e) {

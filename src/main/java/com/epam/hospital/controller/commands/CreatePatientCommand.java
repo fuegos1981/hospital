@@ -26,7 +26,7 @@ public class CreatePatientCommand implements ActionCommand {
 
         try {
             Integer id = ControllerUtils.parseID(request,Fields.ID);
-            request.setAttribute("title",id==null?"create_patient":"edit_patient");
+            //request.setAttribute("title",id==null?"create":"edit");
             Patient patient = getPatient(request, id);
             ControllerUtils.setAttributes(request,Fields.ID);
             if (request.getParameter(ControllerConstants.SUBMIT) == null ){

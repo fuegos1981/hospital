@@ -28,24 +28,35 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
     public List<Appointment> getAllAppointments() throws DBException {
         return appointmentRepository.findAll(Constants.GET_ALL_APPOINTMENTS);
     }
+    public List<Appointment> getAllAppointments(Map<String, Integer> selection) throws DBException {
 
+        return appointmentRepository.findAll(Constants.GET_ALL_APPOINTMENTS+RepositoryUtils.getSelectionString(selection),
+                selection.values().toArray());
+    }
     public boolean create(Appointment appointment) throws DBException {
 
         int idAppointment = appointmentRepository.insert(Constants.ADD_APPOINTMENT,
                 appointment.getDateCreate(),
                 appointment.getDiagnosis().getId(),
                 appointment.getPatient().getId(),
-                appointment.getDoctor().getId());
+                appointment.getDoctor().getId(),
+                appointment.getMedication(),
+                appointment.getProcedure(),
+                appointment.getOperation());
         appointment.setId(idAppointment);
-
         return idAppointment>0;
     }
 
+    public boolean updateAppointment(Appointment appointment) throws DBException {
 
+        Object[] objects = {appointment.getDateCreate(), appointment.getDiagnosis().getId(),
+                appointment.getPatient().getId(), appointment.getDoctor().getId(),
+                appointment.getMedication(),appointment.getProcedure(), appointment.getOperation(), appointment.getId()};
+        return appointmentRepository.update(Constants.UPDATE_APPOINTMENT, objects);
+    }
     public boolean delete(Appointment appointment) throws DBException {
         List<Object[]> listFilters = new ArrayList<>();
         listFilters.add(new Object[]{appointment.getId()});
-
 
         return appointmentRepository.delete(Constants.DELETE_APPOINTMENT, appointment.getId());
     }
@@ -64,6 +75,9 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
         Patient patient= PatientRepository.getRepository().readByID(rs.getInt(Fields.PATIENT_ID));
         Doctor doctor = DoctorRepository.getRepository().readByID(rs.getInt(Fields.DOCTOR_ID));
         Appointment appointment = Appointment.createAppointment(dateCreate, diagnosis,patient, doctor);
+        appointment.setMedication(rs.getString(Fields.MEDICATION));
+        appointment.setProcedure(rs.getString(Fields.PROCEDURE));
+        appointment.setOperation(rs.getString(Fields.OPERATION));
         appointment.setId(rs.getInt(Fields.ID));
         return appointment;
     }

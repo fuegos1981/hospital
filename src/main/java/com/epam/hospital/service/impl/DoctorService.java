@@ -6,6 +6,7 @@ import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.elements.DoctorRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,21 +25,38 @@ public class DoctorService implements Service<Doctor> {
     public boolean create(Doctor doctor) throws DBException, ValidateException {
         ServiceUtils.nameValidate(Fields.LAST_NAME,doctor.getLastName());
         ServiceUtils.nameValidate(Fields.FIRST_NAME,doctor.getFirstName());
-        return doctorRepository.create(doctor);
+        if (doctorService.readByLogin(doctor.getLogin())==null){
+            doctor.setPassword(DigestUtils.md5Hex(doctor.getPassword()));
+            return doctorRepository.create(doctor);
+        }
+        else
+            throw new ValidateException("login");
+
     }
 
     @Override
     public Doctor readById(Integer id) throws DBException, SQLException, ValidateException {
         if (id == null) {
-            throw new ValidateException("incorrect_doctor");
+            throw new ValidateException("doctor");
         }
         else
             return  doctorRepository.readByID(id);
     }
-    public Doctor readByLogin(String login) throws DBException{
-        return  doctorRepository.readByLogin(login);
-    }
+    public Doctor readByLoginPassword(String login, String pass) throws DBException, ValidateException {
+        Doctor doctor = doctorRepository.readByLogin(login);
 
+        if (doctor == null || !doctor.getPassword().equals(DigestUtils.md5Hex(pass))) {
+            throw  new ValidateException("error_log_pass");
+        }
+        return doctor;
+    }
+    public Doctor readByLogin(String login) throws DBException, ValidateException {
+        Doctor doctor = doctorRepository.readByLogin(login);
+        if (doctor == null) {
+            throw  new ValidateException("login");
+        }
+        return doctor;
+    }
     @Override
     public boolean update(Doctor doctor) throws DBException {
         return doctorRepository.create(doctor);

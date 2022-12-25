@@ -47,8 +47,6 @@ public class PatientRepository extends GlobalRepository<Patient>{
         Object[] objects = {patient.getLastName(), patient.getFirstName(), patient.getBirthday(), patient.getEmail(),
                 Gender.getID(patient.getGender()),patient.getId()};
         return patientRepository.update(Constants.UPDATE_PATIENT, objects);
-
-
     }
     public boolean delete(Patient patient) throws DBException {
         return patientRepository.delete(Constants.DELETE_PATIENT, patient.getId());

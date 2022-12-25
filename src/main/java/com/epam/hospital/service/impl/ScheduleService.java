@@ -10,6 +10,7 @@ import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -55,10 +56,12 @@ public class ScheduleService implements Service<Schedule> {
         return scheduleRepository.getAllSchedules();
 
     }
+    public List<Schedule> getAll(Map<String,Integer> selection) throws DBException, SQLException {
+        return scheduleRepository.getAllSchedules(selection);
 
+    }
     public List<Schedule> getScheduleByPatientId(int id) throws DBException, SQLException {
         return scheduleRepository.readByPatientID(id);
-
     }
     public List<Schedule> getScheduleByDoctorId(int id) throws DBException, SQLException {
         return scheduleRepository.readByDoctorID(id);
