@@ -25,21 +25,23 @@ public class SimpleService implements Service<SimpleModel> {
 
         return simpleService;
     }
+
     @Override
     public boolean create(SimpleModel simpleModel) throws DBException, ValidateException {
         ServiceUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
+        simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.create(simpleModel);
     }
 
     @Override
     public SimpleModel readById(Integer id) throws DBException, SQLException, ValidateException {
-
         simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.readByID(id);
     }
 
     @Override
-    public boolean update(SimpleModel simpleModel) throws DBException {
+    public boolean update(SimpleModel simpleModel) throws DBException, ValidateException {
+        ServiceUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
         return simpleRepository.create(simpleModel);
     }
 
@@ -50,6 +52,7 @@ public class SimpleService implements Service<SimpleModel> {
 
     @Override
     public List<SimpleModel> getAll(int[] limit, String sortRule) throws DBException, SQLException {
+        simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.getAll();
     }
     public int getSize() throws DBException {

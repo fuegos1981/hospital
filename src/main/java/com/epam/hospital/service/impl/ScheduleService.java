@@ -1,5 +1,6 @@
 package com.epam.hospital.service.impl;
 
+import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.Schedule;
 import com.epam.hospital.repository.Constants;
 import com.epam.hospital.repository.DBException;
@@ -9,6 +10,7 @@ import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,20 +31,20 @@ public class ScheduleService implements Service<Schedule> {
 
     @Override
     public boolean create(Schedule schedule) throws DBException, ValidateException {
-        ServiceUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
-
+        checkSchedule(schedule);
         return scheduleRepository.create(schedule);
     }
 
     @Override
     public Schedule readById(Integer id) throws DBException, SQLException, ValidateException {
-        if (id==null) throw new ValidateException("schedule");
+        if (id==null)
+            throw new ValidateException("schedule");
         return scheduleRepository.readByID(id);
     }
 
     @Override
     public boolean update(Schedule schedule) throws DBException, ValidateException {
-        ServiceUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
+        checkSchedule(schedule);
         return scheduleRepository.updateSchedule(schedule);
     }
 
@@ -57,18 +59,26 @@ public class ScheduleService implements Service<Schedule> {
 
     }
     public List<Schedule> getAll(Map<String,Integer> selection) throws DBException, SQLException {
+        if (selection==null)
+            return new ArrayList<>();
         return scheduleRepository.getAllSchedules(selection);
+    }
 
-    }
-    public List<Schedule> getScheduleByPatientId(int id) throws DBException, SQLException {
-        return scheduleRepository.readByPatientID(id);
-    }
-    public List<Schedule> getScheduleByDoctorId(int id) throws DBException, SQLException {
-        return scheduleRepository.readByDoctorID(id);
-
-    }
     public int getSize() throws DBException {
         return scheduleRepository.getSize();
+    }
+
+    private void checkSchedule(Schedule schedule) throws ValidateException, DBException {
+        if (schedule==null){
+            throw new ValidateException("schedule");
+        }
+        if(schedule.getPatient()==null){
+            throw new ValidateException("patient");
+        }
+        if(schedule.getDoctor()==null){
+            throw new ValidateException("doctor");
+        }
+        ServiceUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
     }
 
 }

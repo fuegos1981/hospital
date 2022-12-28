@@ -15,9 +15,9 @@
         <fmt:requestEncoding value="UTF-8" />
         <fmt:setLocale value="${locale}" scope="session" />
         <fmt:setBundle basename="pagecontent"/>
-        <form id="base-form" class="form" action="readPatient" method="post">
+        <form id="base-form" class="form" action="readPatient?id=${patient_id}&command=patient_info" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
-            <input type="hidden" name="command" value="patient-info" />
+            <input type="hidden" name="command" value="patient_info" />
             <input type="hidden" name="patient_id" value="${patient_id}" />
             <div id="base1">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
@@ -29,13 +29,15 @@
                                     <th><fmt:message key="Name"/></th>
                                     <th><fmt:message key="Birthday"/></th>
                                     <th><fmt:message key="Email"/></th>
-                                    <th colspan ="1"><fmt:message key="operation"/></th>
+                                    <th colspan ="2"><fmt:message key="operation"/></th>
                                 </tr>
                                 <tr>
                                     <td><c:out value="${patient.toString()}"/></td>
                                     <td><c:out value="${patient.getBirthday()}"/></td>
                                     <td><c:out value="${patient.getEmail()}"/></td>
                                     <td><a href ="/hospital/editPatient?id=${patient.getId()}&command=edit_patient"/><fmt:message key="edit"/></td>
+                                    <td><input type="submit" name="download" class="btn btn-info btn-md" value='<fmt:message key="download_history"/>'/></td>
+
                                 </tr>
                             </table>
                         </div>
@@ -56,7 +58,7 @@
                                         <td><c:out value="${status.count}"/></td>
                                         <td><c:out value="${schedule.getDoctor().toString()}"/></td>
 
-                                        <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd hh:mm" /></td>
+                                        <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd HH:mm" /></td>
                                         <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&visit_time=<fmt:formatDate value='${schedule.getDateVisit()}' pattern = 'yyyy-MM-dd hh:mm' />&doctor_id=${schedule.getDoctor().getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true"/><fmt:message key="edit"/></td>
                                         <td><a href ="/hospital/deleteSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&command=delete_schedule"/><fmt:message key="delete"/></td>
                                     </tr>

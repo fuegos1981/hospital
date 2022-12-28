@@ -23,26 +23,21 @@ public class PatientService implements Service<Patient> {
     }
     @Override
     public boolean create(Patient patient) throws DBException, ValidateException {
-        ServiceUtils.nameValidate(Fields.LAST_NAME,patient.getLastName());
-        ServiceUtils.nameValidate(Fields.FIRST_NAME,patient.getFirstName());
-        ServiceUtils.birthdayValidate(Fields.PATIENT_BIRTHDAY,patient.getBirthday());
-
+        checkPatient(patient);
         return patientRepository.create(patient);
     }
 
     @Override
     public Patient readById(Integer id) throws DBException, SQLException, ValidateException {
         if(id==null)
-            throw new ValidateException("incorrect_patient");
+            throw new ValidateException("patient");
         else
             return patientRepository.readByID(id);
     }
 
     @Override
     public boolean update(Patient patient) throws DBException, ValidateException {
-        ServiceUtils.nameValidate(Fields.LAST_NAME,patient.getLastName());
-        ServiceUtils.nameValidate(Fields.FIRST_NAME,patient.getFirstName());
-        ServiceUtils.birthdayValidate(Fields.PATIENT_BIRTHDAY,patient.getBirthday());
+        checkPatient(patient);
         return patientRepository.updatePatient(patient);
     }
 
@@ -58,6 +53,15 @@ public class PatientService implements Service<Patient> {
 
     public int getSize() throws DBException {
         return patientRepository.getSize();
+    }
+
+    private void checkPatient(Patient patient) throws ValidateException{
+        if (patient==null) {
+            throw new ValidateException("patient");
+        }
+        ServiceUtils.nameValidate(Fields.LAST_NAME,patient.getLastName());
+        ServiceUtils.nameValidate(Fields.FIRST_NAME,patient.getFirstName());
+        ServiceUtils.birthdayValidate(Fields.PATIENT_BIRTHDAY,patient.getBirthday());
     }
 
 }

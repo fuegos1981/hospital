@@ -23,15 +23,9 @@ public class DoctorService implements Service<Doctor> {
     }
     @Override
     public boolean create(Doctor doctor) throws DBException, ValidateException {
-        ServiceUtils.nameValidate(Fields.LAST_NAME,doctor.getLastName());
-        ServiceUtils.nameValidate(Fields.FIRST_NAME,doctor.getFirstName());
-        if (doctorService.readByLogin(doctor.getLogin())==null){
-            doctor.setPassword(DigestUtils.md5Hex(doctor.getPassword()));
-            return doctorRepository.create(doctor);
-        }
-        else
-            throw new ValidateException("login");
-
+        checkDoctor(doctor);
+        doctor.setPassword(DigestUtils.md5Hex(doctor.getPassword()));
+        return doctorRepository.create(doctor);
     }
 
     @Override
@@ -58,7 +52,9 @@ public class DoctorService implements Service<Doctor> {
         return doctor;
     }
     @Override
-    public boolean update(Doctor doctor) throws DBException {
+    public boolean update(Doctor doctor) throws DBException, ValidateException {
+        checkDoctor(doctor);
+        doctor.setPassword(DigestUtils.md5Hex(doctor.getPassword()));
         return doctorRepository.create(doctor);
     }
 
@@ -73,5 +69,13 @@ public class DoctorService implements Service<Doctor> {
     }
     public int getSize() throws DBException {
         return doctorRepository.getSize();
+    }
+
+    private void checkDoctor(Doctor doctor) throws ValidateException, DBException {
+        ServiceUtils.nameValidate(Fields.LAST_NAME,doctor.getLastName());
+        ServiceUtils.nameValidate(Fields.FIRST_NAME,doctor.getFirstName());
+        if (doctor.getLogin()==null||doctor.getLogin().isEmpty()||doctorService.readByLogin(doctor.getLogin())!=null){
+            throw new ValidateException("login");
+        }
     }
 }

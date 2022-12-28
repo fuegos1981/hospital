@@ -1,14 +1,24 @@
 package com.epam.hospital.controller;
 
+import com.epam.hospital.HistoryPatient;
+import com.epam.hospital.model.Patient;
+import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.Fields;
+import com.epam.hospital.service.impl.PatientService;
+import com.epam.hospital.service.impl.ValidateException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class ControllerUtils {
 
@@ -37,7 +47,7 @@ public class ControllerUtils {
             return null;
         }
         SimpleDateFormat sdf = (isTime)
-                ? new SimpleDateFormat("yyyy-MM-dd hh:mm")
+                ? new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.UK)
                 : new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(string.replace("T"," "));
     }
@@ -94,6 +104,28 @@ public class ControllerUtils {
         }
         else{
             return new int[]{(currentPage-1)*ControllerConstants.MAX_COUNT_ON_PAGE,Math.min(currentPage*ControllerConstants.MAX_COUNT_ON_PAGE,countList)};
+        }
+    }
+
+    static void downloadHistory(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException, ValidateException {
+
+        Patient patient = PatientService.getPatientService().readById(ControllerUtils.parseID(req, Fields.PATIENT_ID));
+        String  fileURL = HistoryPatient.getHistoryPatient(patient, req.getServletContext().getRealPath("WEB-INF/pdf/info.pdf"));
+        final int ARBITARY_SIZE = 1048;
+        resp.setContentType("application/pdf");
+        resp.setHeader("Content-disposition", "attachment; filename=info.pdf");
+
+        try(InputStream in = req.getServletContext().getResourceAsStream("/WEB-INF/pdf/info.pdf");
+            OutputStream out = resp.getOutputStream()) {
+
+            byte[] buffer = new byte[ARBITARY_SIZE];
+
+            int numBytesRead;
+            while ((numBytesRead = in.read(buffer)) > 0) {
+                out.write(buffer, 0, numBytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

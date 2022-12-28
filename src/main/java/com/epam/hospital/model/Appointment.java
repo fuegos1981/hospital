@@ -19,7 +19,14 @@ public class Appointment {
         appointment.setDiagnosis(diagnosis);
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
+
         return appointment;
+    }
+
+    public Appointment() {
+        this.setMedication("");
+        this.setProcedure("");
+        this.setOperation("");
     }
 
     public String getMedication() {
@@ -86,4 +93,17 @@ public class Appointment {
         return doctor;
     }
 
+    public String getDescription() {
+        StringBuilder sb =new StringBuilder();
+        if (medication!=null&&!medication.isEmpty()){
+            sb.append(medication+"; ");
+        }
+        if (procedure!=null&&!procedure.isEmpty()){
+            sb.append(procedure+"; ");
+        }
+        if (operation!=null&&!operation.isEmpty()){
+            sb.append(operation+"; ");
+        }
+        return sb.toString();
+    }
 }

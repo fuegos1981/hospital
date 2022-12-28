@@ -21,11 +21,11 @@ public class AppointmentService implements Service<Appointment> {
     }
     @Override
     public boolean create(Appointment appointment) throws DBException, ValidateException{
-        validApp(appointment);
+        checkAppointment(appointment);
         return appointmentRepository.create(appointment);
     }
 
-    private void validApp(Appointment appointment) throws ValidateException {
+    private void checkAppointment(Appointment appointment) throws ValidateException {
         if (appointment.getPatient()==null) throw new ValidateException("patient");
         if (appointment.getDoctor()==null) throw new ValidateException("doctor");
         if (appointment.getDiagnosis()==null) throw new ValidateException("diagnosis");
@@ -35,12 +35,15 @@ public class AppointmentService implements Service<Appointment> {
 
     @Override
     public Appointment readById(Integer id) throws DBException, SQLException, ValidateException {
+        if (id == null) {
+            throw new ValidateException("appointment");
+        }
         return  appointmentRepository.readByID(id);
     }
 
     @Override
     public boolean update(Appointment appointment) throws DBException, ValidateException {
-        validApp(appointment);
+        checkAppointment(appointment);
         return appointmentRepository.updateAppointment(appointment);
     }
 
@@ -61,11 +64,5 @@ public class AppointmentService implements Service<Appointment> {
     public int getSize() throws DBException {
        return appointmentRepository.getSize();
     }
-
-    public List<Appointment> readAppointmentsByPatientID(int id) throws DBException, SQLException {
-        return  appointmentRepository.readAppointmentByPatientID(id);
-    }
-
-
 
 }

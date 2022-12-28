@@ -24,7 +24,7 @@ public class MedicCommand implements ActionCommand {
     private Service<Schedule> scheduleService= ScheduleService.getScheduleService();
     private Service<Appointment> appointmentService= AppointmentService.getAppointmentService();
     @Override
-    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException {
+    public String execute(HttpServletRequest request, MessageManager currentMessageLocale){
         Map<String,Integer> selection = new HashMap<>();
         ControllerUtils.setAttributes(request,"patient_id");
         try {

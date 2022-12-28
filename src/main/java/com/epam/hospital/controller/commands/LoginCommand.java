@@ -36,9 +36,8 @@ public class LoginCommand implements ActionCommand {
             session.setAttribute("user_id", user.getId());
                 if (user.getRole()== Role.ADMIN)
                     return "/hospital/admin?command=admin";
-                   // return new AdminCommand().execute(request, currentMessageLocale);
                 else
-                    return "/hospital/medic?command=medic";//new MedicCommand().execute(request, currentMessageLocale);
+                    return "/hospital/medic?command=medic";
 
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString("error_log_pass"));

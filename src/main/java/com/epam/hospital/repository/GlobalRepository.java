@@ -131,8 +131,8 @@ public abstract class GlobalRepository<T> {
             }
             else if (obj instanceof Date) {
                 Date date = (Date)obj;
-                java.sql.Date sqlPackageDate = new java.sql.Date(date.getTime());
-                stmt.setDate(step, sqlPackageDate);
+                java.sql.Timestamp sqlPackageDate = new Timestamp(date.getTime());
+                stmt.setTimestamp(step, sqlPackageDate);
             } else {
                 stmt.setInt(step, (Integer) obj);
             }

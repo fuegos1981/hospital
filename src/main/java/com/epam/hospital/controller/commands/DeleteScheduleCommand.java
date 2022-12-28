@@ -18,7 +18,7 @@ public class DeleteScheduleCommand implements ActionCommand {
     private final Service<Schedule> scheduleService = ScheduleService.getScheduleService();
 
     @Override
-    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException {
+    public String execute(HttpServletRequest request, MessageManager currentMessageLocale){
         try {
             scheduleService.delete(scheduleService.readById( ControllerUtils.parseID(request, Fields.ID)));
             return "/hospital/readPatient?id="+ControllerUtils.parseID(request, Fields.PATIENT_ID)+"&command=patient_info";

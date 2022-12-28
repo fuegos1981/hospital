@@ -69,7 +69,7 @@
                             <div class="table-responsive  col-md-6">
                                <div class="form-group">
                                <br>
-                               <a class="btn btn-info btn-md" href="/hospital/editPatient?command=edit_doctor"><fmt:message key="create_doctor"/></a>
+                               <a class="btn btn-info btn-md" href="/hospital/editDoctor?command=edit_doctor"><fmt:message key="create_doctor"/></a>
                                </div>
                             <div class="form-group">
                                 <input type="radio" name="sortDoctor" onClick="clickSort()"  value="name asc" ${requestScope['sortDoctor'] == 'name asc'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
