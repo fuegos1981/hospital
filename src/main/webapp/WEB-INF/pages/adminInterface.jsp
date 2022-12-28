@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language ="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tg" uri="/WEB-INF/pagination.tld" %>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -47,7 +48,7 @@
                                     </tr>
                                     <c:forEach var="patient" items="${patients}" varStatus="status">
                                         <tr>
-                                              <td><c:out value="${status.count+10*(current_page_patients-1)}" /></th>
+                                              <td><c:out value="${status.count+10*(current_page_patient-1)}" /></th>
                                               <td><c:out value="${patient.toString()}"/></td>
                                               <td><c:out value="${patient.getBirthday()}"/></td>
                                               <td><a href ="/hospital/readPatient?id=${patient.getId()}&command=patient_info"><fmt:message key="read"/></td>
@@ -55,16 +56,7 @@
                                         </tr>
                                     </c:forEach>
                                 </table>
-                                <div class btn-group btn group-xs>
-                                    <ul id="pagination_patient" class = "pagination pagination-sm">
-                                        <li class="disabled"><input type="button" onClick="clickPagePatient(1)" name="pat" class="btn btn-info btn-md" value='<fmt:message key="begin"/>'/></li>
-                                       <c:forEach varStatus="status" begin="1" end ="${countPagePatient}">
-                                            <li class="active"><input type="button" onClick="clickPagePatient(${status.count})" name="pat" class="btn btn-info btn-md" value='${status.count}'/></li>
-                                       </c:forEach>
-                                        <li><input type="button" onClick="clickPagePatient(${requestScope['countPagePatient']})" name="pat" class="btn btn-info btn-md" value='<fmt:message key="end"/>'/></li>
-                                    </ul>
-                                    <input type="hidden" id ="pat_comment" name="current_page_patients" value="${current_page_patients}" />
-                                </div>
+                                <tg:pgn name="patient" current_page="${current_page_patient}"  count_page = "${count_page_patient}"/>
                             </div>
                             <div class="table-responsive  col-md-6">
                                <div class="form-group">
@@ -88,24 +80,15 @@
                               </tr>
                                <c:forEach var="doctor" items="${doctors}" varStatus="status">
                                     <tr>
-                                        <td><c:out value="${status.count}"/></th>
+                                        <td><c:out value="${status.count+10*(current_page_doctor-1)}"/></th>
                                         <td><c:out value="${doctor.getLastName()} ${doctor.getFirstName()}"/></td>
                                         <td><c:out value="${doctor.getCategory()}"/></td>
                                         <td><a href ="/read-doctor?id=${doctor.getId()}"><fmt:message key="read"/></td>
                                         <td><a href ="/hospital/addSchedule?doctor_id=${doctor.getId()}&name=${doctor.toString()}&command=add_schedule&is_patient=false"><fmt:message key="visit"/></td>
                                     </tr>
-                                </c:forEach>
+                               </c:forEach>
                             </table>
-                            <div class btn-group btn group-xs>
-                                <ul id="pagination_doctor" class = "pagination pagination-sm">
-                                    <li class="disabled"><input type="button" onClick="clickPageDoctor(1)" name="doc" class="btn btn-info btn-md" value='<fmt:message key="begin"/>'/></li>
-                                    <c:forEach varStatus="status" begin="1" end ="${countPageDoctor}">
-                                        <li class="active"><input type="button" onClick="clickPageDoctor(${status.count})" name="doc" class="btn btn-info btn-md" value='${status.count}'/></li>
-                                    </c:forEach>
-                                    <li><input type="button" onClick="clickPageDoctor(${requestScope['countPageDoctor']})" name="doc" class="btn btn-info btn-md" value='<fmt:message key="end"/>'/></li>
-                                </ul>
-                                <input type="hidden" id ="pat_comment_doctor" name="current_page_doctors" value="${current_page_doctors}" />
-                            </div>
+                            <tg:pgn name="doctor" current_page="${current_page_doctor}"  count_page = "${count_page_doctor}"/>
                         </div>
                         </div>
                     </div>

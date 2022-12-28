@@ -21,10 +21,10 @@ public class AdminCommand implements ActionCommand {
     private final static String NAME_ASC = "name asc";
     private final static String SORT_DOCTOR = "sortDoctor";
     private final static String SORT_PATIENT = "sortPatient";
-    private final static String CURRENT_PAGE_DOCTORS = "current_page_doctors";
-    private final static String CURRENT_PAGE_PATIENTS = "current_page_patients";
-    private final static String COUNT_PAGE_DOCTOR = "countPageDoctor";
-    private final static String COUNT_PAGE_PATIENT = "countPagePatient";
+    private final static String CURRENT_PAGE_DOCTOR = "current_page_doctor";
+    private final static String CURRENT_PAGE_PATIENT = "current_page_patient";
+    private final static String COUNT_PAGE_DOCTOR = "count_page_doctor";
+    private final static String COUNT_PAGE_PATIENT = "count_page_patient";
 
     static {
         doctorService = DoctorService.getDoctorService();
@@ -46,7 +46,7 @@ public class AdminCommand implements ActionCommand {
         String sortDoctor = request.getParameter(SORT_DOCTOR);
         sortDoctor=(sortDoctor==null)?NAME_ASC:sortDoctor;
         request.setAttribute(SORT_DOCTOR,sortDoctor);
-        int[] limit = ControllerUtils.setMasForPagination(request, doctorService.getSize(),CURRENT_PAGE_DOCTORS,COUNT_PAGE_DOCTOR);
+        int[] limit = ControllerUtils.setMasForPagination(request, doctorService.getSize(),CURRENT_PAGE_DOCTOR,COUNT_PAGE_DOCTOR);
         List<Doctor> doctors =doctorService.getAll(limit,sortDoctor);
         request.setAttribute(ControllerConstants.DOCTORS,doctors);
 
@@ -56,7 +56,7 @@ public class AdminCommand implements ActionCommand {
         String sortPatient = request.getParameter(SORT_PATIENT);
         sortPatient=(sortPatient==null)?NAME_ASC:sortPatient;
         request.setAttribute(SORT_PATIENT,sortPatient);
-        int[] limit = ControllerUtils.setMasForPagination(request, patientService.getSize(),CURRENT_PAGE_PATIENTS,COUNT_PAGE_PATIENT);
+        int[] limit = ControllerUtils.setMasForPagination(request, patientService.getSize(),CURRENT_PAGE_PATIENT,COUNT_PAGE_PATIENT);
         List<Patient> patients =patientService.getAll(limit,sortPatient);
         request.setAttribute(ControllerConstants.PATIENTS,patients);
     }
