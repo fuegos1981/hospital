@@ -9,7 +9,6 @@ import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 
 public class SimpleService implements Service<SimpleModel> {
     //private SimpleService simpleService;
@@ -35,6 +34,8 @@ public class SimpleService implements Service<SimpleModel> {
 
     @Override
     public SimpleModel readById(Integer id) throws DBException, SQLException, ValidateException {
+        if (id==null)
+            return null;
         simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.readByID(id);
     }

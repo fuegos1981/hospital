@@ -18,7 +18,7 @@ public abstract class GlobalRepository<T> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DBException("Trouble with method read by object ", e);
+            throw new DBException("Trouble with method read by object " +e.getMessage());
         }
 
     }
@@ -27,16 +27,15 @@ public abstract class GlobalRepository<T> {
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
              addFilters(stmt, filters);
-             try (ResultSet rs = stmt.executeQuery()) {
+             ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     return rs.getInt(1);
-                }else
-                    throw new DBException("Trouble with method readSize by object ");
-
+                }
+                else return 0;
              }
-        } catch (SQLException e) {
+         catch (SQLException e) {
             e.printStackTrace();
-            throw new DBException("Trouble with method readSize by object ", e);
+            throw new DBException("Trouble with method readSize by object " +e.getMessage());
         }
 
     }
@@ -51,7 +50,6 @@ public abstract class GlobalRepository<T> {
                 return findByResultSet(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DBException("Trouble with method findAll object "+e.getMessage(), e);
         }
     }
@@ -73,7 +71,7 @@ public abstract class GlobalRepository<T> {
             return -1;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DBException("Trouble with method insert! ", e);
+            throw new DBException("Trouble with method insert! " +e.getMessage());
         } finally {
             close(stmt);
             close(con);

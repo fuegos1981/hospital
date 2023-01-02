@@ -36,7 +36,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info"><fmt:message key="password"/>:</label><br>
-                                <input type="password" name="password" id="password" class="form-control"/>
+                                <input type="password" name="password" id="password" class="form-control" value="${password}"/>
                             </div>
                             <label  class="text-danger"><c:out value="${message}" ></c:out></label>
                             <div class="form-group">

@@ -5,9 +5,6 @@ import com.epam.hospital.model.Patient;
 import com.epam.hospital.repository.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.impl.PatientService;
-import com.epam.hospital.service.impl.ValidateException;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,62 +13,71 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * The class contains static methods to make the controller work
+ *
+ * @author Sinkevich Olena
+ *
+ */
 public class ControllerUtils {
 
-    public static void setCookie(HttpServletResponse resp, String name, String value) {
-
-        Cookie c = new Cookie(name, value);
-        c.setMaxAge(60 * 60); // время жизни файла cookie
-        resp.addCookie(c); // добавление cookie к объекту-ответу
-
-    }
-
-    public static ArrayList<String> addToRequest(HttpServletRequest request) {
-        ArrayList<String> messages = new ArrayList<>();
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            messages.add("Number cookies : " + cookies.length);
-            for (Cookie c : cookies) {
-                messages.add(c.getName() + " = " + c.getValue());
-            }
-        }
-        return messages;
-    }
-
+    /**
+     * <p>This method determines if a patient history should be loaded and performs it if necessary.
+     * </p>
+     * @param string  contains a string representation of a date.
+     * @param isTime informs whether the specified string contains time.
+     * @return date obtained from string representation
+     *
+     */
     public static Date getDateByString(String string, boolean isTime) throws ParseException {
         if (string==null||string.isEmpty()){
             return null;
         }
         SimpleDateFormat sdf = (isTime)
-                ? new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.UK)
+                ? new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK)
                 : new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(string.replace("T"," "));
     }
 
+    /**
+     * <p>This method removes all attributes from request whose names are listed in the second argument</p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param atrs are list of attribute names to be removed from request.
+     *
+     */
     public static void RemoveAttributes(HttpServletRequest request, String... atrs) {
         for (String atr : atrs) {
             request.removeAttribute(atr);
         }
     }
-
+    /**
+     * <p>This method adds all attributes from request whose names are listed in the second argument</p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param atrs are list of parameter names to be added in request.
+     *
+     */
     public static void setAttributes(HttpServletRequest request, String... atrs) {
         for (String atr : atrs) {
             request.setAttribute(atr, request.getParameter(atr));
         }
     }
-
-    public static void setNameFromParameter(HttpServletRequest request) {
-        String name = request.getParameter(ControllerConstants.NAME);
-        if (name!=null){
-            name =name.replace(ControllerConstants.PERC, " ");
-            request.setAttribute(ControllerConstants.NAME, name);
+    public static void RemoveAttributesSession(HttpServletRequest request, String... atrs) {
+        for (String atr : atrs) {
+            request.getSession().removeAttribute(atr);
         }
     }
 
+    /**
+     * <p>This method gets id from request and converts to an integer.
+     * </p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param idName is the name of the parameter to be converted to an integer.
+     * @return  an integer or null if the parameter name was not found in the request
+     *
+     */
     public static Integer parseID(HttpServletRequest request, String idName) {
         String idStr= request.getParameter(idName);
         if (idStr==null|| idStr.isEmpty())
@@ -80,12 +86,17 @@ public class ControllerUtils {
         return Integer.valueOf(idStr);
     }
 
-    public static void setGender(HttpServletRequest request) {
-        String gender = request.getParameter(ControllerConstants.GENDER);
-        gender=(gender==null)?ControllerConstants.MALE:gender;
-        request.setAttribute(ControllerConstants.GENDER,gender);
-    }
-
+    /**
+     * <p>This method sets the attributes in the query required to display pagination for the list.
+     * </p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param countList is a list size.
+     * @param currentCountName is the name of the parameter with current count page.
+     * @param countPageName is the name of the parameter with count pages.*
+     * @return  returns an array of two elements from which and to which element to display the values of the list,
+     * returns null if it is necessary to display all elements of the list
+     *
+     */
     public static int[] setMasForPagination(HttpServletRequest request, int countList, String currentCountName, String countPageName){
 
         int currentPage;
@@ -103,11 +114,18 @@ public class ControllerUtils {
             return null;
         }
         else{
-            return new int[]{(currentPage-1)*ControllerConstants.MAX_COUNT_ON_PAGE,Math.min(currentPage*ControllerConstants.MAX_COUNT_ON_PAGE,countList)};
+            return new int[]{(currentPage-1)*ControllerConstants.MAX_COUNT_ON_PAGE,ControllerConstants.MAX_COUNT_ON_PAGE};
         }
     }
 
-    static void downloadHistory(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException, ValidateException {
+    /**
+     * <p>This method downloads the patient's history to the client's computer.
+     * </p>
+     * @param req {@link HttpServletRequest} is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param resp {@link HttpServletResponse} is as an argument to the servlet's service methods (doGet, doPost, etc).
+     *
+     */
+    static void downloadHistory(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
 
         Patient patient = PatientService.getPatientService().readById(ControllerUtils.parseID(req, Fields.PATIENT_ID));
         String  fileURL = HistoryPatient.getHistoryPatient(patient, req.getServletContext().getRealPath("WEB-INF/pdf/info.pdf"));

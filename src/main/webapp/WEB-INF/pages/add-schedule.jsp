@@ -20,22 +20,22 @@
         <fmt:setBundle basename="pagecontent"/>
         <form id="base-form" class="form" action="addSchedule" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
+            <input type="hidden" name="command" value="add_schedule" />
+            <input type="hidden" name="is_patient" value="${is_patient}" />
+            <input type="hidden" name="id" value="${id}" />
             <div id="base">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
                 <div class="container">
                 <div id="base-row" class="row justify-content-center align-items-center">
                     <div id="base-column" class="col-md-6">
                         <div id="base-box" class="col-md-12">
-                            <input type="hidden" name="command" value="add_schedule" />
-                            <input type="hidden" name="is_patient" value="${is_patient}" />
-                            <input type="hidden" name="id" value="${id}" />
                             <br/>
                             <h3 class="text-center text-info"><fmt:message key="add_visit"/></h3>
                             <br/>
                             <select class="form-control" name="doctor_id" id="doctors">
                                 <option value=""><fmt:message key="select_doctor"/>...</option>
                                 <c:forEach var="doctor" items="${doctors}" varStatus="status">
-                                    <option value="${doctor.getId()}" ${doctor_id == doctor.getId()? 'selected':''}>
+                                    <option value="${doctor.getId()}" ${schedule.getDoctor().getId() == doctor.getId()? 'selected':''}>
                                     <c:out value="${doctor.toString()}"/>
                                     </option>
                                 </c:forEach>
@@ -44,7 +44,7 @@
                             <select class="form-control" name="patient_id" id="patients">
                                 <option value=""><fmt:message key="select_patient"/>...</option>
                                 <c:forEach var="patient" items="${patients}" varStatus="status">
-                                    <option value="${patient.getId()}" ${patient_id == patient.getId()? 'selected':''}>
+                                    <option value="${patient.getId()}" ${schedule.getPatient().getId() == patient.getId()? 'selected':''}>
                                         <c:out value="${patient.toString()}"/>
                                     </option>
                                 </c:forEach>

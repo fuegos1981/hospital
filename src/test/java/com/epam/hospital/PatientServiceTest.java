@@ -2,10 +2,12 @@ package com.epam.hospital;
 
 import com.epam.hospital.model.Gender;
 import com.epam.hospital.model.Patient;
+import com.epam.hospital.repository.DBException;
 import com.epam.hospital.service.impl.PatientService;
 import com.epam.hospital.service.impl.ValidateException;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -47,11 +49,9 @@ public class PatientServiceTest {
         assertTrue(exception.getMessage().contains("birthday"));
     }
     @Test
-    void testNullPatientReadByIdTesting() {
-        Exception exception = assertThrows(ValidateException.class, () -> {
-            PatientService.getPatientService().readById(null);
-        });
-        assertTrue(exception.getMessage().equals("patient"));
+    void testNullPatientReadByIdTesting() throws DBException, SQLException {
+
+        assertTrue(PatientService.getPatientService().readById(null)==null);
     }
 
     @Test

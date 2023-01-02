@@ -28,9 +28,9 @@ public class PatientService implements Service<Patient> {
     }
 
     @Override
-    public Patient readById(Integer id) throws DBException, SQLException, ValidateException {
+    public Patient readById(Integer id) throws DBException, SQLException{
         if(id==null)
-            throw new ValidateException("patient");
+            return null;
         else
             return patientRepository.readByID(id);
     }

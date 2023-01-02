@@ -62,6 +62,7 @@
                                <div class="form-group">
                                <br>
                                <a class="btn btn-info btn-md" href="/hospital/editDoctor?command=edit_doctor"><fmt:message key="create_doctor"/></a>
+                               <a class="btn btn-info btn-md" href="/hospital/editSimple?command=edit_simple&name=Category"><fmt:message key="add_new_category"/></a>
                                </div>
                             <div class="form-group">
                                 <input type="radio" name="sortDoctor" onClick="clickSort()"  value="name asc" ${requestScope['sortDoctor'] == 'name asc'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
@@ -76,14 +77,15 @@
                                   <th><fmt:message key="num"/></th>
                                   <th><fmt:message key="Name"/></th>
                                   <th><fmt:message key="category"/></th>
-                                  <th colspan ="2"><fmt:message key="operation"/></th>
+                                  <th colspan ="3"><fmt:message key="operation"/></th>
                               </tr>
                                <c:forEach var="doctor" items="${doctors}" varStatus="status">
                                     <tr>
                                         <td><c:out value="${status.count+10*(current_page_doctor-1)}"/></th>
                                         <td><c:out value="${doctor.getLastName()} ${doctor.getFirstName()}"/></td>
                                         <td><c:out value="${doctor.getCategory()}"/></td>
-                                        <td><a href ="/read-doctor?id=${doctor.getId()}"><fmt:message key="read"/></td>
+                                        <td><a href ="/hospital/medic?command=medic&doctor_id=${doctor.getId()}"><fmt:message key="read"/></td>
+                                        <td><a href ="/hospital/editDoctor?command=edit_doctor&id=${doctor.getId()}&isFirst=true"><fmt:message key="edit"/></td>
                                         <td><a href ="/hospital/addSchedule?doctor_id=${doctor.getId()}&name=${doctor.toString()}&command=add_schedule&is_patient=false"><fmt:message key="visit"/></td>
                                     </tr>
                                </c:forEach>

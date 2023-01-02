@@ -72,8 +72,11 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
     private Appointment getAppointment(ResultSet rs) throws SQLException, DBException {
         Date dateCreate= rs.getDate(Fields.DATE_CREATE);
         Diagnosis diagnosis= (Diagnosis) SimpleRepository.getRepository(Constants.DIAGNOSIS).readByID(rs.getInt(Fields.DIAGNOSIS_ID));
+        diagnosis.setId(rs.getInt(Fields.DIAGNOSIS_ID));
         Patient patient= PatientRepository.getRepository().readByID(rs.getInt(Fields.PATIENT_ID));
+        patient.setId(rs.getInt(Fields.PATIENT_ID));
         Doctor doctor = DoctorRepository.getRepository().readByID(rs.getInt(Fields.DOCTOR_ID));
+        doctor.setId(rs.getInt(Fields.DOCTOR_ID));
         Appointment appointment = Appointment.createAppointment(dateCreate, diagnosis,patient, doctor);
         appointment.setMedication(rs.getString(Fields.MEDICATION));
         appointment.setProcedure(rs.getString(Fields.PROCEDURE));
@@ -90,11 +93,8 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
         }
         return list;
     }
-
-    public List<Appointment> readAppointmentByPatientID(int patientId) throws DBException {
-        return appointmentRepository.findAll(Constants.GET_ALL_APPOINTMENTS_BY_PATIENT, patientId);
-    }
     public int getSize() throws DBException {
         return appointmentRepository.readSize(Constants.GET_SIZE_APPOINTMENT);
     }
+
 }

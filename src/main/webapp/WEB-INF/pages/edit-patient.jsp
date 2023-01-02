@@ -17,10 +17,9 @@
         <fmt:setLocale value="${locale}" scope="session" />
         </c:if>
         <fmt:setBundle basename="pagecontent"/>
-        <form id="base-form" class="form" action="editPatient?id=${id}&command=edit_patient" method="post">
+        <form id="base-form" class="form" action="editPatient" method="post">
             <input type="hidden" name="command" value="edit_patient" />
             <input type="hidden" name="id" value="${id}" />
-            <input type="hidden" name="not_first" value="${not_first}" />
             <c:import url="/WEB-INF/pages/header.jsp" />
             <div id="base-edit-patient">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
@@ -38,11 +37,11 @@
                                     <label for="email" class="text-info"><fmt:message key="Email"/>:</label><br>
                                     <input type="email" name="email" id="email" class="form-control" value="${patient.getEmail()}"/>
                                     <label for="birthday" class="text-info"><fmt:message key="birthday"/>:</label><br>
-                                    <input type="date" name="birthday" id="birthday" class="form-control" lang ="${locale}" value="${patient.getBirthday()}">
+                                    <input type="date" name="birthday" id="birthday" class="form-control" lang ="${locale}" value="${birthday}">
                                 </div>
                                 <div class="form-group">
-                                    <input type="radio" name="gender"  value="male" ${requestScope['gender'] == 'male'? 'checked':''}/><fmt:message key="male"/>
-                                    <input type="radio" name="gender"  value="female" ${requestScope['gender'] == 'female'? 'checked':''}/><fmt:message key="female"/>
+                                    <input type="radio" name="gender"  value="male" ${patient.getGender().toString() eq 'MALE'? 'checked':''}/><fmt:message key="male"/>
+                                    <input type="radio" name="gender"  value="female" ${patient.getGender().toString() eq 'FEMALE'? 'checked':''}/><fmt:message key="female"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='save'/>">

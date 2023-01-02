@@ -7,7 +7,7 @@
 
 <html>
     <head>
-    <title>edit patient</title>
+    <title>edit</title>
     <style>
         <%@include file="/WEB-INF/styles/main.css"%>
     </style>
@@ -44,6 +44,6 @@
                     </div>
                 </div>
             </div>
-            </form>
+        </form>
     </body>
 </html>

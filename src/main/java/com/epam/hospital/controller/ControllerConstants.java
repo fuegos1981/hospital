@@ -1,45 +1,45 @@
 package com.epam.hospital.controller;
 
-public class ControllerConstants{
-    public static final String SUBMIT_US = "submit_us";
-    public static final String SUBMIT_UA = "submit_ua";
-    public static final String SUBMIT = "submit";
-    public static final String LOCALE_US = "en-US";
-    public static final String LOCALE_UA = "uk-UA";
-    public static final String LOCALE = "locale";
-    public static final String ID = "id";
-    public static final String NAME = "name";
-    public static final String PERC = "%20";
-    public static final String DOCTORS = "doctors";
-    public static final String PATIENTS = "patients";
-    public static final String DOCTOR_ID = "doctor_id";
-    public static final String PATIENT_ID = "patient_id";
-    public static final String DIAGNOSISES = "diagnosises";
-    public static final String DIAGNOSIS_ID = "diagnosis_id";
-    public static final String MESSAGE = "message";
-    public static final String ROLE = "role";
-    public static final String NURSE = "nurse";
-    public static final String GENDER = "gender";
-    public static final String MALE = "male";
-    public static final String ERROR_LOG_PASS = "error_log_pass";
-    public static final String CATEGORY_ID = "category_id";
-    public static final String CATEGORIES = "categories";
-    public static final String ROLE_ID = "role_id";
-    public static final String ROLES = "roles";
-    public static final String SIMPLE = "simple";
+public interface ControllerConstants{
+    String SUBMIT_US = "submit_us";
+    String SUBMIT_UA = "submit_ua";
+    String SUBMIT = "submit";
+    String LOCALE_US = "en-US";
+    String LOCALE_UA = "uk-UA";
+    String LOCALE = "locale";
+    String ID = "id";
+    String NAME = "name";
+    String PERC = "%20";
+    String DOCTORS = "doctors";
+    String PATIENTS = "patients";
+    String DOCTOR_ID = "doctor_id";
+    String PATIENT_ID = "patient_id";
+    String DIAGNOSISES = "diagnosises";
+    String DIAGNOSIS_ID = "diagnosis_id";
+    String MESSAGE = "message";
+    String ROLE = "role";
+    String NURSE = "nurse";
+    String GENDER = "gender";
+    String MALE = "male";
+    String ERROR_LOG_PASS = "error_log_pass";
+    String CATEGORY_ID = "category_id";
+    String CATEGORIES = "categories";
+    String ROLE_ID = "role_id";
+    String ROLES = "roles";
+    String SIMPLE = "simple";
 
 
     //pages
-    public static final String PAGE_INDEX = "/index.jsp";
-    public static final String PAGE_ADD_SCHEDULE = "/WEB-INF/pages/add-schedule.jsp";
-    public static final String PAGE_ERROR = "/WEB-INF/pages/error.jsp";
-    public static final String PAGE_EDIT_PATIENT = "/WEB-INF/pages/edit-patient.jsp";
-    public static final String PAGE_EDIT_DOCTOR = "/WEB-INF/pages/edit-doctor.jsp";
-    public static final String PAGE_ADMIN = "/WEB-INF/pages/adminInterface.jsp";
-    public static final String PAGE_EDIT_SIMPLE = "/WEB-INF/pages/edit-simple.jsp";
-    public static final String PAGE_EDIT_APPOINTMENT = "/WEB-INF/pages/edit-appointment.jsp";
-    public static final String PAGE_PATIENT_INFO = "/WEB-INF/pages/patient-info.jsp";
-    public static final String PAGE_MEDIC = "/WEB-INF/pages/medic-interface.jsp";
+    String PAGE_INDEX = "/index.jsp";
+    String PAGE_ADD_SCHEDULE = "/WEB-INF/pages/add-schedule.jsp";
+    String PAGE_ERROR = "/WEB-INF/pages/error.jsp";
+    String PAGE_EDIT_PATIENT = "/WEB-INF/pages/edit-patient.jsp";
+    String PAGE_EDIT_DOCTOR = "/WEB-INF/pages/edit-doctor.jsp";
+    String PAGE_ADMIN = "/WEB-INF/pages/adminInterface.jsp";
+    String PAGE_EDIT_SIMPLE = "/WEB-INF/pages/edit-simple.jsp";
+    String PAGE_EDIT_APPOINTMENT = "/WEB-INF/pages/edit-appointment.jsp";
+    String PAGE_PATIENT_INFO = "/WEB-INF/pages/patient-info.jsp";
+    String PAGE_MEDIC = "/WEB-INF/pages/medic-interface.jsp";
 
-    public static final int MAX_COUNT_ON_PAGE = 10;
+    int MAX_COUNT_ON_PAGE = 10;
 }

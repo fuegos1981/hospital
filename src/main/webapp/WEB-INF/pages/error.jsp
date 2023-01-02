@@ -17,22 +17,25 @@
         <fmt:requestEncoding value="UTF-8" />
         <fmt:setLocale value="${locale}" scope="session" />
         <fmt:setBundle basename="pagecontent"/>
-        <div id="base">
-            <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
-            <div class="container">
-                <div id="base-row" class="row justify-content-center align-items-center">
-                    <div id="base-column" class="col-md-6">
-                        <div id="base-box" class="col-md-12">
-                            <div class="form-group">
-                                <label class="text-danger"> Request from ${pageContext.errorData.requestURI} is failed</label><br>
-                                <label class="text-danger"> ${pageContext.errorData.statusCode}</label><br>
-                                <label class="text-danger"> ${pageContext.errorData.throwable}</label><br>
-                                <label class="text-danger"> ${message}</label><br>
+        <form id="base-form" class="form" action="error" method="get">
+        <input type="hidden" name="command" value="error" />
+            <div id="base">
+                <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
+                <div class="container">
+                    <div id="base-row" class="row justify-content-center align-items-center">
+                        <div id="base-column" class="col-md-6">
+                            <div id="base-box" class="col-md-12">
+                                <div class="form-group">
+                                    <label class="text-danger"> Request from ${pageContext.errorData.requestURI} is failed</label><br>
+                                    <label class="text-danger"> ${pageContext.errorData.statusCode}</label><br>
+                                    <label class="text-danger"> ${pageContext.errorData.throwable}</label><br>
+                                    <label class="text-danger"> ${message}</label><br>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </body>
 </html>

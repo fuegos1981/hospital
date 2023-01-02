@@ -18,13 +18,27 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class implements working with patient information
+ *Please see the {@link com.epam.hospital.service.Service}  for true identity
+ * @author Sinkevych Olena
+ *
+ */
 public class PatientInfoCommand implements ActionCommand {
-    private Service<Patient> patientService= PatientService.getPatientService();
-    private Service<Schedule> scheduleService= ScheduleService.getScheduleService();
-    private Service<Appointment> appointmentService= AppointmentService.getAppointmentService();
+    private final Service<Patient> patientService= PatientService.getPatientService();
+    private final Service<Schedule> scheduleService= ScheduleService.getScheduleService();
+    private final Service<Appointment> appointmentService= AppointmentService.getAppointmentService();
 
+    /**
+     * <p>This method generates a page or path with a response to the client when working with patient information.
+     * </p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param currentMessageLocale is current locale, used to display error messages in the given locale.
+     * @return  String page or path with a response to the client.
+     *
+     */
     @Override
-    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
+    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             request.setAttribute("patient_id",id);
@@ -34,9 +48,6 @@ public class PatientInfoCommand implements ActionCommand {
             request.setAttribute("schedules",((ScheduleService) scheduleService).getAll(selection));
             request.setAttribute("appointments",((AppointmentService)appointmentService).getAll(selection));
             return ControllerConstants.PAGE_PATIENT_INFO;
-        } catch (DBException | SQLException e) {
-            request.setAttribute("message", e.getMessage());
-            return ControllerConstants.PAGE_ERROR;
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_ERROR;

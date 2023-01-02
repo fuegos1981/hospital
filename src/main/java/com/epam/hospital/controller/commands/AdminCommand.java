@@ -15,6 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The class implements working in Admin interface
+ *Please see the {@link com.epam.hospital.service.Service}  for true identity
+ * @author Sinkevych Olena
+ *
+ */
 public class AdminCommand implements ActionCommand {
     private final static Service<Patient> patientService;
     private final static Service<Doctor> doctorService;
@@ -30,16 +36,21 @@ public class AdminCommand implements ActionCommand {
         doctorService = DoctorService.getDoctorService();
         patientService = PatientService.getPatientService();
     }
+    /**
+     * <p>This method generates a page or path with a response to the client when the administrator is working in the main interface.
+     * </p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param currentMessageLocale is current locale, used to display error messages in the given locale.
+     * @return  String page or path with a response to the client.
+     *
+     */
     @Override
-    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
-        try {
-            fillPatients(request);
-            fillDoctors(request);
+    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException {
+       request.getSession().removeAttribute("patient");
+       fillPatients(request);
+       fillDoctors(request);
             return ControllerConstants.PAGE_ADMIN;
-        } catch (DBException | SQLException e) {
-            request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
-            return ControllerConstants.PAGE_ERROR;
-        }
+
     }
 
     private void fillDoctors(HttpServletRequest request) throws DBException, SQLException {

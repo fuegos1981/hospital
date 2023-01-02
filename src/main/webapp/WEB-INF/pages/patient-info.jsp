@@ -35,7 +35,7 @@
                                     <td><c:out value="${patient.toString()}"/></td>
                                     <td><c:out value="${patient.getBirthday()}"/></td>
                                     <td><c:out value="${patient.getEmail()}"/></td>
-                                    <td><a href ="/hospital/editPatient?id=${patient.getId()}&command=edit_patient"/><fmt:message key="edit"/></td>
+                                    <td><a href ="editPatient?id=${patient.getId()}&command=edit_patient&isFirst=true" method="post"/><fmt:message key="edit"/></td>
                                     <td><input type="submit" name="download" class="btn btn-info btn-md" value='<fmt:message key="download_history"/>'/></td>
 
                                 </tr>
@@ -44,7 +44,7 @@
                         <div class="table-responsive col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true"><fmt:message key="add_visit"/></a>
+                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&command=add_schedule&is_patient=true"><fmt:message key="add_visit"/></a>
                             </div>
                             <table id = "AllSchedule" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -59,7 +59,7 @@
                                         <td><c:out value="${schedule.getDoctor().toString()}"/></td>
 
                                         <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd HH:mm" /></td>
-                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&visit_time=<fmt:formatDate value='${schedule.getDateVisit()}' pattern = 'yyyy-MM-dd hh:mm' />&doctor_id=${schedule.getDoctor().getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true"/><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&command=add_schedule&isFirst=true&is_patient=true"/><fmt:message key="edit"/></td>
                                         <td><a href ="/hospital/deleteSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatient().getId()}&command=delete_schedule"/><fmt:message key="delete"/></td>
                                     </tr>
                                 </c:forEach>
@@ -68,7 +68,7 @@
                         <div class="table-responsive  col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&name=${patient.toString()}&patient_id=${patient_id}"><fmt:message key="create_appointment"/></a>
+                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&patient_id=${patient_id}&isFirst=true"><fmt:message key="create_appointment"/></a>
                             </div>
                             <table id = "AllAppointments" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -86,7 +86,7 @@
                                         <td><c:out value="${appointment.getDoctor().getLastName()} ${appointment.getDoctor().getFirstName()}"/></td>
                                         <td><c:out value="${appointment.getDoctor().getCategory()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosis()}"/></td>
-                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&name=${patient.toString()}&command=edit_appointment">Edit</td>
+                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&isFirst=true">Edit</td>
                                     </tr>
                                </c:forEach>
                             </table>

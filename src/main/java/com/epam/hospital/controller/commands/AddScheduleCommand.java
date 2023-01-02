@@ -20,32 +20,37 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * The class implements a command for creating and editing a schedule
+ *Please see the {@link com.epam.hospital.service.Service}  for true identity
+ * @author Sinkevych Olena
+ *
+ */
 public class AddScheduleCommand implements ActionCommand {
-    private final Service<Doctor> doctorService = DoctorService.getDoctorService();
-    private final Service<Patient> patientService = PatientService.getPatientService();
-    private final Service<Schedule> scheduleService = ScheduleService.getScheduleService();
+    private Service<Doctor> doctorService = DoctorService.getDoctorService();
+    private Service<Patient> patientService = PatientService.getPatientService();
+    private Service<Schedule> scheduleService = ScheduleService.getScheduleService();
 
+
+    /**
+     * <p>This method generates a page or path with a response to the client when creating or editing a schedule.
+     * </p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param currentMessageLocale is current locale, used to display error messages in the given locale.
+     * @return  String page or path with a response to the client when creating or editing a schedule.
+     *
+     */
     @Override
-    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
+    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        Integer doctorId = ControllerUtils.parseID(request,Fields.DOCTOR_ID);
-        Integer patientId =ControllerUtils.parseID(request,Fields.PATIENT_ID);
-        boolean isPatient = Boolean.parseBoolean(request.getParameter("is_patient"));
-        ControllerUtils.setNameFromParameter(request);
-        ControllerUtils.setAttributes(request, Fields.ID,Fields.DOCTOR_ID,Fields.PATIENT_ID,Fields.VISIT_TIME,
-                "is_patient",ControllerConstants.NAME);
+        ControllerUtils.setAttributes(request, Fields.ID,"is_patient", Fields.VISIT_TIME);
+        request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
+        request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
         try {
-
-            request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
-            request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
-            Date dateVisit = ControllerUtils.getDateByString(request.getParameter(Fields.VISIT_TIME), true);
-
+            Schedule schedule = getSchedule(request, id);
             if (request.getParameter(ControllerConstants.SUBMIT)==null) {
                 return ControllerConstants.PAGE_ADD_SCHEDULE;
             } else {
-                Patient patient = patientService.readById(patientId);
-                Doctor doctor = doctorService.readById(doctorId);
-                Schedule schedule = Schedule.createSchedule(doctor, patient, dateVisit);
                 if (id==null){
                     scheduleService.create(schedule);
                 }
@@ -53,20 +58,39 @@ public class AddScheduleCommand implements ActionCommand {
                     schedule.setId(id);
                     scheduleService.update(schedule);
                 }
-                //return new AdminCommand().execute(request, currentMessageLocale);
+                boolean isPatient = Boolean.parseBoolean(request.getParameter("is_patient"));
                 if (isPatient)
-                    return "/hospital/readPatient?id="+patient.getId()+"&command=patient_info";
-                else
-                    return "/hospital/medic?doctor_id="+doctor.getId()+"&command=medic";
+                    return "/hospital/readPatient?id="+schedule.getPatient().getId()+"&command=patient_info";
+                else {
+                    return "/hospital/medic?doctor_id=" + schedule.getDoctor().getId() + "&command=medic";
+                }
 
             }
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_ADD_SCHEDULE;
-        } catch (SQLException | DBException | ParseException e) {
-            request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
-            return ControllerConstants.PAGE_ERROR;
         }
+    }
+
+    private Schedule getSchedule(HttpServletRequest request, Integer id) throws ParseException, DBException, ValidateException, SQLException {
+
+        Schedule schedule = (Schedule) request.getAttribute("schedule");
+        if (id!=null&&request.getParameter("isFirst")!=null){
+            schedule = scheduleService.readById(id);
+            request.setAttribute(Fields.VISIT_TIME,schedule.getDateVisit().toString());
+        }
+        else if (schedule==null) {
+            ControllerUtils.setAttributes(request,ControllerConstants.PATIENT_ID,ControllerConstants.DOCTOR_ID);
+            Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
+            Integer doctorId= ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);
+            Patient patient = patientService.readById(patientId);
+            Doctor doctor = doctorService.readById(doctorId);
+            Date dateVisit = ControllerUtils.getDateByString(request.getParameter(Fields.VISIT_TIME), true);
+            schedule = Schedule.createSchedule(doctor, patient, dateVisit);
+        }
+
+        request.setAttribute("schedule", schedule);
+        return schedule;
     }
 
 

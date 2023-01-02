@@ -34,14 +34,6 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
         return scheduleRepository.update(Constants.UPDATE_SCHEDULE, objects);
     }
 
-    public List<Schedule> readByPatientID(int id) throws DBException {
-        return scheduleRepository.findAll(Constants.GET_SCHEDULE_BY_PATIENT_ID,id);
-    }
-
-    public List<Schedule> readByDoctorID(int id) throws DBException {
-        return scheduleRepository.findAll(Constants.GET_SCHEDULE_BY_DOCTOR_ID,id);
-    }
-
     public List<Schedule> getAllSchedules() throws DBException {
         return scheduleRepository.findAll(Constants.GET_ALL_SCHEDULE);
     }
@@ -71,7 +63,9 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
 
     private Schedule getSchedule(ResultSet rs) throws SQLException, DBException {
         Doctor doctor = DoctorRepository.getRepository().readByID(rs.getInt(Fields.DOCTOR_ID));
+        doctor.setId(rs.getInt(Fields.DOCTOR_ID));
         Patient patient =PatientRepository.getRepository().readByID(rs.getInt(Fields.PATIENT_ID));
+        patient.setId(rs.getInt(Fields.PATIENT_ID));
         Schedule schedule=Schedule.createSchedule(doctor, patient, rs.getTimestamp(Fields.VISIT_TIME));
         schedule.setId(rs.getInt(Fields.ID));
         return schedule;

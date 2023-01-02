@@ -31,7 +31,7 @@ public class DoctorService implements Service<Doctor> {
     @Override
     public Doctor readById(Integer id) throws DBException, SQLException, ValidateException {
         if (id == null) {
-            throw new ValidateException("doctor");
+            return null;
         }
         else
             return  doctorRepository.readByID(id);
@@ -44,12 +44,11 @@ public class DoctorService implements Service<Doctor> {
         }
         return doctor;
     }
-    public Doctor readByLogin(String login) throws DBException, ValidateException {
-        Doctor doctor = doctorRepository.readByLogin(login);
-        if (doctor == null) {
-            throw  new ValidateException("login");
+    public Doctor readByLogin(String login) throws DBException{
+        if (login == null) {
+           return null;
         }
-        return doctor;
+        return doctorRepository.readByLogin(login);
     }
     @Override
     public boolean update(Doctor doctor) throws DBException, ValidateException {
@@ -74,8 +73,18 @@ public class DoctorService implements Service<Doctor> {
     private void checkDoctor(Doctor doctor) throws ValidateException, DBException {
         ServiceUtils.nameValidate(Fields.LAST_NAME,doctor.getLastName());
         ServiceUtils.nameValidate(Fields.FIRST_NAME,doctor.getFirstName());
-        if (doctor.getLogin()==null||doctor.getLogin().isEmpty()||doctorService.readByLogin(doctor.getLogin())!=null){
+        if (doctor.getLogin()==null||(doctor.getLogin().isEmpty())){
             throw new ValidateException("login");
         }
+        else if(readByLogin(doctor.getLogin()).getId()!=doctor.getId()){
+            throw new ValidateException("login_exist");
+        }
+        if (doctor.getPassword()==null){
+            throw new ValidateException("password");
+        }
+        if (doctor.getCategory()==null){
+            throw new ValidateException("category");
+        }
+
     }
 }

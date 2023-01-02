@@ -15,20 +15,31 @@ import com.epam.hospital.service.impl.ValidateException;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Locale;
 
-
+/**
+ * The class implements a command for creating and editing a patient
+ *Please see the {@link com.epam.hospital.service.Service}  for true identity
+ * @author Sinkevych Olena
+ *
+ */
 public class CreatePatientCommand implements ActionCommand {
-    private final static Service<Patient> patientService= PatientService.getPatientService();
+    public Service<Patient> patientService= PatientService.getPatientService();
 
+    /**
+     * <p>This method generates a page or path with a response to the client when creating or editing a patient.
+     * </p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param currentMessageLocale is current locale, used to display error messages in the given locale.
+     * @return  String page or path with a response to the client when creating or editing a patient.
+     *
+     */
     @Override
-    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
+    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
 
         try {
+            ControllerUtils.setAttributes(request,Fields.ID,ControllerConstants.GENDER);
             Integer id = ControllerUtils.parseID(request,Fields.ID);
-            //request.setAttribute("title",id==null?"create":"edit");
             Patient patient = getPatient(request, id);
-            ControllerUtils.setAttributes(request,Fields.ID);
             if (request.getParameter(ControllerConstants.SUBMIT) == null ){
                 return ControllerConstants.PAGE_EDIT_PATIENT;
             }
@@ -45,33 +56,31 @@ public class CreatePatientCommand implements ActionCommand {
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_EDIT_PATIENT;
-        } catch (DBException | ParseException|SQLException e) {
-            request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
-            return ControllerConstants.PAGE_ERROR;
         }
     }
 
-    public static Patient getPatient(HttpServletRequest request, Integer id) throws ParseException, DBException, ValidateException, SQLException {
-        Patient patient;
-        if (id!=null&&request.getParameter("not_first")==null){
+    private Patient getPatient(HttpServletRequest request, Integer id) throws ParseException, DBException, ValidateException, SQLException {
+
+        Patient patient = (Patient) request.getAttribute("patient");
+        if (id!=null&&request.getParameter("isFirst")!=null){
             patient = patientService.readById(id);
-            request.setAttribute(ControllerConstants.GENDER,patient.getGender().toString().toLowerCase());
-            request.setAttribute("not_first", "");
-
+            request.setAttribute(Fields.PATIENT_BIRTHDAY,patient.getBirthday().toString());
         }
-        else {
-            ControllerUtils.setGender(request);
-            patient = Patient.createPatient(request.getParameter(Fields.LAST_NAME),
-                    request.getParameter(Fields.FIRST_NAME),
-                    ControllerUtils.getDateByString(request.getParameter(Fields.PATIENT_BIRTHDAY), false),
-                    request.getParameter(Fields.PATIENT_EMAIL),
-                    Gender.valueOf(request.getAttribute(ControllerConstants.GENDER).toString().toUpperCase()));
-
+        else if (patient==null) {
+                ControllerUtils.setAttributes(request,Fields.PATIENT_BIRTHDAY);
+                patient = Patient.createPatient(request.getParameter(Fields.LAST_NAME),
+                        request.getParameter(Fields.FIRST_NAME),
+                        ControllerUtils.getDateByString(request.getParameter(Fields.PATIENT_BIRTHDAY), false),
+                        request.getParameter(Fields.PATIENT_EMAIL),
+                        Gender.valueOf(request.getParameter("gender").toUpperCase()));
+                if (id!=null)
+                     patient.setId(id);
+            }
+        else{
+            patient.setGender(Gender.valueOf(request.getParameter(ControllerConstants.GENDER).toUpperCase()));
         }
         request.setAttribute("patient", patient);
-
         return patient;
-
     }
 
 

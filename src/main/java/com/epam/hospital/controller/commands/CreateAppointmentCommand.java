@@ -19,18 +19,30 @@ import java.util.Date;
 import java.util.Optional;
 
 
+/**
+ * The class implements a command for creating and editing an appointment
+ *Please see the {@link com.epam.hospital.service.Service}  for true identity
+ * @author Sinkevych Olena
+ *
+ */
 public class CreateAppointmentCommand implements ActionCommand {
     private final Service<Doctor> doctorService = DoctorService.getDoctorService();
     private final Service<Patient> patientService = PatientService.getPatientService();
     private final SimpleService diagnosisService = SimpleService.getSimpleService(Constants.DIAGNOSIS);
     private final Service<Appointment> appointmentService = AppointmentService.getAppointmentService();
 
+    /**
+     * <p>This method generates a page or path with a response to the client when creating or editing an appointment.
+     * </p>
+     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param currentMessageLocale is current locale, used to display error messages in the given locale.
+     * @return  String page or path with a response to the client when creating or editing an appointment.
+     *
+     */
     @Override
-    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) {
+    public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        ControllerUtils.setNameFromParameter(request);
-        //request.setAttribute("title",id==null?"create_appointment":"edit_appointment");
-        ControllerUtils.setAttributes(request,ControllerConstants.ID,ControllerConstants.NAME, ControllerConstants.PATIENT_ID);
+        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID);
         try {
             request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
             request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
@@ -60,9 +72,6 @@ public class CreateAppointmentCommand implements ActionCommand {
             request.setAttribute(ControllerConstants.MESSAGE,
                     currentMessageLocale.getString("not_rights")+" "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_EDIT_APPOINTMENT;
-        }catch (SQLException | DBException|ParseException e) {
-            request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
-            return ControllerConstants.PAGE_ERROR;
         }
     }
 
@@ -78,18 +87,17 @@ public class CreateAppointmentCommand implements ActionCommand {
         }
     }
 
-    public Appointment getAppointment(HttpServletRequest request, Integer id) throws ParseException, DBException, ValidateException, SQLException {
-        Appointment appointment;
+    private Appointment getAppointment(HttpServletRequest request, Integer id) throws DBException, ValidateException, SQLException {
 
-        if (id!=null&&request.getParameter("not_first")==null){
+        Appointment appointment =(Appointment) request.getAttribute("appointment");
+        if (id!=null&&request.getParameter("isFirst")!=null){
             appointment = appointmentService.readById(id);
-            request.setAttribute("not_first", "");
         }
-        else {
+        else if (appointment==null){
             Integer diagnosisId= ControllerUtils.parseID(request,ControllerConstants.DIAGNOSIS_ID);
             Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
             Integer doctorId= ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);
-            ControllerUtils.setAttributes(request,ControllerConstants.DIAGNOSIS_ID,ControllerConstants.PATIENT_ID,ControllerConstants.DOCTOR_ID);
+            //ControllerUtils.setAttributes(request,ControllerConstants.DIAGNOSIS_ID,ControllerConstants.PATIENT_ID,ControllerConstants.DOCTOR_ID);
             appointment = Appointment.createAppointment(new Date(),
                     diagnosisId==null?null:(Diagnosis) diagnosisService.readById(diagnosisId),
                     patientId==null?null: patientService.readById(patientId),
