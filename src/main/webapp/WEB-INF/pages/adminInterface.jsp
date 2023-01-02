@@ -20,7 +20,7 @@
         </c:if>
         <fmt:setBundle basename="pagecontent"/>
 
-        <form id="base-form" class="form" action="admin" method="post">
+        <form id="base-form" class="form" action="Admin" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
             <input type="hidden" name="command" value="admin" />
             <div id="base1">

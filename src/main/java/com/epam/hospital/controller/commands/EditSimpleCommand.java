@@ -50,7 +50,8 @@ public class EditSimpleCommand implements ActionCommand {
             }
 
         } catch (ValidateException e) {
-            request.setAttribute(currentMessageLocale.getString("not_correct")+" "+ControllerConstants.MESSAGE, e.getMessage());
+            request.setAttribute(ControllerConstants.MESSAGE,
+                    currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_EDIT_SIMPLE;
 
         }

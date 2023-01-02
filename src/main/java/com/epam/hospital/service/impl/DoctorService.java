@@ -54,7 +54,7 @@ public class DoctorService implements Service<Doctor> {
     public boolean update(Doctor doctor) throws DBException, ValidateException {
         checkDoctor(doctor);
         doctor.setPassword(DigestUtils.md5Hex(doctor.getPassword()));
-        return doctorRepository.create(doctor);
+        return doctorRepository.updateDoctor(doctor);
     }
 
     @Override

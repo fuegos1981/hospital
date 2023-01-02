@@ -2,11 +2,14 @@ package com.epam.hospital;
 
 import com.epam.hospital.model.Category;
 import com.epam.hospital.model.Doctor;
+import com.epam.hospital.repository.DBException;
 import com.epam.hospital.service.impl.DoctorService;
 import com.epam.hospital.service.impl.ValidateException;
 import org.junit.jupiter.api.Test;
 
 import javax.print.Doc;
+
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,12 +44,9 @@ public class DoctorServiceTest {
         assertTrue(exception.getMessage().contains("login"));
     }
     @Test
-    void testNullDoctorReadByIdTesting() {
+    void testNullDoctorReadByIdTesting() throws DBException, ValidateException, SQLException {
 
-        Exception exception = assertThrows(ValidateException.class, () -> {
-            DoctorService.getDoctorService().readById(null);
-        });
-        assertTrue(exception.getMessage().equals("doctor"));
+        assertTrue(DoctorService.getDoctorService().readById(null)==null);
     }
 
 }

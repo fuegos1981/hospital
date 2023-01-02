@@ -1,8 +1,10 @@
 package com.epam.hospital.service.impl;
 
 import com.epam.hospital.controller.ControllerConstants;
+import com.epam.hospital.model.Patient;
 import com.epam.hospital.model.SimpleModel;
 import com.epam.hospital.repository.DBException;
+import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.elements.SimpleRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceUtils;
@@ -27,7 +29,7 @@ public class SimpleService implements Service<SimpleModel> {
 
     @Override
     public boolean create(SimpleModel simpleModel) throws DBException, ValidateException {
-        ServiceUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
+        checkSimple(simpleModel);
         simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.create(simpleModel);
     }
@@ -42,7 +44,7 @@ public class SimpleService implements Service<SimpleModel> {
 
     @Override
     public boolean update(SimpleModel simpleModel) throws DBException, ValidateException {
-        ServiceUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
+        checkSimple(simpleModel);
         return simpleRepository.create(simpleModel);
     }
 
@@ -58,5 +60,13 @@ public class SimpleService implements Service<SimpleModel> {
     }
     public int getSize() throws DBException {
         return simpleRepository.getSize();
+    }
+
+    private void checkSimple(SimpleModel simpleModel) throws ValidateException, DBException {
+        ServiceUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
+        if (simpleRepository.readByName(simpleModel.getName())!=null){
+            throw new ValidateException("duplicate_name");
+        }
+
     }
 }

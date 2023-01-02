@@ -22,8 +22,8 @@ import java.util.List;
  *
  */
 public class AdminCommand implements ActionCommand {
-    private final static Service<Patient> patientService;
-    private final static Service<Doctor> doctorService;
+    private final static Service<Patient> patientService = PatientService.getPatientService();
+    private final static Service<Doctor> doctorService = DoctorService.getDoctorService();
     private final static String NAME_ASC = "name asc";
     private final static String SORT_DOCTOR = "sortDoctor";
     private final static String SORT_PATIENT = "sortPatient";
@@ -32,10 +32,6 @@ public class AdminCommand implements ActionCommand {
     private final static String COUNT_PAGE_DOCTOR = "count_page_doctor";
     private final static String COUNT_PAGE_PATIENT = "count_page_patient";
 
-    static {
-        doctorService = DoctorService.getDoctorService();
-        patientService = PatientService.getPatientService();
-    }
     /**
      * <p>This method generates a page or path with a response to the client when the administrator is working in the main interface.
      * </p>

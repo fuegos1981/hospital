@@ -39,9 +39,9 @@
                                     <label for="password" class="text-info"><fmt:message key="password"/>:</label><br>
                                     <input type="password" name="password" id="password" class="form-control" value="${password}"/>
                                     <br/>
-                                    <input type="radio" name="role"  value="admin" ${doctor.getRole().toString() eq 'ADMIN'? 'checked':''}/><fmt:message key="admin"/>
-                                    <input type="radio" name="role"  value="doctor" ${doctor.getRole().toString() eq 'DOCTOR'? 'checked':''}/><fmt:message key="doctor"/>
-                                    <input type="radio" name="role"  value="nurse" ${doctor.getRole().toString() eq 'NURSE'? 'checked':''}/><fmt:message key="nurse"/>
+                                    <input type="radio" name="role"  value="ADMIN" ${role eq 'ADMIN'? 'checked':''}/><fmt:message key="admin"/>
+                                    <input type="radio" name="role"  value="DOCTOR" ${role eq 'DOCTOR'? 'checked':''}/><fmt:message key="doctor"/>
+                                    <input type="radio" name="role"  value="NURSE" ${role eq 'NURSE'? 'checked':''}/><fmt:message key="nurse"/>
                                 </div>
                                 <select class="form-control" name="category_id" id="categories">
                                     <option value=""><fmt:message key="select_category"/>...</option>

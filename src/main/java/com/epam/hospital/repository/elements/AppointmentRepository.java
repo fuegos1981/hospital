@@ -55,9 +55,6 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
         return appointmentRepository.update(Constants.UPDATE_APPOINTMENT, objects);
     }
     public boolean delete(Appointment appointment) throws DBException {
-        List<Object[]> listFilters = new ArrayList<>();
-        listFilters.add(new Object[]{appointment.getId()});
-
         return appointmentRepository.delete(Constants.DELETE_APPOINTMENT, appointment.getId());
     }
 

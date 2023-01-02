@@ -59,6 +59,13 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
             int idDoctor = doctorRepository.insert(Constants.ADD_DOCTOR,objects);
             return idDoctor >=0;
     }
+
+    public boolean updateDoctor(Doctor doctor) throws DBException {
+
+        Object[] objects = {doctor.getLastName(), doctor.getFirstName(), doctor.getCategory().getId(),
+                doctor.getLogin(), doctor.getPassword(), Role.getID(doctor.getRole()),doctor.getId()};
+        return doctorRepository.update(Constants.UPDATE_DOCTOR, objects);
+    }
     public boolean delete(Doctor doctor) throws DBException {
         return doctorRepository.delete(Constants.DELETE_DOCTOR,doctor.getId());
     }

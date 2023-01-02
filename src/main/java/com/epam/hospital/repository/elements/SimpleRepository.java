@@ -1,4 +1,5 @@
 package com.epam.hospital.repository.elements;
+import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.SimpleModel;
 import com.epam.hospital.repository.*;
 
@@ -26,11 +27,11 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
         simpleRepository.queries = Constants.getQueries(className);
     }
 
-
-
     public SimpleModel readByID(int id) throws DBException, SQLException {
         return simpleRepository.read(queries[0],id);
     }
+
+
     public List<SimpleModel> getAll() throws DBException, SQLException {
         return simpleRepository.findAll(queries[1]);
     }
@@ -42,6 +43,10 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
     public boolean delete(SimpleModel simpleModel) throws DBException {
         return simpleRepository.delete(queries[3], simpleModel.toString());
     }
+    public SimpleModel readByName(String name) throws DBException {
+        return simpleRepository.read(queries[5],name);
+    }
+
     @Override
     protected SimpleModel readByResultSet(ResultSet rs) throws SQLException {
         while(rs.next()){

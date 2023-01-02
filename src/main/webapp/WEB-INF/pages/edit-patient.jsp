@@ -40,8 +40,8 @@
                                     <input type="date" name="birthday" id="birthday" class="form-control" lang ="${locale}" value="${birthday}">
                                 </div>
                                 <div class="form-group">
-                                    <input type="radio" name="gender"  value="male" ${patient.getGender().toString() eq 'MALE'? 'checked':''}/><fmt:message key="male"/>
-                                    <input type="radio" name="gender"  value="female" ${patient.getGender().toString() eq 'FEMALE'? 'checked':''}/><fmt:message key="female"/>
+                                    <input type="radio" name="gender"  value="MALE" ${gender eq 'MALE'? 'checked':''}/><fmt:message key="male"/>
+                                    <input type="radio" name="gender"  value="FEMALE" ${gender eq 'FEMALE'? 'checked':''}/><fmt:message key="female"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='save'/>">
