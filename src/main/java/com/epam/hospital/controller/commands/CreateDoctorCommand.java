@@ -6,12 +6,12 @@ import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.*;
 import com.epam.hospital.repository.Constants;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.DoctorService;
 import com.epam.hospital.service.impl.SimpleService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -41,7 +41,7 @@ public class CreateDoctorCommand implements ActionCommand {
         try {
             Integer id = ControllerUtils.parseID(request, Fields.ID);
             ControllerUtils.setAttributes(request, Fields.ID, ControllerConstants.MESSAGE, ControllerConstants.ROLE);
-            request.setAttribute(ControllerConstants.CATEGORIES, categoryService.getAll(null, null));
+            request.setAttribute(ControllerConstants.CATEGORIES, categoryService.getAll(null,null, null));
             Doctor doctor = getDoctor(request, id);
             if (request.getParameter(ControllerConstants.SUBMIT) == null) {
                 return ControllerConstants.PAGE_EDIT_DOCTOR;
@@ -77,9 +77,9 @@ public class CreateDoctorCommand implements ActionCommand {
                     request.getParameter(Fields.FIRST_NAME), category);
             doctor.setLogin(request.getParameter(Fields.LOGIN));
             doctor.setPassword(request.getParameter(Fields.PASSWORD));
-            Role.valueOf(((String) request.getAttribute(ControllerConstants.ROLE)));
+            doctor.setRole(Role.valueOf((String) request.getAttribute(ControllerConstants.ROLE)));
         }
-
+        request.setAttribute("doctor", doctor);
         return doctor;
     }
 }

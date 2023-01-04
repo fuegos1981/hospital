@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language ="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tg" uri="/WEB-INF/pagination.tld" %>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -26,10 +27,21 @@
                         <div id ="patient_table_info" class="col-md-12">
                             <table class="table table-bordered table-hover table-striped">
                                 <tr>
-                                    <th><fmt:message key="name"/></th>
-                                    <th colspan ="2"><fmt:message key="operation"/></th>
+                                    <th><fmt:message key="Doctor"/></th>
+                                    <th><fmt:message key="patient"/></th>
+                                    <th><fmt:message key="operation"/></th>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        <select class="form-control" name="doctor_id" id="doctors" onchange="myReadDoctor(${doctor.getId()})">
+                                            <option value=""><fmt:message key="select_doctor"/>...</option>
+                                            <c:forEach var="doctor" items="${doctors}" varStatus="status">
+                                                <option value="${doctor.getId()}" ${doctor_id == doctor.getId()? 'selected':''}>
+                                                    <c:out value="${doctor.toString()}"/>
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
                                     <td>
                                         <select class="form-control" name="patient_id" id="patients" onchange="myReadPatientInfo(${patient.getId()})">
                                             <option value=""><fmt:message key="select_patient"/>...</option>
@@ -41,7 +53,6 @@
                                         </select>
                                     </td>
                                     <td>
-
                                         <c:if test="${not empty patient}">
                                             <a href ="/hospital/readPatient?id=${patient.getId()}&command=patient_info"/><fmt:message key="read"/>
                                         </c:if>
@@ -63,7 +74,7 @@
                                 </tr>
                                 <c:forEach var="schedule" items="${schedules}" varStatus="status">
                                     <tr>
-                                        <td><c:out value="${status.count}"/></td>
+                                        <td><c:out value="${status.count+maxCountOnPage*(current_page_schedule-1)}"/></td>
                                         <td><c:out value="${schedule.getPatient().toString()}"/></td>
 
                                         <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd hh:mm" /></td>
@@ -72,6 +83,7 @@
                                     </tr>
                                 </c:forEach>
                             </table>
+                            <tg:pgn name="schedule" current_page="${current_page_schedule}"  count_page = "${count_page_schedule}"/>
                         </div>
                         <div class="table-responsive  col-md-6">
                             <div class="form-group">
@@ -83,21 +95,22 @@
                                   <th><fmt:message key="num"/></th>
                                   <th><fmt:message key="date"/></th>
                                   <th><fmt:message key="Doctor"/></th>
-                                  <th><fmt:message key="Category"/></th>
+                                  <th><fmt:message key="patient"/></th>
                                   <th><fmt:message key="diagnosis"/></th>
                                   <th colspan ="1"><fmt:message key="operation"/></th>
                               </tr>
                                <c:forEach var="appointment" items="${appointments}" varStatus="status">
                                     <tr>
-                                        <td><c:out value="${status.count}"/></td>
+                                        <td><c:out value="${status.count+maxCountOnPage*(current_page_appointment-1)}"/></td>
                                         <td><c:out value="${appointment.getDateCreate()}"/></th>
                                         <td><c:out value="${appointment.getDoctor().getLastName()} ${appointment.getDoctor().getFirstName()}"/></td>
-                                        <td><c:out value="${appointment.getDoctor().getCategory()}"/></td>
+                                        <td><c:out value="${appointment.getPatient().toString()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosis()}"/></td>
                                         <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&name=${patient.toString()}&command=edit_appointment">Edit</td>
                                     </tr>
                                </c:forEach>
                             </table>
+                            <tg:pgn name="appointment" current_page="${current_page_appointment}"  count_page = "${count_page_appointment}"/>
                         </div>
                     </div>
                 </div>

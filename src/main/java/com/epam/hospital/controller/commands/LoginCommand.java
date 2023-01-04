@@ -6,10 +6,10 @@ import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.Role;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.DoctorService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,7 +46,7 @@ public class LoginCommand implements ActionCommand {
             Doctor user = ((DoctorService) doctorService).readByLoginPassword(login, pass);
             HttpSession session = request.getSession(true);
             session.setAttribute(ControllerConstants.ROLE, user.getRole());
-            session.setAttribute(PARAM_NAME_LOGIN, user.getLogin());
+            session.setAttribute("user_name", user.getLastName()+" "+user.getFirstName());
             session.setAttribute("user_id", user.getId());
                 if (user.getRole()== Role.ADMIN)
                     return "/hospital/admin?command=admin";

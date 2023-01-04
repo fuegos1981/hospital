@@ -2,8 +2,10 @@ package com.epam.hospital;
 
 import com.epam.hospital.model.Appointment;
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.service.impl.AppointmentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -17,26 +19,21 @@ import java.util.*;
 import java.util.List;
 
 public class HistoryPatient {
+    private static final Logger logger = LogManager.getLogger();
 
-
-    public static String getHistoryPatient(Patient patient, String path) throws DBException, SQLException {
-        ClassLoader classLoader = HistoryPatient.class.getClassLoader();
-        //String fileName= classLoader.getResource("pdf").getPath()+"pdfBoxHelloWorld.pdf";
-
+    public static void getHistoryPatient(Patient patient, String path) throws DBException, SQLException {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage();
         document.addPage(page);
         try {
             PDDocumentInformation pdi = document.getDocumentInformation();
 
-            //pdi.setAuthor("Jan Bodnar");
             pdi.setTitle("Hospital");
-            pdi.setCreator("Patients's history");
+            pdi.setCreator("Patient's history");
             Calendar date = Calendar.getInstance();
             pdi.setCreationDate(date);
             pdi.setModificationDate(date);
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
 
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 30);
@@ -65,15 +62,14 @@ public class HistoryPatient {
             document.close();
         }
         catch (IOException e){
-            return null;
+            logger.error(e.getMessage());
         }
-        return path;
     }
     private static void getTable(PDPageContentStream contentStream, PDPage page, Patient patient) throws IOException, DBException, SQLException {
         AppointmentService appointmentService = AppointmentService.getAppointmentService();
         Map<String,Integer> selection = new HashMap<>();
         selection.put("patient_id",patient.getId());
-        List<Appointment> list =appointmentService.getAll(selection);
+        List<Appointment> list =appointmentService.getAll(selection, null, null);
         int pageHeight = (int)page.getTrimBox().getHeight()-200; //get height of the page
 
         contentStream.setStrokingColor(Color.DARK_GRAY);
@@ -98,7 +94,6 @@ public class HistoryPatient {
         initX+=cellWidth;
         contentStream.addRect(initX,initY,cellWidth+30,-cellHeight);
         writeTextInTable(contentStream,initX,initY,cellHeight,"Description");
-        initX+=cellWidth+30;
         initX = 50;
         initY -=cellHeight;
         for(int i = 1; i<=rowCount;i++){

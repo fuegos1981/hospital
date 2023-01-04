@@ -69,7 +69,7 @@
                                         <select class="form-control" name="diagnosis_id" id="diagnosises">
                                             <option value=""><fmt:message key="select_diagnosis"/>...</option>
                                             <c:forEach var="diagnosis" items="${diagnosises}" varStatus="status">
-                                                <option value="${diagnosis.getId()}" ${diagnosis.getName() eq appointment.getDiagnosis().getName()? 'selected':''}>
+                                                <option value="${diagnosis.getId()}" ${diagnosis.getId() == appointment.getDiagnosis().getId()? 'selected':''}>
                                                     <c:out value="${diagnosis.toString()}" />
                                                 </option>
                                             </c:forEach>

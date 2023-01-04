@@ -1,14 +1,17 @@
 package com.epam.hospital.service.impl;
 
+import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.repository.elements.PatientRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class PatientService implements Service<Patient> {
@@ -18,13 +21,9 @@ public class PatientService implements Service<Patient> {
     private PatientService() {
         this.patientRepository = patientRepository.getRepository();
     }
+
     public static PatientService getPatientService(){
         return Objects.requireNonNullElseGet(patientService, PatientService::new);
-    }
-    @Override
-    public boolean create(Patient patient) throws DBException, ValidateException {
-        checkPatient(patient);
-        return patientRepository.create(patient);
     }
 
     @Override
@@ -33,6 +32,11 @@ public class PatientService implements Service<Patient> {
             return null;
         else
             return patientRepository.readByID(id);
+    }
+    @Override
+    public boolean create(Patient patient) throws DBException, ValidateException {
+        checkPatient(patient);
+        return patientRepository.create(patient);
     }
 
     @Override
@@ -47,12 +51,12 @@ public class PatientService implements Service<Patient> {
     }
 
     @Override
-    public List<Patient> getAll(int[] limit,String sortRule) throws DBException, SQLException {
-        return patientRepository.getAllPatients(limit, sortRule);
+    public List<Patient> getAll(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException, SQLException {
+        return patientRepository.getAllPatients(selection, sortRule, limit);
     }
 
-    public int getSize() throws DBException {
-        return patientRepository.getSize();
+    public int getSize(Map<String, Integer> selection) throws DBException {
+        return patientRepository.getSize(selection);
     }
 
     private void checkPatient(Patient patient) throws ValidateException{

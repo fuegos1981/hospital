@@ -2,7 +2,7 @@ package com.epam.hospital.controller;
 
 import com.epam.hospital.HistoryPatient;
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.impl.PatientService;
 import javax.servlet.http.HttpServletRequest;
@@ -43,17 +43,6 @@ public class ControllerUtils {
     }
 
     /**
-     * <p>This method removes all attributes from request whose names are listed in the second argument</p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
-     * @param atrs are list of attribute names to be removed from request.
-     *
-     */
-    public static void RemoveAttributes(HttpServletRequest request, String... atrs) {
-        for (String atr : atrs) {
-            request.removeAttribute(atr);
-        }
-    }
-    /**
      * <p>This method adds all attributes from request whose names are listed in the second argument</p>
      * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
      * @param atrs are list of parameter names to be added in request.
@@ -62,11 +51,6 @@ public class ControllerUtils {
     public static void setAttributes(HttpServletRequest request, String... atrs) {
         for (String atr : atrs) {
             request.setAttribute(atr, request.getParameter(atr));
-        }
-    }
-    public static void RemoveAttributesSession(HttpServletRequest request, String... atrs) {
-        for (String atr : atrs) {
-            request.getSession().removeAttribute(atr);
         }
     }
 
@@ -110,6 +94,7 @@ public class ControllerUtils {
         int countPage = (countList<ControllerConstants.MAX_COUNT_ON_PAGE)?1:(int)Math.ceil(1.00*countList/ControllerConstants.MAX_COUNT_ON_PAGE);
         request.setAttribute(countPageName, countPage);
         request.setAttribute(currentCountName,currentPage);
+        request.setAttribute("maxCountOnPage",ControllerConstants.MAX_COUNT_ON_PAGE);
         if (countList<=ControllerConstants.MAX_COUNT_ON_PAGE){
             return null;
         }
@@ -128,7 +113,7 @@ public class ControllerUtils {
     static void downloadHistory(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
 
         Patient patient = PatientService.getPatientService().readById(ControllerUtils.parseID(req, Fields.PATIENT_ID));
-        String  fileURL = HistoryPatient.getHistoryPatient(patient, req.getServletContext().getRealPath("WEB-INF/pdf/info.pdf"));
+        HistoryPatient.getHistoryPatient(patient, req.getServletContext().getRealPath("WEB-INF/pdf/info.pdf"));
         final int ARBITARY_SIZE = 1048;
         resp.setContentType("application/pdf");
         resp.setHeader("Content-disposition", "attachment; filename=info.pdf");

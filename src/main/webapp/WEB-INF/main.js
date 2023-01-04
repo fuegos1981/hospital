@@ -22,9 +22,20 @@ function click_page_patient(el){
    document.getElementById("pat_comment_patient").value = (el);
    document.getElementById("sub").click();
 }
+function click_page_schedule(el){
+   document.getElementById("pat_comment_schedule").value = (el);
+   document.getElementById("sub").click();
+}
 
+function click_page_appointment(el){
+   document.getElementById("pat_comment_appointment").value = (el);
+   document.getElementById("sub").click();
+}
 
 function  myReadPatientInfo(el){
+    document.getElementById("sub").click();
+}
+function  myReadDoctor(el){
     document.getElementById("sub").click();
 }
 

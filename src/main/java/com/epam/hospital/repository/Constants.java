@@ -12,6 +12,7 @@ public interface Constants {
     String UPDATE_PATIENT = "UPDATE patient SET last_name=?,first_name=?, birthday=?, email=?,gender_id=? where id=?";
     String DELETE_PATIENT = "DELETE from patient where id= ?";
     String GET_SIZE_PATIENT = "SELECT COUNT(id) FROM patient";
+
     //doctor
     String GET_DOCTOR_BY_ID = "select doctor.id, last_name,first_name, login, password, roles.name as role_name, category.name as category_name  from doctor " +
             "join roles on roles.id=doctor.role_id " +
@@ -30,8 +31,6 @@ public interface Constants {
     String GET_SIZE_DOCTOR = "SELECT COUNT(id) FROM doctor";
     //schedule
     String GET_SCHEDULE_BY_ID = "select * from schedule where id= ?";
-    String GET_SCHEDULE_BY_PATIENT_ID = "select * from schedule where patient_id= ?";
-    String GET_SCHEDULE_BY_DOCTOR_ID = "select * from schedule where doctor_id= ?";
     String GET_ALL_SCHEDULE = "select * from schedule";
     String ADD_SCHEDULE = "INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (?,?,?)";
     String UPDATE_SCHEDULE = "UPDATE schedule Set doctor_id=?, patient_id=?, visit_time=? where id = ?";
@@ -40,7 +39,6 @@ public interface Constants {
     //appointment
     String GET_APPOINTMENT_BY_ID = "select * from appointment where id= ?";
     String GET_ALL_APPOINTMENTS = "select * from appointment";
-    String GET_ALL_APPOINTMENTS_BY_PATIENT = "select * from appointment where patient_id= ?";
     String ADD_APPOINTMENT = "INSERT INTO appointment " +
             "(date_create,diagnosis_id,patient_id, doctor_id,medication, procedures,operation) VALUES (?,?,?,?,?,?,?)";
     String UPDATE_APPOINTMENT = "UPDATE appointment Set date_create=?,diagnosis_id=?, " +

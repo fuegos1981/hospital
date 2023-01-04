@@ -6,7 +6,8 @@ import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.DoctorService;
 import com.epam.hospital.service.impl.PatientService;
@@ -24,7 +25,6 @@ import java.util.List;
 public class AdminCommand implements ActionCommand {
     private final static Service<Patient> patientService = PatientService.getPatientService();
     private final static Service<Doctor> doctorService = DoctorService.getDoctorService();
-    private final static String NAME_ASC = "name asc";
     private final static String SORT_DOCTOR = "sortDoctor";
     private final static String SORT_PATIENT = "sortPatient";
     private final static String CURRENT_PAGE_DOCTOR = "current_page_doctor";
@@ -51,20 +51,20 @@ public class AdminCommand implements ActionCommand {
 
     private void fillDoctors(HttpServletRequest request) throws DBException, SQLException {
         String sortDoctor = request.getParameter(SORT_DOCTOR);
-        sortDoctor=(sortDoctor==null)?NAME_ASC:sortDoctor;
+        sortDoctor=(sortDoctor==null)? SortRule.NAME_ASC.toString():sortDoctor;
         request.setAttribute(SORT_DOCTOR,sortDoctor);
-        int[] limit = ControllerUtils.setMasForPagination(request, doctorService.getSize(),CURRENT_PAGE_DOCTOR,COUNT_PAGE_DOCTOR);
-        List<Doctor> doctors =doctorService.getAll(limit,sortDoctor);
+        int[] limit = ControllerUtils.setMasForPagination(request, doctorService.getSize(null),CURRENT_PAGE_DOCTOR,COUNT_PAGE_DOCTOR);
+        List<Doctor> doctors =doctorService.getAll(null,SortRule.valueOf(sortDoctor),limit);
         request.setAttribute(ControllerConstants.DOCTORS,doctors);
 
     }
 
     private void fillPatients(HttpServletRequest request) throws DBException, SQLException {
         String sortPatient = request.getParameter(SORT_PATIENT);
-        sortPatient=(sortPatient==null)?NAME_ASC:sortPatient;
+        sortPatient=(sortPatient==null)?SortRule.NAME_ASC.toString():sortPatient;
         request.setAttribute(SORT_PATIENT,sortPatient);
-        int[] limit = ControllerUtils.setMasForPagination(request, patientService.getSize(),CURRENT_PAGE_PATIENT,COUNT_PAGE_PATIENT);
-        List<Patient> patients =patientService.getAll(limit,sortPatient);
+        int[] limit = ControllerUtils.setMasForPagination(request, patientService.getSize(null),CURRENT_PAGE_PATIENT,COUNT_PAGE_PATIENT);
+        List<Patient> patients =patientService.getAll(null,SortRule.valueOf(sortPatient), limit);
         request.setAttribute(ControllerConstants.PATIENTS,patients);
     }
 

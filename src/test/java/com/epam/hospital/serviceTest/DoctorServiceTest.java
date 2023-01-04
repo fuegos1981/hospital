@@ -1,13 +1,11 @@
-package com.epam.hospital;
+package com.epam.hospital.serviceTest;
 
 import com.epam.hospital.model.Category;
 import com.epam.hospital.model.Doctor;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.service.impl.DoctorService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 import org.junit.jupiter.api.Test;
-
-import javax.print.Doc;
 
 import java.sql.SQLException;
 

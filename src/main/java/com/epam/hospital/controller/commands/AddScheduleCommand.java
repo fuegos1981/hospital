@@ -7,13 +7,13 @@ import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.model.Schedule;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.DoctorService;
 import com.epam.hospital.service.impl.PatientService;
 import com.epam.hospital.service.impl.ScheduleService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -44,8 +44,8 @@ public class AddScheduleCommand implements ActionCommand {
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
         ControllerUtils.setAttributes(request, Fields.ID,"is_patient", Fields.VISIT_TIME);
-        request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
-        request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
+        request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
+        request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null,null));
         try {
             Schedule schedule = getSchedule(request, id);
             if (request.getParameter(ControllerConstants.SUBMIT)==null) {

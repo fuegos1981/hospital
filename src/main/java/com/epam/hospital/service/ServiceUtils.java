@@ -1,6 +1,6 @@
 package com.epam.hospital.service;
 
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 
 import java.util.Date;
 

@@ -1,7 +1,7 @@
 package com.epam.hospital.controller;
 
 import com.epam.hospital.MessageManager;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

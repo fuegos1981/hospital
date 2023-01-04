@@ -1,10 +1,8 @@
 package com.epam.hospital.repository.elements;
 
 import com.epam.hospital.model.*;
-import com.epam.hospital.repository.Constants;
-import com.epam.hospital.repository.DBException;
-import com.epam.hospital.repository.Fields;
-import com.epam.hospital.repository.GlobalRepository;
+import com.epam.hospital.repository.*;
+import com.epam.hospital.exceptions.DBException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,21 +27,6 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
         return scheduleRepository.read(Constants.GET_SCHEDULE_BY_ID,id);
     }
 
-    public boolean updateSchedule(Schedule schedule) throws DBException {
-        Object[] objects = {schedule.getDoctor().getId(), schedule.getPatient().getId(), schedule.getDateVisit(),schedule.getId()};
-        return scheduleRepository.update(Constants.UPDATE_SCHEDULE, objects);
-    }
-
-    public List<Schedule> getAllSchedules() throws DBException {
-        return scheduleRepository.findAll(Constants.GET_ALL_SCHEDULE);
-    }
-    public List<Schedule> getAllSchedules(Map<String, Integer> selection) throws DBException {
-        return scheduleRepository.findAll(Constants.GET_ALL_SCHEDULE+RepositoryUtils.getSelectionString(selection),
-                selection.values().toArray());
-    }
-    public int getSize() throws DBException {
-        return scheduleRepository.readSize(Constants.GET_SIZE_SCHEDULE);
-    }
     public boolean create(Schedule schedule) throws DBException {
 
         Object[] objects = {schedule.getDoctor().getId(), schedule.getPatient().getId(), schedule.getDateVisit()};
@@ -53,12 +36,42 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
         return scheduleRepository.delete(Constants.DELETE_SCHEDULE,schedule.getId());
     }
 
+    public boolean updateSchedule(Schedule schedule) throws DBException {
+        Object[] objects = {schedule.getDoctor().getId(), schedule.getPatient().getId(), schedule.getDateVisit(),schedule.getId()};
+        return scheduleRepository.update(Constants.UPDATE_SCHEDULE, objects);
+    }
+
+    public List<Schedule> getAllSchedules(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException {
+        if (selection==null)
+            return scheduleRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_SCHEDULE, null, sortRule,limit).getQuery());
+        else
+            return scheduleRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_SCHEDULE, selection, sortRule,limit).getQuery(),
+                selection.values().toArray());
+    }
+
+    public int getSize(Map<String, Integer> selection) throws DBException {
+        if (selection==null)
+            return scheduleRepository.readSize(Constants.GET_SIZE_SCHEDULE);
+        else
+            return scheduleRepository.readSize(QueryRedactor.getRedactor(Constants.GET_SIZE_SCHEDULE, selection).getQuery(),
+                    selection.values().toArray());
+    }
+
     @Override
     protected Schedule readByResultSet(ResultSet rs) throws SQLException, DBException {
         if(rs.next()){
             return getSchedule(rs);
         }
         return null;
+    }
+
+    @Override
+    protected List<Schedule> findByResultSet(ResultSet rs) throws SQLException, DBException {
+        List<Schedule> list = new ArrayList<>();
+        while(rs.next()){
+            list.add(getSchedule(rs));
+        }
+        return list;
     }
 
     private Schedule getSchedule(ResultSet rs) throws SQLException, DBException {
@@ -72,12 +85,5 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
     }
 
 
-    @Override
-    protected List<Schedule> findByResultSet(ResultSet rs) throws SQLException, DBException {
-        List<Schedule> list = new ArrayList<>();
-        while(rs.next()){
-            list.add(getSchedule(rs));
-        }
-        return list;
-    }
+
 }

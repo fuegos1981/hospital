@@ -6,11 +6,11 @@ import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Gender;
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.PatientService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -79,6 +79,7 @@ public class CreatePatientCommand implements ActionCommand {
             if (id != null)
                 patient.setId(id);
         }
+        request.setAttribute("patient", patient);
         return patient;
     }
 

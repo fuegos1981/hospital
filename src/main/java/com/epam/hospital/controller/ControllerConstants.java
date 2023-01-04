@@ -9,7 +9,6 @@ public interface ControllerConstants{
     String LOCALE = "locale";
     String ID = "id";
     String NAME = "name";
-    String PERC = "%20";
     String DOCTORS = "doctors";
     String PATIENTS = "patients";
     String DOCTOR_ID = "doctor_id";

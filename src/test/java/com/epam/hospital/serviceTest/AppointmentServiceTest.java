@@ -1,8 +1,8 @@
-package com.epam.hospital;
+package com.epam.hospital.serviceTest;
 
 import com.epam.hospital.model.*;
 import com.epam.hospital.service.impl.AppointmentService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

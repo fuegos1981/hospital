@@ -1,7 +1,9 @@
 package com.epam.hospital.service.impl;
 
+import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.model.Appointment;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.repository.elements.AppointmentRepository;
 import com.epam.hospital.service.Service;
 
@@ -19,19 +21,6 @@ public class AppointmentService implements Service<Appointment> {
     public static AppointmentService getAppointmentService(){
         return Objects.requireNonNullElseGet(appointmentService, AppointmentService::new);
     }
-    @Override
-    public boolean create(Appointment appointment) throws DBException, ValidateException{
-        checkAppointment(appointment);
-        return appointmentRepository.create(appointment);
-    }
-
-    private void checkAppointment(Appointment appointment) throws ValidateException {
-        if (appointment.getPatient()==null) throw new ValidateException("patient");
-        if (appointment.getDoctor()==null) throw new ValidateException("doctor");
-        if (appointment.getDiagnosis()==null) throw new ValidateException("diagnosis");
-        if (appointment.getMedication().isEmpty()&& appointment.getProcedure().isEmpty()&& appointment.getOperation().isEmpty())
-            throw new ValidateException("description");
-    }
 
     @Override
     public Appointment readById(Integer id) throws DBException, SQLException, ValidateException {
@@ -39,6 +28,12 @@ public class AppointmentService implements Service<Appointment> {
             throw new ValidateException("appointment");
         }
         return  appointmentRepository.readByID(id);
+    }
+
+    @Override
+    public boolean create(Appointment appointment) throws DBException, ValidateException {
+        checkAppointment(appointment);
+        return appointmentRepository.create(appointment);
     }
 
     @Override
@@ -53,16 +48,32 @@ public class AppointmentService implements Service<Appointment> {
     }
 
     @Override
-    public List<Appointment> getAll(int[] limit,String sortRule) throws DBException, SQLException {
-        return appointmentRepository.getAllAppointments();
+    public List<Appointment> getAll(Map<String, Integer> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
+        return appointmentRepository.getAllAppointments(selection, sortRule, limit);
     }
 
-    public List<Appointment> getAll(Map<String, Integer> selection) throws DBException, SQLException {
-        return appointmentRepository.getAllAppointments(selection);
-    }
     @Override
-    public int getSize() throws DBException {
-       return appointmentRepository.getSize();
+    public int getSize(Map<String,Integer> selection) throws DBException {
+        return appointmentRepository.getSize(selection);
     }
+
+    private void checkAppointment(Appointment appointment) throws ValidateException {
+        if (appointment.getPatient()==null)
+            throw new ValidateException("patient");
+        if (appointment.getDoctor()==null)
+            throw new ValidateException("doctor");
+        if (appointment.getDiagnosis()==null)
+            throw new ValidateException("diagnosis");
+        if (appointment.getMedication().isEmpty()&& appointment.getProcedure().isEmpty()&& appointment.getOperation().isEmpty())
+            throw new ValidateException("description");
+    }
+
+
+
+
+
+
+
+
 
 }

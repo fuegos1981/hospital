@@ -1,19 +1,20 @@
 package com.epam.hospital.service.impl;
 
 import com.epam.hospital.controller.ControllerConstants;
-import com.epam.hospital.model.Patient;
+import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.model.SimpleModel;
-import com.epam.hospital.repository.DBException;
-import com.epam.hospital.repository.Fields;
+import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.repository.elements.SimpleRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceUtils;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class SimpleService implements Service<SimpleModel> {
-    //private SimpleService simpleService;
+
     private SimpleRepository simpleRepository;
     private String classNameParam;
     private SimpleService() {
@@ -54,11 +55,11 @@ public class SimpleService implements Service<SimpleModel> {
     }
 
     @Override
-    public List<SimpleModel> getAll(int[] limit, String sortRule) throws DBException, SQLException {
+    public List<SimpleModel> getAll(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException, SQLException {
         simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.getAll();
     }
-    public int getSize() throws DBException {
+    public int getSize(Map<String, Integer> selection) throws DBException {
         return simpleRepository.getSize();
     }
 

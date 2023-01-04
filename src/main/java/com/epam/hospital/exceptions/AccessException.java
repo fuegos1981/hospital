@@ -1,15 +1,15 @@
-package com.epam.hospital.repository;
+package com.epam.hospital.exceptions;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class DBException extends Exception {
+public class AccessException extends Exception{
     private static Logger logger = LogManager.getLogger();
-    public DBException(String message, Throwable cause) {
+    public AccessException(String message, Throwable cause) {
         super(message, cause);
         logger.error(message);
     }
-    public DBException(String message) {
+    public AccessException(String message) {
         super(message);
         logger.error(message);
     }

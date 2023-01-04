@@ -1,6 +1,8 @@
 package com.epam.hospital.repository;
 
 
+import com.epam.hospital.exceptions.DBException;
+
 import java.sql.*;
 import java.util.Date;
 import java.util.List;

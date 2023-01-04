@@ -1,5 +1,6 @@
 package com.epam.hospital.repository.elements;
 
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.model.*;
 import com.epam.hospital.repository.*;
 
@@ -13,11 +14,9 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
     private AppointmentRepository() {
     }
 
-
     public static AppointmentRepository getRepository(){
         if (appointmentRepository==null)  {
             appointmentRepository = new AppointmentRepository();
-            //connectionPool = ConnectionPool.getInstance();
         }
         return appointmentRepository;
     }
@@ -25,14 +24,7 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
     public Appointment readByID(int id) throws DBException{
         return appointmentRepository.read(Constants.GET_APPOINTMENT_BY_ID,id);
     }
-    public List<Appointment> getAllAppointments() throws DBException {
-        return appointmentRepository.findAll(Constants.GET_ALL_APPOINTMENTS);
-    }
-    public List<Appointment> getAllAppointments(Map<String, Integer> selection) throws DBException {
 
-        return appointmentRepository.findAll(Constants.GET_ALL_APPOINTMENTS+RepositoryUtils.getSelectionString(selection),
-                selection.values().toArray());
-    }
     public boolean create(Appointment appointment) throws DBException {
 
         int idAppointment = appointmentRepository.insert(Constants.ADD_APPOINTMENT,
@@ -54,13 +46,32 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
                 appointment.getMedication(),appointment.getProcedure(), appointment.getOperation(), appointment.getId()};
         return appointmentRepository.update(Constants.UPDATE_APPOINTMENT, objects);
     }
+
     public boolean delete(Appointment appointment) throws DBException {
         return appointmentRepository.delete(Constants.DELETE_APPOINTMENT, appointment.getId());
     }
 
+    public List<Appointment> getAllAppointments(Map<String, Integer> selection, SortRule sortRule,int[] limit) throws DBException {
+        if (selection==null)
+            return appointmentRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_APPOINTMENTS,
+                    selection, sortRule,limit).getQuery());
+        else
+            return appointmentRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_APPOINTMENTS,
+                        selection, sortRule,limit).getQuery(),
+                selection.values().toArray());
+    }
+
+    public int getSize(Map<String, Integer> selection) throws DBException {
+        if (selection==null)
+            return appointmentRepository.readSize(Constants.GET_SIZE_APPOINTMENT);
+        else
+            return appointmentRepository.readSize(QueryRedactor.getRedactor(Constants.GET_SIZE_APPOINTMENT,selection).getQuery(),
+                    selection.values().toArray());
+    }
+
     @Override
     protected Appointment readByResultSet(ResultSet rs) throws SQLException, DBException {
-        while(rs.next()){
+        if (rs.next()){
             return getAppointment(rs);
         }
         return null;
@@ -90,8 +101,6 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
         }
         return list;
     }
-    public int getSize() throws DBException {
-        return appointmentRepository.readSize(Constants.GET_SIZE_APPOINTMENT);
-    }
+
 
 }

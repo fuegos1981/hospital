@@ -1,8 +1,8 @@
-package com.epam.hospital;
+package com.epam.hospital.serviceTest;
 
 import com.epam.hospital.model.*;
 import com.epam.hospital.service.impl.ScheduleService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ScheduleServiceTest {
     private  Patient patient;
     private  Doctor doctor;
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @BeforeEach
     void init() throws ParseException {
@@ -28,35 +28,27 @@ public class ScheduleServiceTest {
     @Test
     void testNullDoctorTestingCreate() throws ParseException {
         Schedule schedule = Schedule.createSchedule(null,patient,formatter.parse("2023-01-05 12:00"));
-        Exception exception = assertThrows(ValidateException.class, () -> {
-            ScheduleService.getScheduleService().create(schedule);
-        });
+        Exception exception = assertThrows(ValidateException.class, () -> ScheduleService.getScheduleService().create(schedule));
         assertTrue(exception.getMessage().contains("doctor"));
     }
 
     @Test
     void testNullPatientTestingCreate() throws ParseException {
         Schedule schedule = Schedule.createSchedule(doctor,null,formatter.parse("2023-01-05 12:00"));
-        Exception exception = assertThrows(ValidateException.class, () -> {
-            ScheduleService.getScheduleService().create(schedule);
-        });
+        Exception exception = assertThrows(ValidateException.class, () -> ScheduleService.getScheduleService().create(schedule));
         assertTrue(exception.getMessage().contains("patient"));
     }
     @Test
-    void testNullDataVisitTestingCreate() throws ParseException {
+    void testNullDataVisitTestingCreate() {
         Schedule schedule = Schedule.createSchedule(doctor,patient,null);
-        Exception exception = assertThrows(ValidateException.class, () -> {
-            ScheduleService.getScheduleService().create(schedule);
-        });
+        Exception exception = assertThrows(ValidateException.class, () -> ScheduleService.getScheduleService().create(schedule));
         assertTrue(exception.getMessage().contains("visit_time"));
     }
 
     @Test
     void testBeforeNowDataVisitTestingCreate() throws ParseException {
         Schedule schedule = Schedule.createSchedule(doctor,patient,formatter.parse("2022-01-05 12:00"));
-        Exception exception = assertThrows(ValidateException.class, () -> {
-            ScheduleService.getScheduleService().create(schedule);
-        });
+        Exception exception = assertThrows(ValidateException.class, () -> ScheduleService.getScheduleService().create(schedule));
         assertTrue(exception.getMessage().contains("visit_time"));
     }
 }

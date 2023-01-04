@@ -6,12 +6,12 @@ import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.model.Appointment;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.model.Schedule;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.AppointmentService;
 import com.epam.hospital.service.impl.PatientService;
 import com.epam.hospital.service.impl.ScheduleService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -45,8 +45,8 @@ public class PatientInfoCommand implements ActionCommand {
             request.setAttribute("patient",patientService.readById(id));
             Map<String,Integer> selection = new HashMap<>();
             selection.put("patient_id",id);
-            request.setAttribute("schedules",((ScheduleService) scheduleService).getAll(selection));
-            request.setAttribute("appointments",((AppointmentService)appointmentService).getAll(selection));
+            request.setAttribute("schedules", scheduleService.getAll(selection, null, null));
+            request.setAttribute("appointments",appointmentService.getAll(selection, null,null));
             return ControllerConstants.PAGE_PATIENT_INFO;
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString(e.getMessage()));

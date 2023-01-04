@@ -1,5 +1,5 @@
 package com.epam.hospital.repository.elements;
-import com.epam.hospital.model.Doctor;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.model.SimpleModel;
 import com.epam.hospital.repository.*;
 
@@ -22,6 +22,7 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
 
         return simpleRepository;
     }
+
     public  void setClassNameParam(String className){
         simpleRepository.classNameParam = className;
         simpleRepository.queries = Constants.getQueries(className);
@@ -71,7 +72,7 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
     }
 
     private SimpleModel getSimpleModel(ResultSet rs) throws SQLException {
-        SimpleModel simpleModel = RepositoryUtils.getSimpleInstance(classNameParam);
+        SimpleModel simpleModel = SimpleModel.getSimpleInstance(classNameParam);
         simpleModel.setId(rs.getInt(Fields.ID));
         simpleModel.setName(rs.getString(Fields.NAME));
         return simpleModel;

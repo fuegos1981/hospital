@@ -5,10 +5,9 @@ import com.epam.hospital.controller.ActionCommand;
 import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.SimpleModel;
-import com.epam.hospital.repository.DBException;
-import com.epam.hospital.repository.elements.RepositoryUtils;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.service.impl.SimpleService;
-import com.epam.hospital.service.impl.ValidateException;
+import com.epam.hospital.exceptions.ValidateException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -39,7 +38,7 @@ public class EditSimpleCommand implements ActionCommand {
             }
             else {
                 SimpleService simpleService= SimpleService.getSimpleService(name_Class);
-                SimpleModel simpleModel = RepositoryUtils.getSimpleInstance(name_Class);
+                SimpleModel simpleModel = SimpleModel.getSimpleInstance(name_Class);
                 simpleModel.setName(simple);
                 simpleService.create(simpleModel);
                 if (name_Class.equalsIgnoreCase("Category")) {

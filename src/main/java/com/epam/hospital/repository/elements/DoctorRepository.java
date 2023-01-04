@@ -1,5 +1,6 @@
 package com.epam.hospital.repository.elements;
 
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.model.*;
 import com.epam.hospital.repository.*;
 
@@ -7,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DoctorRepository extends GlobalRepository<Doctor> {
     private static DoctorRepository  doctorRepository;
@@ -27,30 +29,6 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     public Doctor readByLogin(String login) throws DBException {
         return doctorRepository.read(Constants.GET_DOCTOR_BY_LOGIN,login);
     }
-    public int getSize() throws DBException {
-        return doctorRepository.readSize(Constants.GET_SIZE_DOCTOR);
-    }
-
-    public List<Doctor> getAllDoctors(int[] limit,String sortRule) throws DBException {
-
-        return doctorRepository.findAll(Constants.GET_ALL_DOCTORS+getSortRule(sortRule)+(limit==null?"":" limit " +limit[0]+","+limit[1]));
-    }
-
-    private String getSortRule(String sortRule) {
-        if (sortRule ==null||sortRule.equals("name asc"))
-            return " order by last_Name,first_Name";
-        else if (sortRule.equals("name desc"))
-            return " order by last_Name desc,first_Name desc";
-        else if (sortRule.equals("category asc"))
-            return " order by category_name,last_Name,first_Name";
-        else if (sortRule.equals("category desc"))
-            return " order by category_name desc,last_Name,first_Name";
-        else if (sortRule.equals("count patients asc"))
-            return " order by count_patients,last_Name,first_Name";
-        else if (sortRule.equals("count patients desc"))
-            return " order by count_patients desc, last_Name, first_Name";
-        return "";
-    }
 
     public boolean create(Doctor doctor) throws DBException {
 
@@ -66,8 +44,25 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
                 doctor.getLogin(), doctor.getPassword(), Role.getID(doctor.getRole()),doctor.getId()};
         return doctorRepository.update(Constants.UPDATE_DOCTOR, objects);
     }
+
     public boolean delete(Doctor doctor) throws DBException {
         return doctorRepository.delete(Constants.DELETE_DOCTOR,doctor.getId());
+    }
+
+    public List<Doctor> getAllDoctors(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException {
+        if (selection==null)
+            return doctorRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_DOCTORS,null,sortRule,limit).getQuery());
+        else
+            return doctorRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_DOCTORS,selection,sortRule,limit).getQuery(),
+                selection.values().toArray());
+    }
+
+    public int getSize(Map<String, Integer> selection) throws DBException {
+        if (selection==null)
+            return doctorRepository.readSize(Constants.GET_SIZE_DOCTOR);
+        else
+            return doctorRepository.readSize(QueryRedactor.getRedactor(Constants.GET_SIZE_DOCTOR,selection).getQuery(),
+                    selection.values().toArray());
     }
 
     @Override

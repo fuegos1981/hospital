@@ -1,13 +1,14 @@
 package com.epam.hospital.controller.commands;
 
-import com.epam.hospital.AccessException;
+import com.epam.hospital.exceptions.AccessException;
 import com.epam.hospital.MessageManager;
 import com.epam.hospital.controller.ActionCommand;
 import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
+import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.model.*;
 import com.epam.hospital.repository.Constants;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.*;
@@ -44,9 +45,9 @@ public class CreateAppointmentCommand implements ActionCommand {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
         ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID);
         try {
-            request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null));
-            request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null));
-            request.setAttribute(ControllerConstants.DIAGNOSISES, diagnosisService.getAll(null,null));
+            request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null,null, null));
+            request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
+            request.setAttribute(ControllerConstants.DIAGNOSISES, diagnosisService.getAll(null,null,null));
             Appointment appointment= getAppointment(request,id);
             if (request.getParameter(ControllerConstants.SUBMIT) == null ) {
                 return ControllerConstants.PAGE_EDIT_APPOINTMENT;
@@ -97,7 +98,6 @@ public class CreateAppointmentCommand implements ActionCommand {
             Integer diagnosisId= ControllerUtils.parseID(request,ControllerConstants.DIAGNOSIS_ID);
             Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
             Integer doctorId= ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);
-            //ControllerUtils.setAttributes(request,ControllerConstants.DIAGNOSIS_ID,ControllerConstants.PATIENT_ID,ControllerConstants.DOCTOR_ID);
             appointment = Appointment.createAppointment(new Date(),
                     diagnosisId==null?null:(Diagnosis) diagnosisService.readById(diagnosisId),
                     patientId==null?null: patientService.readById(patientId),

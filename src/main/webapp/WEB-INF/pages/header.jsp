@@ -25,9 +25,9 @@
                 <a class="btn btn-info btn-md" href="/hospital/admin?command=admin"><fmt:message key="main"/></a>
             </c:if>
             <c:if test="${role.toString() eq 'DOCTOR'||role.toString() eq 'NURSE'}">
-                <a class="btn btn-info btn-md" href="/hospital/medic?command=medic"><fmt:message key="main"/></a>
+                <a class="btn btn-info btn-md" href="/hospital/medic?command=medic&doctor_id=${user_id}"><fmt:message key="main"/></a>
             </c:if>
-            <a class="btn btn-info btn-md" href="/hospital/login?command=logout"><fmt:message key="logout"/></a>
+            <a class="btn btn-info btn-md" href="/hospital/login?command=logout"><fmt:message key="logout"/> ${user_name}</a>
         </c:if>
     </div>
     </body>

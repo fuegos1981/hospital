@@ -1,10 +1,10 @@
 package com.epam.hospital.service.impl;
 
-import com.epam.hospital.model.Doctor;
+import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.model.Schedule;
-import com.epam.hospital.repository.Constants;
-import com.epam.hospital.repository.DBException;
+import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.repository.elements.ScheduleRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ServiceUtils;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ScheduleService implements Service<Schedule> {
 
@@ -54,18 +53,13 @@ public class ScheduleService implements Service<Schedule> {
     }
 
     @Override
-    public List<Schedule> getAll(int[] limit,String sortRule) throws DBException, SQLException {
-        return scheduleRepository.getAllSchedules();
+    public List<Schedule> getAll(Map<String, Integer> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
+        return scheduleRepository.getAllSchedules(selection, sortRule, limit);
 
     }
-    public List<Schedule> getAll(Map<String,Integer> selection) throws DBException, SQLException {
-        if (selection==null)
-            return new ArrayList<>();
-        return scheduleRepository.getAllSchedules(selection);
-    }
 
-    public int getSize() throws DBException {
-        return scheduleRepository.getSize();
+    public int getSize(Map<String, Integer> selection) throws DBException {
+        return scheduleRepository.getSize(selection);
     }
 
     private void checkSchedule(Schedule schedule) throws ValidateException, DBException {
