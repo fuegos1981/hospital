@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language ="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tf" %>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -38,7 +39,7 @@
                                 <label for="password" class="text-info"><fmt:message key="password"/>:</label><br>
                                 <input type="password" name="password" id="password" class="form-control" value="${password}"/>
                             </div>
-                            <label  class="text-danger"><c:out value="${message}" ></c:out></label>
+                            <tf:errortag text="${message}"/>
                             <div class="form-group">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='login_submit'/>"/>
                             </div>
