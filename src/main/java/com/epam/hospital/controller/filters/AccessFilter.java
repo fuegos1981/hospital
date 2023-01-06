@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * The class class restricts access to users with different rights
+ * The class restricts access to users with different rights
  *Please see the {@link javax.servlet.annotation.WebFilter}  for true identity
  * @author Sinkevych Olena
  *

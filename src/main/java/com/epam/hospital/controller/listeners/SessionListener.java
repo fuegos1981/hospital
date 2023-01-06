@@ -7,6 +7,12 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
+/**
+ * An implementation of the Filter Listener to fix the start and end time of the user's work in the program.
+ *Please see the {@link javax.servlet.annotation.WebListener}  for true identity
+ * @author Sinkevych Olena
+ *
+ */
 @WebListener
 public class SessionListener implements HttpSessionAttributeListener {
     private static Logger logger = LogManager.getLogger();

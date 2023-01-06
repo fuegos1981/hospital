@@ -3,10 +3,18 @@ package com.epam.hospital.repository;
 
 import com.epam.hospital.exceptions.DBException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * abstract class contains methods for working with the database.
+ *
+ * @author Sinkevych Olena
+ *
+ */
 public abstract class GlobalRepository<T> {
 
 
@@ -123,6 +131,13 @@ public abstract class GlobalRepository<T> {
         }
     }
 
+    /**
+     * <p>This method forms the final query to the database
+     * </p>
+     * @param stmt is an object used for executing a static SQL statement and returning the results it produces.
+     * @param filters  is an array of objects to replace wildcard characters in the query.
+     *
+     */
     private void addFilters(PreparedStatement stmt, Object[] filters) throws SQLException {
         int step = 1;
         for (Object obj : filters) {
@@ -145,18 +160,17 @@ public abstract class GlobalRepository<T> {
             try {
                 el.close();
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new DBException("not close el! ", e);
+                throw new DBException("not close! ", e);
             }
         }
     }
 
-    private void rollback(Connection con) {
+    private void rollback(Connection con) throws DBException {
         if (con != null) {
             try {
                 con.rollback();
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                throw new DBException("rollback! ", ex);
             }
         }
     }

@@ -9,10 +9,22 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
+/**
+ * This class is one of the strategies for organizing connections in the application, using HikariCP
+ *
+ * Please see the {@link com.zaxxer.hikari.HikariDataSource} class for true identity
+ * @author Sinkevych Olena
+ *
+ */
 public class ConnectionPool {
     private static HikariDataSource dataSource = null;
     private static ConnectionPool connectionPool = null;
+
+    /**
+     * <p>This method is used to initialize object ConnectionPool
+     * </p>
+     *
+     */
     private ConnectionPool(){
         Properties p=new Properties ();
         try {
@@ -27,7 +39,6 @@ public class ConnectionPool {
         config.setJdbcUrl(p.getProperty("url"));
         config.setUsername(p.getProperty("user"));
         config.setPassword(p.getProperty("password"));
-        //config.setDriverClassName("com.mysql.jdbc.Driver");
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");

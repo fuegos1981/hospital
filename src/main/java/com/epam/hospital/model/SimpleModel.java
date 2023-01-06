@@ -1,5 +1,10 @@
 package com.epam.hospital.model;
 
+/**
+ * This interface is intended  for all models that have only one single field Name (category, diagnosis, role).
+ * @author Sinkevych Olena
+ *
+ */
 public interface SimpleModel {
     void setId(int id);
     void setName(String name);

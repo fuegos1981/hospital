@@ -3,12 +3,27 @@ package com.epam.hospital.repository;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * This class is used to form the final query to the database.
+ *
+ * @author Sinkevych Olena
+ *
+ */
 public class QueryRedactor {
     private  String query;
     Map<String, Integer> selection;
     SortRule sortRule;
     private  int[] limit;
 
+    /**
+     * <p>This method is used to receive object QueryRedactor
+     * </p>
+     * @param query  is query to database.
+     * @param selection is restriction map for the list of records in the database.
+     * @param sortRule is a query part for sorting records.
+     * @param limit is an array that contains the start number of the record in the database and the number of records to filter.
+     *
+     */
     public  static QueryRedactor getRedactor(String query,Map<String, Integer> selection,SortRule sortRule, int[] limit) {
         QueryRedactor qr = new QueryRedactor();
         qr.query = query;
@@ -17,6 +32,14 @@ public class QueryRedactor {
         qr.limit = limit;
         return  qr;
     }
+
+    /**
+     * <p>This method is used to receive object QueryRedactor
+     * </p>
+     * @param query  is query to database.
+     * @param selection is restriction map for the list of records in the database.
+     *
+     */
     public  static QueryRedactor getRedactor(String query,Map<String, Integer> selection) {
         QueryRedactor qr = new QueryRedactor();
         qr.query = query;
@@ -24,14 +47,11 @@ public class QueryRedactor {
         return  qr;
     }
 
-    public  static QueryRedactor getRedactor(String query,SortRule sortRule, int[] limit) {
-        QueryRedactor qr = new QueryRedactor();
-        qr.query = query;
-        qr.sortRule = sortRule;
-        qr.limit = limit;
-        return  qr;
-    }
-
+    /**
+     * <p>This method return final query to the database.
+     * </p>
+     *
+     */
     public  String getQuery() {
         return  query
                 +getSelectionString(selection)

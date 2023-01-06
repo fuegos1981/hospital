@@ -51,7 +51,7 @@
                                     <th><fmt:message key="num"/></th>
                                     <th><fmt:message key="Name"/></th>
                                     <th><fmt:message key="visit"/></th>
-                                    <th colspan ="2">Operation</th>
+                                    <th colspan ="2"><fmt:message key="operation"/></th>
                                 </tr>
                                 <c:forEach var="schedule" items="${schedules}" varStatus="status">
                                     <tr>
@@ -86,7 +86,7 @@
                                         <td><c:out value="${appointment.getDoctor().getLastName()} ${appointment.getDoctor().getFirstName()}"/></td>
                                         <td><c:out value="${appointment.getDoctor().getCategory()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosis()}"/></td>
-                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&isFirst=true">Edit</td>
+                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&isFirst=true"><fmt:message key="edit"/></td>
                                     </tr>
                                </c:forEach>
                             </table>

@@ -2,6 +2,11 @@ package com.epam.hospital.controller;
 
 import com.epam.hospital.controller.commands.*;
 
+/**
+ * This enum is a repository of commands.
+ * @author Sinkevych Olena
+ *
+ */
 public enum CommandEnum {
     LOGIN {
         {this.command = new LoginCommand();}
