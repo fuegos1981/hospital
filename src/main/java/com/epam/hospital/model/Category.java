@@ -1,5 +1,10 @@
 package com.epam.hospital.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Category implements SimpleModel{
     private int id;
     private String name;
@@ -15,23 +20,6 @@ public class Category implements SimpleModel{
 
     @Override
     public String toString() {
-        return name;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
         return name;
     }
 

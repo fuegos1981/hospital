@@ -1,7 +1,12 @@
 package com.epam.hospital.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
+@Getter
+@Setter
 public class Schedule {
     private int id;
     private Doctor doctor;
@@ -16,35 +21,4 @@ public class Schedule {
         return schedule;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public void setDateVisit(Date dateVisit) {
-        this.dateVisit = dateVisit;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public Date getDateVisit() {
-        return dateVisit;
-    }
 }

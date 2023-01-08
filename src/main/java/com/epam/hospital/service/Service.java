@@ -11,9 +11,9 @@ import java.util.Map;
 public interface Service<T> {
 
     T readById(Integer id) throws DBException, SQLException, ValidateException;
-    boolean create(T t) throws DBException, ValidateException;
-    boolean update(T t) throws DBException, ValidateException;
-    void delete(T t) throws DBException;
+    boolean create(T t) throws DBException, ValidateException, SQLException;
+    boolean update(T t) throws DBException, ValidateException, SQLException;
+    void delete(T t) throws DBException, ValidateException, SQLException;
     List<T> getAll(Map<String,Integer> selection, SortRule sortRule, int[] limit) throws DBException, SQLException;
     int getSize(Map<String,Integer> selection) throws DBException;
 

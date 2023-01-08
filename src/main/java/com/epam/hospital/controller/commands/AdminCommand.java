@@ -35,7 +35,7 @@ public class AdminCommand implements ActionCommand {
     /**
      * <p>This method generates a page or path with a response to the client when the administrator is working in the main interface.
      * </p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request is as an argument to the servlet's service methods (doGet, doPost).
      * @param currentMessageLocale is current locale, used to display error messages in the given locale.
      * @return  String page or path with a response to the client.
      *

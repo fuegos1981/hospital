@@ -1,5 +1,6 @@
 package com.epam.hospital;
 
+import com.epam.hospital.dto.AppointmentDto;
 import com.epam.hospital.model.Appointment;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.exceptions.DBException;
@@ -69,7 +70,7 @@ public class HistoryPatient {
         AppointmentService appointmentService = AppointmentService.getAppointmentService();
         Map<String,Integer> selection = new HashMap<>();
         selection.put("patient_id",patient.getId());
-        List<Appointment> list =appointmentService.getAll(selection, null, null);
+        List<AppointmentDto> list =appointmentService.getAll(selection, null, null);
         int pageHeight = (int)page.getTrimBox().getHeight()-200; //get height of the page
 
         contentStream.setStrokingColor(Color.DARK_GRAY);
@@ -115,14 +116,14 @@ public class HistoryPatient {
         contentStream.stroke();
     }
 
-    private static void writeApp(PDPageContentStream contentStream, List<Appointment> list, int initX, int initY, int cellHeight, int i, int j) throws IOException {
+    private static void writeApp(PDPageContentStream contentStream, List<AppointmentDto> list, int initX, int initY, int cellHeight, int i, int j) throws IOException {
         if (j ==1)
             writeTextInTable(contentStream, initX, initY, cellHeight, list.get(i -1).getDateCreate().toString());
         if (j ==2)
             writeTextInTable(contentStream, initX, initY, cellHeight,
-                    list.get(i -1).getDoctor().getLastName()+" "+list.get(i -1).getDoctor().getFirstName());
+                    list.get(i -1).getDoctorName());
         if (j ==3)
-            writeTextInTable(contentStream, initX, initY, cellHeight, list.get(i -1).getDiagnosis().toString());
+            writeTextInTable(contentStream, initX, initY, cellHeight, list.get(i -1).getDiagnosisName().toString());
         if (j ==4)
             writeTextInTable(contentStream, initX, initY, cellHeight, list.get(i -1).getDescription());
     }

@@ -3,6 +3,8 @@ package com.epam.hospital.controller.commands;
 import com.epam.hospital.MessageManager;
 import com.epam.hospital.controller.ActionCommand;
 import com.epam.hospital.controller.ControllerConstants;
+import com.epam.hospital.dto.AppointmentDto;
+import com.epam.hospital.dto.ScheduleDto;
 import com.epam.hospital.model.Appointment;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.model.Schedule;
@@ -26,8 +28,8 @@ import java.util.Map;
  */
 public class PatientInfoCommand implements ActionCommand {
     private final Service<Patient> patientService= PatientService.getPatientService();
-    private final Service<Schedule> scheduleService= ScheduleService.getScheduleService();
-    private final Service<Appointment> appointmentService= AppointmentService.getAppointmentService();
+    private final Service<ScheduleDto> scheduleService= ScheduleService.getScheduleService();
+    private final Service<AppointmentDto> appointmentService= AppointmentService.getAppointmentService();
 
     /**
      * <p>This method generates a page or path with a response to the client when working with patient information.

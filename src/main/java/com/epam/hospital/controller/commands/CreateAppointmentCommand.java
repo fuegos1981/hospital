@@ -1,5 +1,6 @@
 package com.epam.hospital.controller.commands;
 
+import com.epam.hospital.dto.AppointmentDto;
 import com.epam.hospital.exceptions.AccessException;
 import com.epam.hospital.MessageManager;
 import com.epam.hospital.controller.ActionCommand;
@@ -30,12 +31,12 @@ public class CreateAppointmentCommand implements ActionCommand {
     private final Service<Doctor> doctorService = DoctorService.getDoctorService();
     private final Service<Patient> patientService = PatientService.getPatientService();
     private final SimpleService diagnosisService = SimpleService.getSimpleService(Constants.DIAGNOSIS);
-    private final Service<Appointment> appointmentService = AppointmentService.getAppointmentService();
+    private final Service<AppointmentDto> appointmentService = AppointmentService.getAppointmentService();
 
     /**
      * <p>This method generates a page or path with a response to the client when creating or editing an appointment.
      * </p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request is as an argument to the servlet's service methods (doGet, doPost).
      * @param currentMessageLocale is current locale, used to display error messages in the given locale.
      * @return  String page or path with a response to the client when creating or editing an appointment.
      *
@@ -48,7 +49,7 @@ public class CreateAppointmentCommand implements ActionCommand {
             request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null,null, null));
             request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
             request.setAttribute(ControllerConstants.DIAGNOSISES, diagnosisService.getAll(null,null,null));
-            Appointment appointment= getAppointment(request,id);
+            AppointmentDto appointment= getAppointment(request,id);
             if (request.getParameter(ControllerConstants.SUBMIT) == null ) {
                 return ControllerConstants.PAGE_EDIT_APPOINTMENT;
             }
@@ -61,7 +62,7 @@ public class CreateAppointmentCommand implements ActionCommand {
                     appointment.setId(id);
                     appointmentService.update(appointment);
                 }
-                    return "/hospital/readPatient?id="+appointment.getPatient().getId()+"&command=patient_info";
+                    return "/hospital/readPatient?id="+appointment.getPatientId()+"&command=patient_info";
 
             }
         } catch (ValidateException e) {
@@ -76,11 +77,11 @@ public class CreateAppointmentCommand implements ActionCommand {
         }
     }
 
-    private void checkAccess(HttpServletRequest request,Appointment appointment) throws AccessException {
+    private void checkAccess(HttpServletRequest request,AppointmentDto appointment) throws AccessException {
         HttpSession session= request.getSession();
         Role role = (Role) session.getAttribute("role");
         Integer userId = (Integer) session.getAttribute("user_id");
-        if (role!=Role.ADMIN && !userId.equals(appointment.getDoctor().getId())){
+        if (role!=Role.ADMIN && !userId.equals(appointment.getDoctorId())){
             throw new AccessException("other_doctor");
         }
         if (role==Role.NURSE && !appointment.getOperation().isEmpty()){
@@ -88,9 +89,9 @@ public class CreateAppointmentCommand implements ActionCommand {
         }
     }
 
-    private Appointment getAppointment(HttpServletRequest request, Integer id) throws DBException, ValidateException, SQLException {
+    private AppointmentDto getAppointment(HttpServletRequest request, Integer id) throws DBException, ValidateException, SQLException {
 
-        Appointment appointment =(Appointment) request.getAttribute("appointment");
+        AppointmentDto appointment =(AppointmentDto) request.getAttribute("appointment");
         if (id!=null&&request.getParameter("isFirst")!=null){
             appointment = appointmentService.readById(id);
         }
@@ -98,10 +99,7 @@ public class CreateAppointmentCommand implements ActionCommand {
             Integer diagnosisId= ControllerUtils.parseID(request,ControllerConstants.DIAGNOSIS_ID);
             Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
             Integer doctorId= ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);
-            appointment = Appointment.createAppointment(new Date(),
-                    diagnosisId==null?null:(Diagnosis) diagnosisService.readById(diagnosisId),
-                    patientId==null?null: patientService.readById(patientId),
-                    doctorId==null?null: doctorService.readById(doctorId));
+            appointment = AppointmentDto.createAppointmentDto(new Date(), diagnosisId,patientId,doctorId);
             appointment.setMedication(Optional.ofNullable(request.getParameter(Fields.MEDICATION)).orElse(""));
             appointment.setProcedure(Optional.ofNullable(request.getParameter(Fields.PROCEDURE)).orElse(""));
             appointment.setOperation(Optional.ofNullable(request.getParameter(Fields.OPERATION)).orElse(""));

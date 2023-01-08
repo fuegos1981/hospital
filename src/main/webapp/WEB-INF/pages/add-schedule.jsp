@@ -36,7 +36,7 @@
                             <select class="form-control" name="doctor_id" id="doctors">
                                 <option value=""><fmt:message key="select_doctor"/>...</option>
                                 <c:forEach var="doctor" items="${doctors}" varStatus="status">
-                                    <option value="${doctor.getId()}" ${schedule.getDoctor().getId() == doctor.getId()? 'selected':''}>
+                                    <option value="${doctor.getId()}" ${schedule.getDoctorId() == doctor.getId()? 'selected':''}>
                                     <c:out value="${doctor.toString()}"/>
                                     </option>
                                 </c:forEach>
@@ -45,7 +45,7 @@
                             <select class="form-control" name="patient_id" id="patients">
                                 <option value=""><fmt:message key="select_patient"/>...</option>
                                 <c:forEach var="patient" items="${patients}" varStatus="status">
-                                    <option value="${patient.getId()}" ${schedule.getPatient().getId() == patient.getId()? 'selected':''}>
+                                    <option value="${patient.getId()}" ${schedule.getPatientId() == patient.getId()? 'selected':''}>
                                         <c:out value="${patient.toString()}"/>
                                     </option>
                                 </c:forEach>

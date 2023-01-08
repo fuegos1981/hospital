@@ -4,6 +4,7 @@ import com.epam.hospital.MessageManager;
 import com.epam.hospital.controller.ActionCommand;
 import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
+import com.epam.hospital.dto.ScheduleDto;
 import com.epam.hospital.model.Schedule;
 import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
@@ -21,7 +22,7 @@ import java.sql.SQLException;
  *
  */
 public class DeleteScheduleCommand implements ActionCommand {
-    private final Service<Schedule> scheduleService = ScheduleService.getScheduleService();
+    private final Service<ScheduleDto> scheduleService = ScheduleService.getScheduleService();
 
     /**
      * <p>This method generates a page or path with a response to the client when deleting a schedule.

@@ -52,7 +52,7 @@
                                               <td><c:out value="${patient.toString()}"/></td>
                                               <td><c:out value="${patient.getBirthday()}"/></td>
                                               <td><a href ="/hospital/readPatient?id=${patient.getId()}&command=patient_info"><fmt:message key="read"/></td>
-                                              <td><a href ="/hospital/addSchedule?patient_id=${patient.getId()}&name=${patient.toString()}&command=add_schedule&is_patient=true" method="post"><fmt:message key="visit"/></td>
+                                              <td><a href ="/hospital/addSchedule?patient_id=${patient.getId()}&command=add_schedule&is_patient=true" method="post"><fmt:message key="visit"/></td>
                                         </tr>
                                     </c:forEach>
                                 </table>

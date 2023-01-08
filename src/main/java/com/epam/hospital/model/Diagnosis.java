@@ -1,5 +1,10 @@
 package com.epam.hospital.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Diagnosis implements SimpleModel{
     private int id;
     private String name;
@@ -8,22 +13,6 @@ public class Diagnosis implements SimpleModel{
         Diagnosis diagnosis = new Diagnosis();
         diagnosis.name=name;
         return diagnosis;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
