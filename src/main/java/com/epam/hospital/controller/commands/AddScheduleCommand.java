@@ -42,7 +42,8 @@ public class AddScheduleCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        ControllerUtils.setAttributes(request, Fields.ID,"is_patient", Fields.VISIT_TIME);
+        setPath(request);
+        ControllerUtils.setAttributes(request, Fields.ID,Fields.IS_PATIENT, Fields.VISIT_TIME);
         request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
         request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null,null));
         try {
@@ -57,8 +58,7 @@ public class AddScheduleCommand implements ActionCommand {
                     scheduleDto.setId(id);
                     scheduleService.update(scheduleDto);
                 }
-                boolean isPatient = Boolean.parseBoolean(request.getParameter("is_patient"));
-                if (isPatient)
+                if (Boolean.parseBoolean(request.getParameter(Fields.IS_PATIENT)))
                     return "/hospital/readPatient?id="+scheduleDto.getPatientId()+"&command=patient_info";
                 else {
                     return "/hospital/medic?doctor_id=" + scheduleDto.getDoctorId() + "&command=medic";
@@ -66,8 +66,14 @@ public class AddScheduleCommand implements ActionCommand {
 
             }
         } catch (ValidateException e) {
-            request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));
+            request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString("not_correct")+": "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_ADD_SCHEDULE;
+        }
+    }
+
+    private void setPath(HttpServletRequest request) {
+        if (request.getAttribute("path")==null){
+
         }
     }
 

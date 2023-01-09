@@ -11,19 +11,18 @@ import com.epam.hospital.service.Service;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AppointmentService implements Service<AppointmentDto> {
-    private static AppointmentService appointmentService;
     private AppointmentRepository appointmentRepository;
     private final MappingUtils mappingUtils;
+
     private AppointmentService() {
-        this.appointmentRepository = appointmentRepository.getRepository();
+        this.appointmentRepository = AppointmentRepository.getRepository();
         this.mappingUtils = new MappingUtils();
     }
     public static AppointmentService getAppointmentService(){
-        return Objects.requireNonNullElseGet(appointmentService, AppointmentService::new);
+       return new AppointmentService();
     }
 
     @Override

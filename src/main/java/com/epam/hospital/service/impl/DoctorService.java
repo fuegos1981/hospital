@@ -20,7 +20,6 @@ public class DoctorService implements Service<Doctor> {
         doctorRepository = DoctorRepository.getRepository();
     }
     public static DoctorService getDoctorService(){
-
         return new DoctorService();
     }
 

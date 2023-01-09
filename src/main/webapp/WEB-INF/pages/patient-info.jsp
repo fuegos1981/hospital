@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language ="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tg" uri="/WEB-INF/pagination.tld" %>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -18,6 +19,7 @@
         <form id="base-form" class="form" action="readPatient?id=${patient_id}&command=patient_info" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
             <input type="hidden" name="command" value="patient_info" />
+            <input id = "sub" type="submit" name="submit" class="btn btn-info btn-md" value="sub">
             <input type="hidden" name="patient_id" value="${patient_id}" />
             <div id="base1">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
@@ -55,7 +57,7 @@
                                 </tr>
                                 <c:forEach var="schedule" items="${schedules}" varStatus="status">
                                     <tr>
-                                        <td><c:out value="${status.count}"/></td>
+                                        <td><c:out value="${status.count+maxCountOnPage*(current_page_schedule-1)}"/></td>
                                         <td><c:out value="${schedule.getDoctorName()}"/></td>
 
                                         <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd HH:mm" /></td>
@@ -64,11 +66,12 @@
                                     </tr>
                                 </c:forEach>
                             </table>
+                            <tg:pgn name="schedule" current_page="${current_page_schedule}"  count_page = "${count_page_schedule}"/>
                         </div>
                         <div class="table-responsive  col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&patient_id=${patient_id}&isFirst=true"><fmt:message key="create_appointment"/></a>
+                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&patient_id=${patient_id}&is_patient=true&isFirst=true"><fmt:message key="create_appointment"/></a>
                             </div>
                             <table id = "AllAppointments" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -81,19 +84,23 @@
                               </tr>
                                <c:forEach var="appointment" items="${appointments}" varStatus="status">
                                     <tr>
-                                        <td><c:out value="${status.count}"/></td>
+                                        <td><c:out value="${status.count+maxCountOnPage*(current_page_appointment-1)}"/></td>
                                         <td><c:out value="${appointment.getDateCreate()}"/></th>
                                         <td><c:out value="${appointment.getDoctorName()}"/></td>
                                         <td><c:out value="${appointment.getCategoryName()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosisName()}"/></td>
-                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&isFirst=true"><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&is_patient=true&isFirst=true"><fmt:message key="edit"/></td>
                                     </tr>
                                </c:forEach>
                             </table>
+                             <tg:pgn name="appointment" current_page="${current_page_appointment}"  count_page = "${count_page_appointment}"/>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
     </body>
+    <script>
+        <%@include file="/WEB-INF/main.js"%>
+    </script>
 </html>

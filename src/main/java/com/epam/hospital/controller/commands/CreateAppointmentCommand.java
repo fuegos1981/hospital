@@ -44,7 +44,7 @@ public class CreateAppointmentCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID, Fields.DATE_CREATE);
+        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID,Fields.IS_PATIENT, Fields.DATE_CREATE);
         try {
             request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null,null, null));
             request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
@@ -62,17 +62,21 @@ public class CreateAppointmentCommand implements ActionCommand {
                     appointment.setId(id);
                     appointmentService.update(appointment);
                 }
+                if (Boolean.parseBoolean(request.getParameter(Fields.IS_PATIENT)))
                     return "/hospital/readPatient?id="+appointment.getPatientId()+"&command=patient_info";
+                else {
+                    return "/hospital/medic?doctor_id=" + appointment.getDoctorId() + "&command=medic";
+                }
 
             }
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE,
-                    currentMessageLocale.getString("not_correct")+" "+currentMessageLocale.getString(e.getMessage()));
+                    currentMessageLocale.getString("not_correct")+": "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_EDIT_APPOINTMENT;
         }
         catch (AccessException e) {
             request.setAttribute(ControllerConstants.MESSAGE,
-                    currentMessageLocale.getString("not_rights")+" "+currentMessageLocale.getString(e.getMessage()));
+                    currentMessageLocale.getString("not_rights")+": "+currentMessageLocale.getString(e.getMessage()));
             return ControllerConstants.PAGE_EDIT_APPOINTMENT;
         }
     }

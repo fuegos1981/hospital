@@ -88,7 +88,7 @@
                         <div class="table-responsive  col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&name=${patient.toString()}&patient_id=${patient_id}"><fmt:message key="create_appointment"/></a>
+                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&doctor_id=${doctor_id}&patient_id=${patient_id}"><fmt:message key="create_appointment"/></a>
                             </div>
                             <table id = "AllAppointments" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -118,6 +118,6 @@
         </form>
     </body>
     <script>
-            <%@include file="/WEB-INF/main.js"%>
-        </script>
+        <%@include file="/WEB-INF/main.js"%>
+    </script>
 </html>
