@@ -5,9 +5,7 @@ import com.epam.hospital.controller.ActionCommand;
 import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.dto.AppointmentDto;
 import com.epam.hospital.dto.ScheduleDto;
-import com.epam.hospital.model.Appointment;
 import com.epam.hospital.model.Patient;
-import com.epam.hospital.model.Schedule;
 import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.AppointmentService;
@@ -34,7 +32,7 @@ public class PatientInfoCommand implements ActionCommand {
     /**
      * <p>This method generates a page or path with a response to the client when working with patient information.
      * </p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request is as an argument to the servlet's service methods (doGet, doPost).
      * @param currentMessageLocale is current locale, used to display error messages in the given locale.
      * @return  String page or path with a response to the client.
      *
@@ -45,7 +43,7 @@ public class PatientInfoCommand implements ActionCommand {
             int id = Integer.parseInt(request.getParameter("id"));
             request.setAttribute("patient_id",id);
             request.setAttribute("patient",patientService.readById(id));
-            Map<String,Integer> selection = new HashMap<>();
+            Map<String,Object> selection = new HashMap<>();
             selection.put("patient_id",id);
             request.setAttribute("schedules", scheduleService.getAll(selection, null, null));
             request.setAttribute("appointments",appointmentService.getAll(selection, null,null));

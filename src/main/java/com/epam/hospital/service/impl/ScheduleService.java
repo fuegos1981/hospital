@@ -3,33 +3,33 @@ package com.epam.hospital.service.impl;
 import com.epam.hospital.dto.ScheduleDto;
 import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.exceptions.DBException;
+
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.repository.elements.ScheduleRepository;
 import com.epam.hospital.service.MappingUtils;
 import com.epam.hospital.service.Service;
-import com.epam.hospital.service.ServiceUtils;
+import com.epam.hospital.service.ValidatorUtils;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ScheduleService implements Service<ScheduleDto> {
 
-    private static ScheduleService scheduleService;
     private ScheduleRepository scheduleRepository;
     private final MappingUtils mappingUtils;
 
     private ScheduleService() {
 
-        this.scheduleRepository = scheduleRepository.getRepository();
+        this.scheduleRepository = ScheduleRepository.getRepository();
         this.mappingUtils = new MappingUtils();
     }
 
     public static ScheduleService getScheduleService() {
-        return Objects.requireNonNullElseGet(scheduleService, ScheduleService::new);
+        return new ScheduleService();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ScheduleService implements Service<ScheduleDto> {
     }
 
     @Override
-    public List<ScheduleDto> getAll(Map<String, Integer> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
+    public List<ScheduleDto> getAll(Map<String, Object> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
 
         return scheduleRepository.getAllSchedules(selection, sortRule, limit).stream()
                 .map(mappingUtils::mapToScheduleDto)
@@ -65,11 +65,11 @@ public class ScheduleService implements Service<ScheduleDto> {
 
     }
 
-    public int getSize(Map<String, Integer> selection) throws DBException {
+    public int getSize(Map<String, Object> selection) throws DBException {
         return scheduleRepository.getSize(selection);
     }
 
-    private void checkSchedule(ScheduleDto schedule) throws ValidateException {
+    private void checkSchedule(ScheduleDto schedule) throws ValidateException, DBException {
         if (schedule==null){
             throw new ValidateException("schedule");
         }
@@ -79,7 +79,21 @@ public class ScheduleService implements Service<ScheduleDto> {
         if(schedule.getDoctorId()==null){
             throw new ValidateException("doctor");
         }
-        ServiceUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
+        ValidatorUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
+        checkTime(schedule);
+    }
+
+    private void checkTime(ScheduleDto schedule) throws DBException, ValidateException {
+        Map<String, Object> selection = new HashMap<>();
+        selection.put(Fields.DOCTOR_ID, schedule.getDoctorId());
+        selection.put(Fields.VISIT_TIME, schedule.getDateVisit());
+        if(scheduleRepository.getSize(selection)>0)
+          throw new ValidateException("doctor_not_time");
+        selection.remove(Fields.DOCTOR_ID);
+        selection.put(Fields.PATIENT_ID, schedule.getPatientId());
+        if(scheduleRepository.getSize(selection)>0)
+            throw new ValidateException("patient_not_time");
+
     }
 
 }

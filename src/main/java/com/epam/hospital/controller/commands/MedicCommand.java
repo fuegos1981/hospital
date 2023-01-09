@@ -51,7 +51,7 @@ public class MedicCommand implements ActionCommand {
 
         ControllerUtils.setAttributes(request,ControllerConstants.PATIENT_ID,ControllerConstants.DOCTOR_ID);
         try {
-            Map<String,Integer> selection = getSelection(request);
+            Map<String,Object> selection = getSelection(request);
             request.setAttribute("patients",patientService.getAll(null, SortRule.NAME_ASC, null));
             request.setAttribute("doctors",doctorService.getAll(null, SortRule.NAME_ASC, null));
             int[] limitSchedule = ControllerUtils.setMasForPagination(request, scheduleService.getSize(selection),
@@ -68,8 +68,8 @@ public class MedicCommand implements ActionCommand {
         }
     }
 
-    private Map<String,Integer> getSelection(HttpServletRequest request) throws DBException, ValidateException, SQLException {
-        Map<String,Integer> selection = new HashMap<>();
+    private Map<String,Object> getSelection(HttpServletRequest request) throws DBException, ValidateException, SQLException {
+        Map<String,Object> selection = new HashMap<>();
         Integer patientId = ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
         Integer doctorId;
         doctorId  = ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);

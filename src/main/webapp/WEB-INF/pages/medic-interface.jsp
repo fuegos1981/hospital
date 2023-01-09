@@ -106,7 +106,7 @@
                                         <td><c:out value="${appointment.getDoctorName()}"/></td>
                                         <td><c:out value="${appointment.getPatientName()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosisName()}"/></td>
-                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&name=${patient.toString()}&command=edit_appointment">Edit</td>
+                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&isFirst=true"><fmt:message key="edit"/></td>
                                     </tr>
                                </c:forEach>
                             </table>

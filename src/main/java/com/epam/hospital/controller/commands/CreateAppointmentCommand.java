@@ -44,7 +44,7 @@ public class CreateAppointmentCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID);
+        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID, Fields.DATE_CREATE);
         try {
             request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null,null, null));
             request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
@@ -89,17 +89,19 @@ public class CreateAppointmentCommand implements ActionCommand {
         }
     }
 
-    private AppointmentDto getAppointment(HttpServletRequest request, Integer id) throws DBException, ValidateException, SQLException {
+    private AppointmentDto getAppointment(HttpServletRequest request, Integer id) throws DBException, ValidateException, SQLException, ParseException {
 
-        AppointmentDto appointment =(AppointmentDto) request.getAttribute("appointment");
+        AppointmentDto appointment;
         if (id!=null&&request.getParameter("isFirst")!=null){
             appointment = appointmentService.readById(id);
+            request.setAttribute(Fields.DATE_CREATE, appointment.getDateCreate().toString());
         }
-        else if (appointment==null){
+        else {
+            Date dateCreate = ControllerUtils.getDateByString(request.getParameter(Fields.DATE_CREATE),false);
             Integer diagnosisId= ControllerUtils.parseID(request,ControllerConstants.DIAGNOSIS_ID);
             Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
             Integer doctorId= ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);
-            appointment = AppointmentDto.createAppointmentDto(new Date(), diagnosisId,patientId,doctorId);
+            appointment = AppointmentDto.createAppointmentDto(dateCreate==null?new Date():dateCreate, diagnosisId,patientId,doctorId);
             appointment.setMedication(Optional.ofNullable(request.getParameter(Fields.MEDICATION)).orElse(""));
             appointment.setProcedure(Optional.ofNullable(request.getParameter(Fields.PROCEDURE)).orElse(""));
             appointment.setOperation(Optional.ofNullable(request.getParameter(Fields.OPERATION)).orElse(""));

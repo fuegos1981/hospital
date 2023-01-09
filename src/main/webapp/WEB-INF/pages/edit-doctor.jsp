@@ -39,6 +39,7 @@
                                     <input type="login" name="login" id="login" class="form-control" value="${doctor.getLogin()}"/>
                                     <label for="password" class="text-info"><fmt:message key="password"/>:</label><br>
                                     <input type="password" name="password" id="password" class="form-control" value="${password}"/>
+
                                     <br/>
                                     <input type="radio" name="role"  value="ADMIN" ${role eq 'ADMIN'? 'checked':''}/><fmt:message key="admin"/>
                                     <input type="radio" name="role"  value="DOCTOR" ${role eq 'DOCTOR'? 'checked':''}/><fmt:message key="doctor"/>

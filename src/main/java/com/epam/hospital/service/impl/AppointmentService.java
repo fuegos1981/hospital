@@ -52,14 +52,14 @@ public class AppointmentService implements Service<AppointmentDto> {
     }
 
     @Override
-    public List<AppointmentDto> getAll(Map<String, Integer> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
+    public List<AppointmentDto> getAll(Map<String, Object> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
         return appointmentRepository.getAllAppointments(selection, sortRule, limit).stream()
                 .map(mappingUtils::mapToAppointmentDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public int getSize(Map<String,Integer> selection) throws DBException {
+    public int getSize(Map<String,Object> selection) throws DBException {
         return appointmentRepository.getSize(selection);
     }
 

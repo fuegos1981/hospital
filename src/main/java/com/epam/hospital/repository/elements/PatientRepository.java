@@ -50,7 +50,7 @@ public class PatientRepository extends GlobalRepository<Patient>{
         return patientRepository.delete(Constants.DELETE_PATIENT, patient.getId());
     }
 
-    public List<Patient> getAllPatients(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException{
+    public List<Patient> getAllPatients(Map<String, Object> selection, SortRule sortRule, int[] limit) throws DBException{
         if (selection==null)
             return patientRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_PATIENTS,null, sortRule,limit).getQuery());
         else
@@ -58,7 +58,7 @@ public class PatientRepository extends GlobalRepository<Patient>{
                 selection.values().toArray());
     }
 
-    public int getSize(Map<String, Integer> selection) throws DBException {
+    public int getSize(Map<String, Object> selection) throws DBException {
         if (selection==null)
             return patientRepository.readSize(Constants.GET_SIZE_PATIENT);
         else

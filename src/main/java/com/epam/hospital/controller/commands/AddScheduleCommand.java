@@ -82,8 +82,6 @@ public class AddScheduleCommand implements ActionCommand {
             ControllerUtils.setAttributes(request,ControllerConstants.PATIENT_ID,ControllerConstants.DOCTOR_ID);
             Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
             Integer doctorId= ControllerUtils.parseID(request,ControllerConstants.DOCTOR_ID);
-            //Patient patient = patientService.readById(patientId);
-            //Doctor doctor = doctorService.readById(doctorId);
             Date dateVisit = ControllerUtils.getDateByString(request.getParameter(Fields.VISIT_TIME), true);
             schedule = ScheduleDto.createScheduleDto(doctorId, patientId, dateVisit);
         }

@@ -41,7 +41,7 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
         return scheduleRepository.update(Constants.UPDATE_SCHEDULE, objects);
     }
 
-    public List<Schedule> getAllSchedules(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException {
+    public List<Schedule> getAllSchedules(Map<String, Object> selection, SortRule sortRule, int[] limit) throws DBException {
         if (selection==null)
             return scheduleRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_SCHEDULE, null, sortRule,limit).getQuery());
         else
@@ -49,7 +49,7 @@ public class ScheduleRepository extends GlobalRepository<Schedule> {
                 selection.values().toArray());
     }
 
-    public int getSize(Map<String, Integer> selection) throws DBException {
+    public int getSize(Map<String, Object> selection) throws DBException {
         if (selection==null)
             return scheduleRepository.readSize(Constants.GET_SIZE_SCHEDULE);
         else

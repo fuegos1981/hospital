@@ -23,4 +23,5 @@ public interface Fields {
     String OPERATION = "operation";
     String TYPE = "type";
     String NAME = "name";
+    String PASSWORD_NOT_CHANGE ="password not change";
 }

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public class QueryRedactor {
     private  String query;
-    Map<String, Integer> selection;
+    Map<String, Object> selection;
     SortRule sortRule;
     private  int[] limit;
 
@@ -24,7 +24,7 @@ public class QueryRedactor {
      * @param limit is an array that contains the start number of the record in the database and the number of records to filter.
      *
      */
-    public  static QueryRedactor getRedactor(String query,Map<String, Integer> selection,SortRule sortRule, int[] limit) {
+    public  static QueryRedactor getRedactor(String query,Map<String, Object> selection,SortRule sortRule, int[] limit) {
         QueryRedactor qr = new QueryRedactor();
         qr.query = query;
         qr.selection= selection;
@@ -40,7 +40,7 @@ public class QueryRedactor {
      * @param selection is restriction map for the list of records in the database.
      *
      */
-    public  static QueryRedactor getRedactor(String query,Map<String, Integer> selection) {
+    public  static QueryRedactor getRedactor(String query,Map<String, Object> selection) {
         QueryRedactor qr = new QueryRedactor();
         qr.query = query;
         qr.selection= selection;
@@ -59,7 +59,7 @@ public class QueryRedactor {
                 +(limit==null?"":" limit " +limit[0]+","+limit[1]);
     }
 
-    private static String getSelectionString(Map<String, Integer> selection){
+    private static String getSelectionString(Map<String, Object> selection){
         if (selection == null||selection.size()==0)
             return "";
         return  " where "+selection.keySet().stream()

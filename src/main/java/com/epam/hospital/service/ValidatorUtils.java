@@ -4,10 +4,18 @@ import com.epam.hospital.exceptions.ValidateException;
 
 import java.util.Date;
 
-public class ServiceUtils {
+public class ValidatorUtils {
+    public static final String  email_valid = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+    public static final String  name_valid = "[A-ZА-Я][a-zа-я]*";
+
     public static void nameValidate(String name, String value) throws ValidateException {
-        if (value==null||!value.matches("[A-ZА-Я][a-zа-я]*")){
+        if (value==null||!value.matches(name_valid)){
             throw new ValidateException(name);
+        }
+    }
+    public static void emailValidate(String email, String value) throws ValidateException {
+        if (value==null||!value.matches(email_valid)){
+            throw new ValidateException(email);
         }
     }
 

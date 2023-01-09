@@ -45,7 +45,7 @@
                                 </tr>
                                 <tr>
                                     <td><input type="label" name="id" id="id" class="form-control"value="${id}"></td>
-                                    <td><input type="date" name="date" id="date" class="form-control" value="${appointment.getDateCreate()}"></td>
+                                    <td><input type="date" name="date_create" id="date" class="form-control" value="${date_create}"></td>
                                     <td>
                                         <select class="form-control" name="patient_id" id="patients" onchange="myReadPatientInfo(${patient.getId()})">
                                             <option value=""><fmt:message key="select_patient"/>...</option>

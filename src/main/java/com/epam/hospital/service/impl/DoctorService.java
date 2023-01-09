@@ -7,22 +7,21 @@ import com.epam.hospital.repository.Fields;
 import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.repository.elements.DoctorRepository;
 import com.epam.hospital.service.Service;
-import com.epam.hospital.service.ServiceUtils;
+import com.epam.hospital.service.ValidatorUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class DoctorService implements Service<Doctor> {
-    private static DoctorService doctorService;
     private static DoctorRepository doctorRepository;
     private DoctorService() {
-        this.doctorRepository = doctorRepository.getRepository();
+        doctorRepository = DoctorRepository.getRepository();
     }
     public static DoctorService getDoctorService(){
-        return Objects.requireNonNullElseGet(doctorService, DoctorService::new);
+
+        return new DoctorService();
     }
 
     @Override
@@ -30,8 +29,10 @@ public class DoctorService implements Service<Doctor> {
         if (id == null) {
             return null;
         }
-        else
+        else{
             return  doctorRepository.readByID(id);
+        }
+
     }
     public Doctor readByLoginPassword(String login, String pass) throws DBException, ValidateException {
         Doctor doctor = doctorRepository.readByLogin(login);
@@ -56,9 +57,13 @@ public class DoctorService implements Service<Doctor> {
     }
 
     @Override
-    public boolean update(Doctor doctor) throws DBException, ValidateException {
+    public boolean update(Doctor doctor) throws DBException, ValidateException, SQLException {
         checkDoctor(doctor);
-        doctor.setPassword(DigestUtils.md5Hex(doctor.getPassword()));
+        if (doctor.getPassword().equals(Fields.PASSWORD_NOT_CHANGE)){
+            doctor.setPassword(doctorRepository.readByID(doctor.getId()).getPassword());
+        }
+        else
+            doctor.setPassword(DigestUtils.md5Hex(doctor.getPassword()));
         return doctorRepository.updateDoctor(doctor);
     }
 
@@ -68,16 +73,16 @@ public class DoctorService implements Service<Doctor> {
     }
 
     @Override
-    public List<Doctor> getAll(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException, SQLException {
+    public List<Doctor> getAll(Map<String, Object> selection, SortRule sortRule, int[] limit) throws DBException, SQLException {
         return doctorRepository.getAllDoctors(selection, sortRule, limit);
     }
-    public int getSize(Map<String,Integer> selection) throws DBException {
+    public int getSize(Map<String,Object> selection) throws DBException {
         return doctorRepository.getSize(selection);
     }
 
     private void checkDoctor(Doctor doctor) throws ValidateException, DBException {
-        ServiceUtils.nameValidate(Fields.LAST_NAME,doctor.getLastName());
-        ServiceUtils.nameValidate(Fields.FIRST_NAME,doctor.getFirstName());
+        ValidatorUtils.nameValidate(Fields.LAST_NAME,doctor.getLastName());
+        ValidatorUtils.nameValidate(Fields.FIRST_NAME,doctor.getFirstName());
         if (doctor.getLogin()==null||(doctor.getLogin().isEmpty())){
             throw new ValidateException("login");
         }
@@ -85,7 +90,7 @@ public class DoctorService implements Service<Doctor> {
         if(doctorDop!=null && doctorDop.getId()!=doctor.getId()){
             throw new ValidateException("login_exist");
         }
-        if (doctor.getPassword()==null){
+        if (doctor.getPassword()==null||doctor.getPassword().length()<3){
             throw new ValidateException("password");
         }
         if (doctor.getCategory()==null){

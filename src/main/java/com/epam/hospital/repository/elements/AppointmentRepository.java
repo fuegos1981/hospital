@@ -51,7 +51,7 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
         return appointmentRepository.delete(Constants.DELETE_APPOINTMENT, appointment.getId());
     }
 
-    public List<Appointment> getAllAppointments(Map<String, Integer> selection, SortRule sortRule,int[] limit) throws DBException {
+    public List<Appointment> getAllAppointments(Map<String, Object> selection, SortRule sortRule,int[] limit) throws DBException {
         if (selection==null)
             return appointmentRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_APPOINTMENTS,
                     selection, sortRule,limit).getQuery());
@@ -61,7 +61,7 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
                 selection.values().toArray());
     }
 
-    public int getSize(Map<String, Integer> selection) throws DBException {
+    public int getSize(Map<String, Object> selection) throws DBException {
         if (selection==null)
             return appointmentRepository.readSize(Constants.GET_SIZE_APPOINTMENT);
         else

@@ -67,11 +67,12 @@ public class CreateDoctorCommand implements ActionCommand {
         if (id != null && request.getParameter("isFirst") != null) {
             doctor = doctorService.readById(id);
             request.setAttribute(ControllerConstants.ROLE, doctor.getRole().toString());
+            request.setAttribute(Fields.PASSWORD, Fields.PASSWORD_NOT_CHANGE);
         } else {
             if (request.getAttribute(ControllerConstants.ROLE) == null) {
                 request.setAttribute(ControllerConstants.ROLE, Role.NURSE.toString());
             }
-            ControllerUtils.setAttributes(request, ControllerConstants.CATEGORY_ID, "password");
+            ControllerUtils.setAttributes(request, ControllerConstants.CATEGORY_ID, Fields.PASSWORD);
             Category category = (Category) categoryService.readById(ControllerUtils.parseID(request, ControllerConstants.CATEGORY_ID));
             doctor = Doctor.createDoctor(request.getParameter(Fields.LAST_NAME),
                     request.getParameter(Fields.FIRST_NAME), category);

@@ -7,7 +7,7 @@ import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.repository.elements.SimpleRepository;
 import com.epam.hospital.service.Service;
-import com.epam.hospital.service.ServiceUtils;
+import com.epam.hospital.service.ValidatorUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -55,16 +55,16 @@ public class SimpleService implements Service<SimpleModel> {
     }
 
     @Override
-    public List<SimpleModel> getAll(Map<String, Integer> selection, SortRule sortRule, int[] limit) throws DBException, SQLException {
+    public List<SimpleModel> getAll(Map<String, Object> selection, SortRule sortRule, int[] limit) throws DBException, SQLException {
         simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.getAll();
     }
-    public int getSize(Map<String, Integer> selection) throws DBException {
+    public int getSize(Map<String, Object> selection) throws DBException {
         return simpleRepository.getSize();
     }
 
     private void checkSimple(SimpleModel simpleModel) throws ValidateException, DBException {
-        ServiceUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
+        ValidatorUtils.nameValidate(ControllerConstants.NAME, simpleModel.getName());
         if (simpleRepository.readByName(simpleModel.getName())!=null){
             throw new ValidateException("duplicate_name");
         }

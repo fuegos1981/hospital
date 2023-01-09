@@ -14,7 +14,7 @@ public interface Service<T> {
     boolean create(T t) throws DBException, ValidateException, SQLException;
     boolean update(T t) throws DBException, ValidateException, SQLException;
     void delete(T t) throws DBException, ValidateException, SQLException;
-    List<T> getAll(Map<String,Integer> selection, SortRule sortRule, int[] limit) throws DBException, SQLException;
-    int getSize(Map<String,Integer> selection) throws DBException;
+    List<T> getAll(Map<String,Object> selection, SortRule sortRule, int[] limit) throws DBException, SQLException;
+    int getSize(Map<String,Object> selection) throws DBException;
 
 }

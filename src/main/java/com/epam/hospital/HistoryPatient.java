@@ -68,7 +68,7 @@ public class HistoryPatient {
     }
     private static void getTable(PDPageContentStream contentStream, PDPage page, Patient patient) throws IOException, DBException, SQLException {
         AppointmentService appointmentService = AppointmentService.getAppointmentService();
-        Map<String,Integer> selection = new HashMap<>();
+        Map<String,Object> selection = new HashMap<>();
         selection.put("patient_id",patient.getId());
         List<AppointmentDto> list =appointmentService.getAll(selection, null, null);
         int pageHeight = (int)page.getTrimBox().getHeight()-200; //get height of the page
