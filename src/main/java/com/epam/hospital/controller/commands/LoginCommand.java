@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 public class LoginCommand implements ActionCommand {
     private static final String PARAM_NAME_LOGIN = "username";
     private static final String PARAM_NAME_PASSWORD = "password";
-    private final Service<Doctor> doctorService = DoctorService.getDoctorService();
+    private Service<Doctor> doctorService = DoctorService.getDoctorService();
 
     /**
      * <p>This method generates a page or path with a response to the client when login user.

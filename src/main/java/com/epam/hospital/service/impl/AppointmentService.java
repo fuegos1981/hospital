@@ -69,7 +69,7 @@ public class AppointmentService implements Service<AppointmentDto> {
             throw new ValidateException("doctor");
         if (appointment.getDiagnosisId()==null)
             throw new ValidateException("diagnosis");
-        if (appointment.getMedication().isEmpty()&& appointment.getProcedure().isEmpty()&& appointment.getOperation().isEmpty())
+        if (appointment.getDescription().isEmpty())
             throw new ValidateException("description");
     }
 
