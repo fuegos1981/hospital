@@ -43,6 +43,7 @@ public class CreateAppointmentCommand implements ActionCommand {
      */
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
+        ControllerUtils.setPathReturn(request);
         Integer id = ControllerUtils.parseID(request,Fields.ID);
         ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID,Fields.IS_PATIENT, Fields.DATE_CREATE);
         try {
@@ -62,11 +63,7 @@ public class CreateAppointmentCommand implements ActionCommand {
                     appointment.setId(id);
                     appointmentService.update(appointment);
                 }
-                if (Boolean.parseBoolean(request.getParameter(Fields.IS_PATIENT)))
-                    return "/hospital/readPatient?id="+appointment.getPatientId()+"&command=patient_info";
-                else {
-                    return "/hospital/medic?doctor_id=" + appointment.getDoctorId() + "&command=medic";
-                }
+                return request.getParameter("path_return");
 
             }
         } catch (ValidateException e) {

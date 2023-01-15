@@ -46,7 +46,7 @@
                         <div class="table-responsive col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&command=add_schedule&is_patient=true"><fmt:message key="add_visit"/></a>
+                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&command=add_schedule&is_patient=true&from=patient_info"><fmt:message key="add_visit"/></a>
                             </div>
                             <table id = "AllSchedule" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -61,8 +61,8 @@
                                         <td><c:out value="${schedule.getDoctorName()}"/></td>
 
                                         <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd HH:mm" /></td>
-                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&command=add_schedule&isFirst=true&is_patient=true"/><fmt:message key="edit"/></td>
-                                        <td><a href ="/hospital/deleteSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatientId()}&command=delete_schedule"/><fmt:message key="delete"/></td>
+                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatientId()}&command=add_schedule&isFirst=true&from=patient_info"/><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/deleteSchedule?id=${schedule.getId()}&patient_id=${schedule.getPatientId()}&command=delete_schedule&from=patient_info"/><fmt:message key="delete"/></td>
                                     </tr>
                                 </c:forEach>
                             </table>
@@ -71,7 +71,7 @@
                         <div class="table-responsive  col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&patient_id=${patient_id}&is_patient=true&isFirst=true"><fmt:message key="create_appointment"/></a>
+                                <a class="btn btn-info btn-md" href="/hospital/editAppointment?command=edit_appointment&patient_id=${patient_id}&isFirst=true&from=patient_info"><fmt:message key="create_appointment"/></a>
                             </div>
                             <table id = "AllAppointments" class="table table-bordered table-hover table-striped">
                                 <tr>
@@ -89,7 +89,7 @@
                                         <td><c:out value="${appointment.getDoctorName()}"/></td>
                                         <td><c:out value="${appointment.getCategoryName()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosisName()}"/></td>
-                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&is_patient=true&isFirst=true"><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&isFirst=true&from=patient_info"><fmt:message key="edit"/></td>
                                     </tr>
                                </c:forEach>
                             </table>

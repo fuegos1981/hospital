@@ -22,7 +22,7 @@
         <form id="base-form" class="form" action="addSchedule" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
             <input type="hidden" name="command" value="add_schedule" />
-            <input type="hidden" name="is_patient" value="${is_patient}" />
+            <input type="hidden" name="path_return" value="${path_return}" />
             <input type="hidden" name="id" value="${id}" />
             <div id="base">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>

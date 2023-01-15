@@ -19,8 +19,6 @@ public class ActionFactory {
      */
     public ActionCommand defineCommand(HttpServletRequest request) {
         String action = request.getParameter("command");
-        CommandEnum currentEnum = CommandEnum.valueOf(action.toUpperCase());
-        return currentEnum.getCurrentCommand();
-
+        return action==null?null:CommandEnum.valueOf(action.toUpperCase()).getCurrentCommand();
     }
 }

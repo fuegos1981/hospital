@@ -103,6 +103,26 @@ public class ControllerUtils {
         }
     }
 
+    public  static void setPathReturn(HttpServletRequest request){
+
+        String path;
+        String patient_id = request.getParameter(ControllerConstants.PATIENT_ID);
+        String doctor_id = request.getParameter(ControllerConstants.DOCTOR_ID);
+        if (request.getParameter("path_return")==null){
+            String from =request.getParameter("from");
+            if (from.equals("patient_info"))
+                path ="/hospital/readPatient?id="+patient_id+"&command="+from;
+            else if (from.equals("admin"))
+                path ="/hospital/admin";
+            else
+                path = "/hospital/medic?patient_id="+patient_id+"&doctor_id="+doctor_id+"&command="+from;
+            request.setAttribute("path_return",path);
+        }
+        else
+            ControllerUtils.setAttributes(request,"path_return");
+
+    }
+
     /**
      * <p>This method downloads the patient's history to the client's computer.
      * </p>

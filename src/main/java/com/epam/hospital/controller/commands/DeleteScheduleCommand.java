@@ -5,7 +5,6 @@ import com.epam.hospital.controller.ActionCommand;
 import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.dto.ScheduleDto;
-import com.epam.hospital.model.Schedule;
 import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.Service;
@@ -35,8 +34,9 @@ public class DeleteScheduleCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale){
         try {
+            ControllerUtils.setPathReturn(request);
             scheduleService.delete(scheduleService.readById( ControllerUtils.parseID(request, Fields.ID)));
-            return "/hospital/readPatient?id="+ControllerUtils.parseID(request, Fields.PATIENT_ID)+"&command=patient_info";
+            return (String) request.getAttribute("path_return");
         } catch (ValidateException|DBException|SQLException e) {
             request.setAttribute(ControllerConstants.MESSAGE, e.getMessage());
             return ControllerConstants.PAGE_ERROR;

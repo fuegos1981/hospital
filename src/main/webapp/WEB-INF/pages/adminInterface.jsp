@@ -52,7 +52,7 @@
                                               <td><c:out value="${patient.toString()}"/></td>
                                               <td><c:out value="${patient.getBirthday()}"/></td>
                                               <td><a href ="/hospital/readPatient?id=${patient.getId()}&command=patient_info"><fmt:message key="read"/></td>
-                                              <td><a href ="/hospital/addSchedule?patient_id=${patient.getId()}&command=add_schedule&is_patient=true" method="post"><fmt:message key="visit"/></td>
+                                              <td><a href ="/hospital/addSchedule?patient_id=${patient.getId()}&command=add_schedule&from=admin" method="post"><fmt:message key="visit"/></td>
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -86,7 +86,7 @@
                                         <td><c:out value="${doctor.getCategory()}"/></td>
                                         <td><a href ="/hospital/medic?command=medic&doctor_id=${doctor.getId()}"><fmt:message key="read"/></td>
                                         <td><a href ="/hospital/editDoctor?command=edit_doctor&id=${doctor.getId()}&isFirst=true"><fmt:message key="edit"/></td>
-                                        <td><a href ="/hospital/addSchedule?doctor_id=${doctor.getId()}&name=${doctor.toString()}&command=add_schedule&is_patient=false"><fmt:message key="visit"/></td>
+                                        <td><a href ="/hospital/addSchedule?doctor_id=${doctor.getId()}&name=${doctor.toString()}&command=add_schedule&from=admin"><fmt:message key="visit"/></td>
                                     </tr>
                                </c:forEach>
                             </table>

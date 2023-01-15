@@ -27,6 +27,7 @@
             <c:import url="/WEB-INF/pages/header.jsp" />
             <input type="hidden" name="command" value="edit_appointment" />
             <input type="hidden" name="id" value="${id}" />
+            <input type="hidden" name="path_return" value="${path_return}" />
             <div id="base3">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
                 <div class="container">

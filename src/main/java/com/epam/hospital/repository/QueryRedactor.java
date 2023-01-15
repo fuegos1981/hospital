@@ -1,5 +1,4 @@
 package com.epam.hospital.repository;
-
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -11,9 +10,10 @@ import java.util.stream.Collectors;
  */
 public class QueryRedactor {
     private  String query;
-    Map<String, Object> selection;
-    SortRule sortRule;
+    private  Map<String, Object> selection;
+    private  SortRule sortRule;
     private  int[] limit;
+
 
     /**
      * <p>This method is used to receive object QueryRedactor

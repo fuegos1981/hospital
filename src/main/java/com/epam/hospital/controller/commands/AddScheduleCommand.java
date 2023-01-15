@@ -41,8 +41,8 @@ public class AddScheduleCommand implements ActionCommand {
      */
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
+        ControllerUtils.setPathReturn(request);
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        setPath(request);
         ControllerUtils.setAttributes(request, Fields.ID,Fields.IS_PATIENT, Fields.VISIT_TIME);
         request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
         request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null,null));
@@ -58,12 +58,7 @@ public class AddScheduleCommand implements ActionCommand {
                     scheduleDto.setId(id);
                     scheduleService.update(scheduleDto);
                 }
-                if (Boolean.parseBoolean(request.getParameter(Fields.IS_PATIENT)))
-                    return "/hospital/readPatient?id="+scheduleDto.getPatientId()+"&command=patient_info";
-                else {
-                    return "/hospital/medic?doctor_id=" + scheduleDto.getDoctorId() + "&command=medic";
-                }
-
+                return request.getParameter("path_return");
             }
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString("not_correct")+": "+currentMessageLocale.getString(e.getMessage()));
@@ -71,11 +66,6 @@ public class AddScheduleCommand implements ActionCommand {
         }
     }
 
-    private void setPath(HttpServletRequest request) {
-        if (request.getAttribute("path")==null){
-
-        }
-    }
 
     private ScheduleDto getScheduleDto(HttpServletRequest request, Integer id) throws ParseException, DBException, ValidateException, SQLException {
 
