@@ -15,8 +15,8 @@ public class QueryRedactorTest {
         Map<String,Object> selection = new HashMap<>();
         selection.put(Fields.PATIENT_ID,100);
         selection.put(Fields.DOCTOR_ID,50);
-        QueryRedactor qr = QueryRedactor.getRedactor("",selection);
-        assertEquals(" where doctor_id = ? and patient_id = ?", qr.getQuery());
+        QueryRedactor qr = QueryRedactor.getRedactor(selection);
+        assertEquals(" where doctor_id = ? and patient_id = ?", qr.getQuery(""));
     }
 
     @Test
@@ -24,7 +24,13 @@ public class QueryRedactorTest {
         Map<String,Object> selection = new HashMap<>();
         selection.put(Fields.PATIENT_ID,100);
         selection.put(Fields.DOCTOR_ID,50);
-        QueryRedactor qr = QueryRedactor.getRedactor("",selection, SortRule.NAME_DESC,new int[]{2,5});
-        assertEquals(" where doctor_id = ? and patient_id = ? order by last_Name desc,first_Name desc limit 2,5", qr.getQuery());
+        QueryRedactor qr = QueryRedactor.getRedactor(selection, SortRule.NAME_DESC,new int[]{2,5});
+        assertEquals(" where doctor_id = ? and patient_id = ? order by last_Name desc,first_Name desc limit 2,5", qr.getQuery(""));
+    }
+
+    @Test
+    void testGetSelectionValuesNull() {
+        QueryRedactor qr = QueryRedactor.getRedactor(null, SortRule.NAME_DESC,new int[]{2,5});
+        assertNull(qr.getSelectionValues());
     }
 }

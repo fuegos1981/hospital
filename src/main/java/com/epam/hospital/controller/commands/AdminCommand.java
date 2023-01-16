@@ -7,6 +7,7 @@ import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.repository.QueryRedactor;
 import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.DoctorService;
@@ -42,7 +43,6 @@ public class AdminCommand implements ActionCommand {
      */
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException {
-       request.getSession().removeAttribute("patient");
        fillPatients(request);
        fillDoctors(request);
             return ControllerConstants.PAGE_ADMIN;
@@ -53,8 +53,8 @@ public class AdminCommand implements ActionCommand {
         String sortDoctor = request.getParameter(SORT_DOCTOR);
         sortDoctor=(sortDoctor==null)? SortRule.NAME_ASC.toString():sortDoctor;
         request.setAttribute(SORT_DOCTOR,sortDoctor);
-        int[] limit = ControllerUtils.setMasForPagination(request, doctorService.getSize(null),CURRENT_PAGE_DOCTOR,COUNT_PAGE_DOCTOR);
-        List<Doctor> doctors =doctorService.getAll(null,SortRule.valueOf(sortDoctor),limit);
+        int[] limit = ControllerUtils.setMasForPagination(request, doctorService.getSize(),CURRENT_PAGE_DOCTOR,COUNT_PAGE_DOCTOR);
+        List<Doctor> doctors =doctorService.getAll(QueryRedactor.getRedactor(SortRule.valueOf(sortDoctor),limit));
         request.setAttribute(ControllerConstants.DOCTORS,doctors);
 
     }
@@ -63,8 +63,8 @@ public class AdminCommand implements ActionCommand {
         String sortPatient = request.getParameter(SORT_PATIENT);
         sortPatient=(sortPatient==null)?SortRule.NAME_ASC.toString():sortPatient;
         request.setAttribute(SORT_PATIENT,sortPatient);
-        int[] limit = ControllerUtils.setMasForPagination(request, patientService.getSize(null),CURRENT_PAGE_PATIENT,COUNT_PAGE_PATIENT);
-        List<Patient> patients =patientService.getAll(null,SortRule.valueOf(sortPatient), limit);
+        int[] limit = ControllerUtils.setMasForPagination(request, patientService.getSize(),CURRENT_PAGE_PATIENT,COUNT_PAGE_PATIENT);
+        List<Patient> patients =patientService.getAll(QueryRedactor.getRedactor(SortRule.valueOf(sortPatient), limit));
         request.setAttribute(ControllerConstants.PATIENTS,patients);
     }
 

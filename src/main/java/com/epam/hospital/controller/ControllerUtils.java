@@ -44,12 +44,12 @@ public class ControllerUtils {
 
     /**
      * <p>This method adds all attributes from request whose names are listed in the second argument</p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
-     * @param atrs are list of parameter names to be added in request.
+     * @param request is as an argument to the servlet's service methods (doGet, doPost...).
+     * @param args are list of parameter names to be added in request.
      *
      */
-    public static void setAttributes(HttpServletRequest request, String... atrs) {
-        for (String atr : atrs) {
+    public static void setAttributes(HttpServletRequest request, String... args) {
+        for (String atr : args) {
             request.setAttribute(atr, request.getParameter(atr));
         }
     }
@@ -57,7 +57,7 @@ public class ControllerUtils {
     /**
      * <p>This method gets id from request and converts to an integer.
      * </p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request is as an argument to the servlet's service methods (doGet, doPost...).
      * @param idName is the name of the parameter to be converted to an integer.
      * @return  an integer or null if the parameter name was not found in the request
      *
@@ -73,7 +73,7 @@ public class ControllerUtils {
     /**
      * <p>This method sets the attributes in the query required to display pagination for the list.
      * </p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request is as an argument to the servlet's service methods (doGet, doPost...).
      * @param countList is a list size.
      * @param currentCountName is the name of the parameter with current count page.
      * @param countPageName is the name of the parameter with count pages.*
@@ -103,46 +103,47 @@ public class ControllerUtils {
         }
     }
 
-    public  static void setPathReturn(HttpServletRequest request){
-
-        String path;
+    public  static String setPathReturn(HttpServletRequest request){
+        StringBuilder path = new StringBuilder();
         String patient_id = request.getParameter(ControllerConstants.PATIENT_ID);
         String doctor_id = request.getParameter(ControllerConstants.DOCTOR_ID);
         if (request.getParameter("path_return")==null){
             String from =request.getParameter("from");
             if (from.equals("patient_info"))
-                path ="/hospital/readPatient?id="+patient_id+"&command="+from;
+                path.append("/hospital/readPatient?id=").append(patient_id).append("&command=patient_info");
             else if (from.equals("admin"))
-                path ="/hospital/admin";
-            else
-                path = "/hospital/medic?patient_id="+patient_id+"&doctor_id="+doctor_id+"&command="+from;
-            request.setAttribute("path_return",path);
+                path.append("/hospital/admin?command=admin");
+            else {
+                path.append("/hospital/medic?command=medic");
+                if (patient_id!=null)
+                    path.append("&patient_id=").append(patient_id);
+                if (doctor_id!=null)
+                    path.append("&doctor_id=").append(doctor_id);
+            }
+            request.setAttribute("path_return",path.toString());
         }
         else
             ControllerUtils.setAttributes(request,"path_return");
-
+        return  path.toString();
     }
 
     /**
      * <p>This method downloads the patient's history to the client's computer.
      * </p>
-     * @param req {@link HttpServletRequest} is as an argument to the servlet's service methods (doGet, doPost, etc).
-     * @param resp {@link HttpServletResponse} is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param req {@link HttpServletRequest} is as an argument to the servlet's service methods (doGet, doPost...).
+     * @param resp {@link HttpServletResponse} is as an argument to the servlet's service methods (doGet, doPost...).
      *
      */
     static void downloadHistory(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
 
         Patient patient = PatientService.getPatientService().readById(ControllerUtils.parseID(req, Fields.PATIENT_ID));
         HistoryPatient.getHistoryPatient(patient, req.getServletContext().getRealPath("WEB-INF/pdf/info.pdf"));
-        final int ARBITARY_SIZE = 1048;
+        final int ARBITRARY_SIZE = 1048;
         resp.setContentType("application/pdf");
         resp.setHeader("Content-disposition", "attachment; filename=info.pdf");
-
         try(InputStream in = req.getServletContext().getResourceAsStream("/WEB-INF/pdf/info.pdf");
             OutputStream out = resp.getOutputStream()) {
-
-            byte[] buffer = new byte[ARBITARY_SIZE];
-
+            byte[] buffer = new byte[ARBITRARY_SIZE];
             int numBytesRead;
             while ((numBytesRead = in.read(buffer)) > 0) {
                 out.write(buffer, 0, numBytesRead);

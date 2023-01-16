@@ -6,6 +6,7 @@ import com.epam.hospital.controller.commands.CreateDoctorCommand;
 import com.epam.hospital.model.Category;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.model.SimpleModel;
 import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.SimpleService;
@@ -55,7 +56,10 @@ public class CreateDoctorCommandTest {
 
     @Test
     void getExecuteCreateDoctorSubmit() throws DBException, SQLException, ParseException, ValidateException {
-        Doctor doctor = Doctor.createDoctor("Markov","Ivan", Category.createInstance("Anesthesiologist"));
+        Category category = (Category) SimpleModel.getSimpleInstance("Category");
+        category.setName("Anesthesiologist");
+        category.setId(5);
+        //Doctor doctor = Doctor.createDoctor("Markov","Ivan", category);
         HttpServletRequest request= mock(HttpServletRequest.class);
         lenient().when(request.getParameter("LAST_NAME")).thenReturn("Markov1");
         lenient().when(request.getParameter("gender")).thenReturn(null);
@@ -65,9 +69,8 @@ public class CreateDoctorCommandTest {
         lenient().when(request.getParameter("password")).thenReturn("111");
         lenient().when(request.getParameter(ControllerConstants.CATEGORY_ID)).thenReturn("5");
         lenient().when(request.getAttribute("role")).thenReturn("DOCTOR");
-        Category category = Category.createInstance("Anesthesiologist");
-        category.setId(5);
-        lenient().when((Category)categoryService.readById(Mockito.any())).thenReturn(category);
+
+        lenient().when((Category)categoryService.readById(5)).thenReturn(category);
         when(doctorService.create(Mockito.any())).thenReturn(true);
         Mockito.lenient().doNothing().when(request).setAttribute(Mockito.isA(String.class), Mockito.isA(Object.class));
         assertEquals("/hospital/main?command=admin", cpc.execute(request, MessageManager.EN));

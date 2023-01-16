@@ -45,11 +45,11 @@ public class CreateAppointmentCommand implements ActionCommand {
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         ControllerUtils.setPathReturn(request);
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID,Fields.IS_PATIENT, Fields.DATE_CREATE);
+        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID, Fields.DATE_CREATE);
         try {
-            request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null,null, null));
-            request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
-            request.setAttribute(ControllerConstants.DIAGNOSISES, diagnosisService.getAll(null,null,null));
+            request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll());
+            request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll());
+            request.setAttribute(ControllerConstants.DIAGNOSISES, diagnosisService.getAll());
             AppointmentDto appointment= getAppointment(request,id);
             if (request.getParameter(ControllerConstants.SUBMIT) == null ) {
                 return ControllerConstants.PAGE_EDIT_APPOINTMENT;
@@ -96,6 +96,8 @@ public class CreateAppointmentCommand implements ActionCommand {
         if (id!=null&&request.getParameter("isFirst")!=null){
             appointment = appointmentService.readById(id);
             request.setAttribute(Fields.DATE_CREATE, appointment.getDateCreate().toString());
+            request.setAttribute(Fields.PATIENT_ID,appointment.getPatientId());
+            request.setAttribute(Fields.DOCTOR_ID,appointment.getDoctorId());
         }
         else {
             Date dateCreate = ControllerUtils.getDateByString(request.getParameter(Fields.DATE_CREATE),false);

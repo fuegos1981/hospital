@@ -3,14 +3,13 @@ package com.epam.hospital.service.impl;
 import com.epam.hospital.dto.AppointmentDto;
 import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.exceptions.DBException;
-import com.epam.hospital.repository.SortRule;
+import com.epam.hospital.repository.QueryRedactor;
 import com.epam.hospital.repository.elements.AppointmentRepository;
 import com.epam.hospital.service.MappingUtils;
 import com.epam.hospital.service.Service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AppointmentService implements Service<AppointmentDto> {
@@ -21,8 +20,9 @@ public class AppointmentService implements Service<AppointmentDto> {
         this.appointmentRepository = AppointmentRepository.getRepository();
         this.mappingUtils = new MappingUtils();
     }
-    public static AppointmentService getAppointmentService(){
-       return new AppointmentService();
+
+    public static AppointmentService getAppointmentService() {
+        return new AppointmentService();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class AppointmentService implements Service<AppointmentDto> {
         if (id == null) {
             throw new ValidateException("appointment");
         }
-        return  mappingUtils.mapToAppointmentDto(appointmentRepository.readByID(id));
+        return mappingUtils.mapToAppointmentDto(appointmentRepository.readByID(id));
     }
 
     @Override
@@ -51,34 +51,39 @@ public class AppointmentService implements Service<AppointmentDto> {
     }
 
     @Override
-    public List<AppointmentDto> getAll(Map<String, Object> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
-        return appointmentRepository.getAllAppointments(selection, sortRule, limit).stream()
+    public List<AppointmentDto> getAll(QueryRedactor qr) throws DBException, SQLException {
+        return appointmentRepository.getAllAppointments(qr).stream()
                 .map(mappingUtils::mapToAppointmentDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public int getSize(Map<String,Object> selection) throws DBException {
-        return appointmentRepository.getSize(selection);
+    public int getSize(QueryRedactor qr) throws DBException {
+        return appointmentRepository.getSize(qr);
+    }
+
+    @Override
+    public List<AppointmentDto> getAll() throws DBException, SQLException {
+        return appointmentRepository.getAllAppointments().stream()
+                .map(mappingUtils::mapToAppointmentDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getSize() throws DBException {
+        return appointmentRepository.getSize();
     }
 
     private void checkAppointment(AppointmentDto appointment) throws ValidateException {
-        if (appointment.getPatientId()==null)
+        if (appointment.getPatientId() == null)
             throw new ValidateException("patient");
-        if (appointment.getDoctorId()==null)
+        if (appointment.getDoctorId() == null)
             throw new ValidateException("doctor");
-        if (appointment.getDiagnosisId()==null)
+        if (appointment.getDiagnosisId() == null)
             throw new ValidateException("diagnosis");
         if (appointment.getDescription().isEmpty())
             throw new ValidateException("description");
     }
-
-
-
-
-
-
-
 
 
 }

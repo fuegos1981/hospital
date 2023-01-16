@@ -9,6 +9,8 @@ import com.epam.hospital.dto.ScheduleDto;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
+import com.epam.hospital.repository.QueryRedactor;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.AppointmentService;
 import com.epam.hospital.service.impl.PatientService;
@@ -50,12 +52,12 @@ public class PatientInfoCommand implements ActionCommand {
             request.setAttribute("patient",patientService.readById(id));
             Map<String,Object> selection = new HashMap<>();
             selection.put(Fields.PATIENT_ID,id);
-            int[] limitSchedule = ControllerUtils.setMasForPagination(request, scheduleService.getSize(selection),
+            int[] limitSchedule = ControllerUtils.setMasForPagination(request, scheduleService.getSize(QueryRedactor.getRedactor(selection)),
                     CURRENT_PAGE_SCHEDULE,COUNT_PAGE_SCHEDULE);
-            request.setAttribute("schedules",scheduleService.getAll(selection, null, limitSchedule));
-            int[] limitApp = ControllerUtils.setMasForPagination(request, appointmentService.getSize(selection),
+            request.setAttribute("schedules",scheduleService.getAll(QueryRedactor.getRedactor(selection, SortRule.VISIT_TIME_DESC, limitSchedule)));
+            int[] limitApp = ControllerUtils.setMasForPagination(request, appointmentService.getSize(QueryRedactor.getRedactor(selection)),
                     CURRENT_PAGE_APPOINTMENT,COUNT_PAGE_APPOINTMENT);
-            request.setAttribute("appointments",appointmentService.getAll(selection, null, limitApp));
+            request.setAttribute("appointments",appointmentService.getAll(QueryRedactor.getRedactor(selection, SortRule.DATE_CREATE_DESC, limitApp)));
             return ControllerConstants.PAGE_PATIENT_INFO;
         } catch (ValidateException e) {
             request.setAttribute(ControllerConstants.MESSAGE, currentMessageLocale.getString(e.getMessage()));

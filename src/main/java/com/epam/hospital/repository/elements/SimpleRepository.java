@@ -50,7 +50,7 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
 
     @Override
     protected SimpleModel readByResultSet(ResultSet rs) throws SQLException {
-        while(rs.next()){
+        if(rs.next()){
             return getSimpleModel(rs);
         }
         return null;

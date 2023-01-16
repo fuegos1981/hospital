@@ -31,7 +31,7 @@ public class CreateDoctorCommand implements ActionCommand {
      * <p>This method generates a page or path with a response to the client when creating or editing a doctor.
      * </p>
      *
-     * @param request              is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request              is as an argument to the servlet's service methods (doGet, doPost...).
      * @param currentMessageLocale is current locale, used to display error messages in the given locale.
      * @return String page or path with a response to the client when creating or editing a doctor.
      */
@@ -41,7 +41,7 @@ public class CreateDoctorCommand implements ActionCommand {
         try {
             Integer id = ControllerUtils.parseID(request, Fields.ID);
             ControllerUtils.setAttributes(request, Fields.ID, ControllerConstants.MESSAGE, ControllerConstants.ROLE);
-            request.setAttribute(ControllerConstants.CATEGORIES, categoryService.getAll(null,null, null));
+            request.setAttribute(ControllerConstants.CATEGORIES, categoryService.getAll());
             Doctor doctor = getDoctor(request, id);
             if (request.getParameter(ControllerConstants.SUBMIT) == null) {
                 return ControllerConstants.PAGE_EDIT_DOCTOR;

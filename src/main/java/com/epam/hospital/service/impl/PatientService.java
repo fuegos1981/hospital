@@ -4,14 +4,13 @@ import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
-import com.epam.hospital.repository.SortRule;
+import com.epam.hospital.repository.QueryRedactor;
 import com.epam.hospital.repository.elements.PatientRepository;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.ValidatorUtils;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class PatientService implements Service<Patient> {
 
@@ -21,17 +20,18 @@ public class PatientService implements Service<Patient> {
         this.patientRepository = PatientRepository.getRepository();
     }
 
-    public static PatientService getPatientService(){
+    public static PatientService getPatientService() {
         return new PatientService();
     }
 
     @Override
-    public Patient readById(Integer id) throws DBException, SQLException{
-        if(id==null)
+    public Patient readById(Integer id) throws DBException, SQLException {
+        if (id == null)
             return null;
         else
             return patientRepository.readByID(id);
     }
+
     @Override
     public boolean create(Patient patient) throws DBException, ValidateException {
         checkPatient(patient);
@@ -50,22 +50,31 @@ public class PatientService implements Service<Patient> {
     }
 
     @Override
-    public List<Patient> getAll(Map<String, Object> selection, SortRule sortRule, int[] limit) throws DBException, SQLException {
-        return patientRepository.getAllPatients(selection, sortRule, limit);
+    public List<Patient> getAll(QueryRedactor qr) throws DBException, SQLException {
+        return patientRepository.getAllPatients(qr);
     }
 
-    public int getSize(Map<String, Object> selection) throws DBException {
-        return patientRepository.getSize(selection);
+    public int getSize(QueryRedactor qr) throws DBException {
+        return patientRepository.getSize(qr);
     }
 
-    private void checkPatient(Patient patient) throws ValidateException{
-        if (patient==null) {
+    @Override
+    public List<Patient> getAll() throws DBException, SQLException {
+        return patientRepository.getAllPatients();
+    }
+
+    public int getSize() throws DBException {
+        return patientRepository.getSize();
+    }
+
+    private void checkPatient(Patient patient) throws ValidateException {
+        if (patient == null) {
             throw new ValidateException("patient");
         }
-        ValidatorUtils.nameValidate(Fields.LAST_NAME,patient.getLastName());
-        ValidatorUtils.nameValidate(Fields.FIRST_NAME,patient.getFirstName());
-        ValidatorUtils.emailValidate("Email",patient.getEmail());
-        ValidatorUtils.birthdayValidate(Fields.PATIENT_BIRTHDAY,patient.getBirthday());
+        ValidatorUtils.nameValidate(Fields.LAST_NAME, patient.getLastName());
+        ValidatorUtils.nameValidate(Fields.FIRST_NAME, patient.getFirstName());
+        ValidatorUtils.emailValidate("Email", patient.getEmail());
+        ValidatorUtils.birthdayValidate(Fields.PATIENT_BIRTHDAY, patient.getBirthday());
     }
 
 }

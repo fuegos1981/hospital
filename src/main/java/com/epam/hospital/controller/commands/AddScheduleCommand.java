@@ -43,9 +43,9 @@ public class AddScheduleCommand implements ActionCommand {
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         ControllerUtils.setPathReturn(request);
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        ControllerUtils.setAttributes(request, Fields.ID,Fields.IS_PATIENT, Fields.VISIT_TIME);
-        request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll(null,null,null));
-        request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll(null, null,null));
+        ControllerUtils.setAttributes(request, Fields.ID, Fields.VISIT_TIME, ControllerConstants.MESSAGE);
+        request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll());
+        request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll());
         try {
             ScheduleDto scheduleDto = getScheduleDto(request, id);
             if (request.getParameter(ControllerConstants.SUBMIT)==null) {

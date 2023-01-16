@@ -8,6 +8,7 @@ import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.model.Category;
 import com.epam.hospital.model.Doctor;
 import com.epam.hospital.model.Role;
+import com.epam.hospital.model.SimpleModel;
 import com.epam.hospital.service.impl.DoctorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,11 +43,14 @@ public class LoginCommandTest {
     public void getExecuteIsUserSubmit() throws DBException, ValidateException {
         HttpServletRequest request= mock(HttpServletRequest.class);
         HttpSession session= mock(HttpSession.class);
+        Category category = (Category) SimpleModel.getSimpleInstance("Category");
+        category.setName("Pediatric");
+        category.setId(5);
         when(request.getSession(true)).thenReturn(session);
         when(request.getParameter("submit")).thenReturn("submit");
         when(request.getParameter("username")).thenReturn("admin");
         when(request.getParameter("password")).thenReturn("111");
-        Doctor doctor = Doctor.createDoctor("Vanow","Oleg", Category.createInstance("pediatric"));
+        Doctor doctor = Doctor.createDoctor("Vanow","Oleg", category);
         doctor.setRole(Role.ADMIN);
         when(doctorService.readByLoginPassword(request.getParameter("username"),
                 request.getParameter("password"))).thenReturn(doctor);

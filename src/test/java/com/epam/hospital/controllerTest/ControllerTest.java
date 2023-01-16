@@ -4,6 +4,7 @@ import com.epam.hospital.MessageManager;
 import com.epam.hospital.controller.Controller;
 import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
+import com.epam.hospital.repository.Fields;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -13,8 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ControllerTest {
     @Test
@@ -50,15 +50,35 @@ public class ControllerTest {
     @Test
     void testParseID(){
         HttpServletRequest request= mock(HttpServletRequest.class);
-        when(request.getParameter("id")).thenReturn("5");
-        assertEquals(ControllerUtils.parseID(request,"id"),5);
+        when(request.getParameter(Fields.ID)).thenReturn("5");
+        assertEquals(ControllerUtils.parseID(request,Fields.ID),5);
     }
 
     @Test
     void testParseIDNull(){
         HttpServletRequest request= mock(HttpServletRequest.class);
-        when(request.getParameter("id")).thenReturn(null);
-        assertNull(ControllerUtils.parseID(request,"id"));
+        when(request.getParameter(Fields.ID)).thenReturn(null);
+        assertNull(ControllerUtils.parseID(request,Fields.ID));
+    }
+
+    @Test
+    void testSetPathReturnMedic(){
+        HttpServletRequest request= mock(HttpServletRequest.class);
+        when(request.getParameter("path_return")).thenReturn(null);
+        when(request.getParameter("from")).thenReturn("medic");
+        when(request.getParameter(ControllerConstants.PATIENT_ID)).thenReturn("5");
+        when(request.getParameter(ControllerConstants.DOCTOR_ID)).thenReturn(null);
+        assertEquals(ControllerUtils.setPathReturn(request),"/hospital/medic?command=medic&patient_id=5");
+    }
+
+    @Test
+    void testSetPathReturnAdmin(){
+        HttpServletRequest request= mock(HttpServletRequest.class);
+        when(request.getParameter("path_return")).thenReturn(null);
+        when(request.getParameter("from")).thenReturn("admin");
+        when(request.getParameter(ControllerConstants.PATIENT_ID)).thenReturn("5");
+        when(request.getParameter(ControllerConstants.DOCTOR_ID)).thenReturn(null);
+        assertEquals(ControllerUtils.setPathReturn(request),"/hospital/admin?command=admin");
     }
 
 

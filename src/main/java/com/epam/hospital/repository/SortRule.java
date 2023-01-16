@@ -8,7 +8,9 @@ public enum SortRule {
     COUNT_PATIENT_ASC(" order by count_patients,last_Name,first_Name"),
     COUNT_PATIENT_DESC(" order by count_patients desc, last_Name, first_Name"),
     BIRTHDAY_ASC(" order by birthday,last_Name,first_Name"),
-    BIRTHDAY_DESC(" order by birthday desc,last_Name,first_Name");
+    BIRTHDAY_DESC(" order by birthday desc,last_Name,first_Name"),
+    DATE_CREATE_DESC(" order by date_create desc"),
+    VISIT_TIME_DESC(" order by visit_time desc");
 
     private  final String query;
 

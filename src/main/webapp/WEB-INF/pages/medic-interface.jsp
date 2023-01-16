@@ -78,7 +78,7 @@
                                         <td><c:out value="${schedule.getPatientName()}"/></td>
 
                                         <td><fmt:formatDate value="${schedule.getDateVisit()}" pattern = "yyyy-MM-dd hh:mm" /></td>
-                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${patient_id}&visit_time=<fmt:formatDate value='${schedule.getDateVisit()}' pattern = 'yyyy-MM-dd hh:mm' />&doctor_id=${doctor_id}&command=add_schedule&from=medic"/><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/addSchedule?id=${schedule.getId()}&patient_id=${patient_id}&visit_time=<fmt:formatDate value='${schedule.getDateVisit()}' pattern = 'yyyy-MM-dd hh:mm' />&doctor_id=${doctor_id}&command=add_schedule&isFirst=true&from=medic"/><fmt:message key="edit"/></td>
                                         <td><a href ="/hospital/deleteSchedule?id=${schedule.getId()}&patient_id=${patient_id}&doctor_id=${doctor_id}&command=delete_schedule&from=medic"/><fmt:message key="delete"/></td>
                                     </tr>
                                 </c:forEach>
@@ -106,7 +106,7 @@
                                         <td><c:out value="${appointment.getDoctorName()}"/></td>
                                         <td><c:out value="${appointment.getPatientName()}"/></td>
                                         <td><c:out value="${appointment.getDiagnosisName()}"/></td>
-                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&command=edit_appointment&isFirst=true&from=medic"><fmt:message key="edit"/></td>
+                                        <td><a href ="/hospital/editAppointment?id=${appointment.getId()}&patient_id=${patient.getId()}&doctor_id=${doctor_id}&command=edit_appointment&isFirst=true&from=medic"><fmt:message key="edit"/></td>
                                     </tr>
                                </c:forEach>
                             </table>

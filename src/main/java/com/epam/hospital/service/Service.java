@@ -1,6 +1,7 @@
 package com.epam.hospital.service;
 
 import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.repository.QueryRedactor;
 import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.exceptions.ValidateException;
 
@@ -14,7 +15,8 @@ public interface Service<T> {
     boolean create(T t) throws DBException, ValidateException, SQLException;
     boolean update(T t) throws DBException, ValidateException, SQLException;
     void delete(T t) throws DBException, ValidateException, SQLException;
-    List<T> getAll(Map<String,Object> selection, SortRule sortRule, int[] limit) throws DBException, SQLException;
-    int getSize(Map<String,Object> selection) throws DBException;
-
+    List<T> getAll(QueryRedactor qr) throws DBException, SQLException;
+    int getSize(QueryRedactor qr) throws DBException;
+    List<T> getAll() throws DBException, SQLException;
+    int getSize() throws DBException;
 }

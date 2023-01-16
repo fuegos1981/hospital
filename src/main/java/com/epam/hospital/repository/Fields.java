@@ -23,6 +23,5 @@ public interface Fields {
     String OPERATION = "operation";
     String TYPE = "type";
     String NAME = "name";
-    String IS_PATIENT = "is_patient";
     String PASSWORD_NOT_CHANGE ="password not change";
 }

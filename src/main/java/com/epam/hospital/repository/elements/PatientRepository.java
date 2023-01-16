@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 
 public class PatientRepository extends GlobalRepository<Patient>{
 
@@ -50,25 +48,27 @@ public class PatientRepository extends GlobalRepository<Patient>{
         return patientRepository.delete(Constants.DELETE_PATIENT, patient.getId());
     }
 
-    public List<Patient> getAllPatients(Map<String, Object> selection, SortRule sortRule, int[] limit) throws DBException{
-        if (selection==null)
-            return patientRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_PATIENTS,null, sortRule,limit).getQuery());
-        else
-            return patientRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_PATIENTS,selection, sortRule,limit).getQuery(),
-                selection.values().toArray());
+    public List<Patient> getAllPatients(QueryRedactor qr) throws DBException{
+            return patientRepository.findAll(qr.getQuery(Constants.GET_ALL_PATIENTS),
+                    qr.getSelectionValues());
     }
 
-    public int getSize(Map<String, Object> selection) throws DBException {
-        if (selection==null)
+    public int getSize(QueryRedactor qr) throws DBException {
+            return patientRepository.readSize(qr.getQuery(Constants.GET_SIZE_PATIENT),
+                qr.getSelectionValues());
+    }
+
+    public List<Patient> getAllPatients() throws DBException{
+            return patientRepository.findAll(Constants.GET_ALL_PATIENTS);
+    }
+
+    public int getSize() throws DBException {
             return patientRepository.readSize(Constants.GET_SIZE_PATIENT);
-        else
-            return patientRepository.readSize(QueryRedactor.getRedactor(Constants.GET_SIZE_PATIENT,selection).getQuery(),
-                selection.values().toArray());
     }
 
     @Override
     protected Patient readByResultSet(ResultSet rs) throws SQLException {
-        while(rs.next()){
+        if (rs.next()){
             return getPatient(rs);
         }
         return null;

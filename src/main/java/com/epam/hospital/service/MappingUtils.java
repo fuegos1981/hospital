@@ -16,17 +16,18 @@ import java.sql.SQLException;
 public class MappingUtils {
 
     //из entity в dto
-    public ScheduleDto mapToScheduleDto(Schedule entity){
+    public ScheduleDto mapToScheduleDto(Schedule entity) {
         ScheduleDto dto = new ScheduleDto();
         dto.setId(entity.getId());
         dto.setDoctorId(entity.getDoctor().getId());
         dto.setPatientId(entity.getPatient().getId());
-        dto.setDoctorName(entity.getDoctor().getLastName()+" "+entity.getDoctor().getFirstName());
+        dto.setDoctorName(entity.getDoctor().getLastName() + " " + entity.getDoctor().getFirstName());
         dto.setPatientName(entity.getPatient().toString());
         dto.setDateVisit(entity.getDateVisit());
 
         return dto;
     }
+
     //из dto в entity
     public Schedule mapToSchedule(ScheduleDto dto) throws DBException, ValidateException, SQLException {
         Schedule entity = new Schedule();
@@ -39,14 +40,14 @@ public class MappingUtils {
 
 
     //из entity в dto
-    public AppointmentDto mapToAppointmentDto(Appointment entity){
+    public AppointmentDto mapToAppointmentDto(Appointment entity) {
         AppointmentDto dto = new AppointmentDto();
         dto.setId(entity.getId());
         dto.setDoctorId(entity.getDoctor().getId());
         dto.setPatientId(entity.getPatient().getId());
         dto.setDiagnosisId(entity.getDiagnosis().getId());
         dto.setDiagnosisName(entity.getDiagnosis().getName());
-        dto.setDoctorName(entity.getDoctor().getLastName()+" "+entity.getDoctor().getFirstName());
+        dto.setDoctorName(entity.getDoctor().getLastName() + " " + entity.getDoctor().getFirstName());
         dto.setPatientName(entity.getPatient().toString());
         dto.setCategoryName(entity.getDoctor().getCategory().getName());
         dto.setDateCreate(entity.getDateCreate());
@@ -55,6 +56,7 @@ public class MappingUtils {
         dto.setOperation(entity.getOperation());
         return dto;
     }
+
     //из dto в entity
     public Appointment mapToAppointment(AppointmentDto dto) throws DBException, ValidateException, SQLException {
         Appointment entity = new Appointment();

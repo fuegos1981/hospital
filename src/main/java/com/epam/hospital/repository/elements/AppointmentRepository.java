@@ -51,22 +51,23 @@ public class AppointmentRepository extends GlobalRepository<Appointment> {
         return appointmentRepository.delete(Constants.DELETE_APPOINTMENT, appointment.getId());
     }
 
-    public List<Appointment> getAllAppointments(Map<String, Object> selection, SortRule sortRule,int[] limit) throws DBException {
-        if (selection==null)
-            return appointmentRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_APPOINTMENTS,
-                    selection, sortRule,limit).getQuery());
-        else
-            return appointmentRepository.findAll(QueryRedactor.getRedactor(Constants.GET_ALL_APPOINTMENTS,
-                        selection, sortRule,limit).getQuery(),
-                selection.values().toArray());
+    public List<Appointment> getAllAppointments(QueryRedactor qr) throws DBException {
+
+            return appointmentRepository.findAll(qr.getQuery(Constants.GET_ALL_APPOINTMENTS),
+                    qr.getSelectionValues());
     }
 
-    public int getSize(Map<String, Object> selection) throws DBException {
-        if (selection==null)
+    public int getSize(QueryRedactor qr) throws DBException {
+            return appointmentRepository.readSize(qr.getQuery(Constants.GET_SIZE_APPOINTMENT),
+                    qr.getSelectionValues());
+    }
+
+    public List<Appointment> getAllAppointments() throws DBException {
+            return appointmentRepository.findAll(Constants.GET_ALL_APPOINTMENTS);
+    }
+
+    public int getSize() throws DBException {
             return appointmentRepository.readSize(Constants.GET_SIZE_APPOINTMENT);
-        else
-            return appointmentRepository.readSize(QueryRedactor.getRedactor(Constants.GET_SIZE_APPOINTMENT,selection).getQuery(),
-                    selection.values().toArray());
     }
 
     @Override

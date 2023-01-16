@@ -5,7 +5,7 @@ import com.epam.hospital.exceptions.ValidateException;
 import com.epam.hospital.exceptions.DBException;
 
 import com.epam.hospital.repository.Fields;
-import com.epam.hospital.repository.SortRule;
+import com.epam.hospital.repository.QueryRedactor;
 import com.epam.hospital.repository.elements.ScheduleRepository;
 import com.epam.hospital.service.MappingUtils;
 import com.epam.hospital.service.Service;
@@ -40,7 +40,7 @@ public class ScheduleService implements Service<ScheduleDto> {
 
     @Override
     public ScheduleDto readById(Integer id) throws DBException, SQLException, ValidateException {
-        if (id==null)
+        if (id == null)
             throw new ValidateException("schedule");
         return mappingUtils.mapToScheduleDto(scheduleRepository.readByID(id));
     }
@@ -57,29 +57,39 @@ public class ScheduleService implements Service<ScheduleDto> {
     }
 
     @Override
-    public List<ScheduleDto> getAll(Map<String, Object> selection,SortRule sortRule,int[] limit) throws DBException, SQLException {
-
-        return scheduleRepository.getAllSchedules(selection, sortRule, limit).stream()
+    public List<ScheduleDto> getAll(QueryRedactor qr) throws DBException, SQLException {
+        return scheduleRepository.getAllSchedules(qr).stream()
                 .map(mappingUtils::mapToScheduleDto)
                 .collect(Collectors.toList());
 
     }
 
-    public int getSize(Map<String, Object> selection) throws DBException {
-        return scheduleRepository.getSize(selection);
+    public int getSize(QueryRedactor qr) throws DBException {
+        return scheduleRepository.getSize(qr);
+    }
+
+    @Override
+    public List<ScheduleDto> getAll() throws DBException, SQLException {
+        return scheduleRepository.getAllSchedules().stream()
+                .map(mappingUtils::mapToScheduleDto)
+                .collect(Collectors.toList());
+    }
+
+    public int getSize() throws DBException {
+        return scheduleRepository.getSize();
     }
 
     private void checkSchedule(ScheduleDto schedule) throws ValidateException, DBException {
-        if (schedule==null){
+        if (schedule == null) {
             throw new ValidateException("schedule");
         }
-        if(schedule.getPatientId()==null){
+        if (schedule.getPatientId() == null) {
             throw new ValidateException("patient");
         }
-        if(schedule.getDoctorId()==null){
+        if (schedule.getDoctorId() == null) {
             throw new ValidateException("doctor");
         }
-        ValidatorUtils.dateVisitValidate(Fields.VISIT_TIME,schedule.getDateVisit());
+        ValidatorUtils.dateVisitValidate(Fields.VISIT_TIME, schedule.getDateVisit());
         checkTime(schedule);
     }
 
@@ -87,11 +97,11 @@ public class ScheduleService implements Service<ScheduleDto> {
         Map<String, Object> selection = new HashMap<>();
         selection.put(Fields.DOCTOR_ID, schedule.getDoctorId());
         selection.put(Fields.VISIT_TIME, schedule.getDateVisit());
-        if(scheduleRepository.getSize(selection)>0)
-          throw new ValidateException("doctor_not_time");
+        if (scheduleRepository.getSize(QueryRedactor.getRedactor(selection)) > 0)
+            throw new ValidateException("doctor_not_time");
         selection.remove(Fields.DOCTOR_ID);
         selection.put(Fields.PATIENT_ID, schedule.getPatientId());
-        if(scheduleRepository.getSize(selection)>0)
+        if (scheduleRepository.getSize(QueryRedactor.getRedactor(selection)) > 0)
             throw new ValidateException("patient_not_time");
 
     }

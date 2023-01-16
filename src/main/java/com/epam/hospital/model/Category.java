@@ -12,12 +12,6 @@ public class Category implements SimpleModel{
     public Category() {
     }
 
-    public static Category createInstance(String name){
-        Category category = new Category();
-        category.name=name;
-        return category;
-    }
-
     @Override
     public String toString() {
         return name;

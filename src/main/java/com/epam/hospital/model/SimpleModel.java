@@ -13,8 +13,7 @@ public interface SimpleModel {
     static SimpleModel getSimpleInstance(String classNameParam){
         try {
             Class<?> clazz = Class.forName("com.epam.hospital.model."+classNameParam);
-            SimpleModel  simpleModel= (SimpleModel) clazz.getConstructor().newInstance();
-            return simpleModel;
+            return (SimpleModel) clazz.getConstructor().newInstance();
         }
         catch( Exception e ) {
             return null;

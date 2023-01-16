@@ -42,7 +42,7 @@ public class AddScheduleCommandTest {
         when(request.getParameter(Mockito.any())).thenReturn(null);
         when(request.getParameter(ControllerConstants.PATIENT_ID)).thenReturn("5");
         when(request.getAttribute("schedule")).thenReturn(null);
-//        when(request.getAttribute("role")).thenReturn("ADMIN");
+        when(request.getParameter("from")).thenReturn("medic");
         Mockito.lenient().doNothing().when(request).setAttribute(Mockito.isA(String.class), Mockito.isA(Object.class));
         assertEquals(ControllerConstants.PAGE_ADD_SCHEDULE, cpc.execute(request, MessageManager.EN));
     }
@@ -53,6 +53,7 @@ public class AddScheduleCommandTest {
         HttpServletRequest request= mock(HttpServletRequest.class);
         when(request.getParameter(Mockito.any())).thenReturn(null);
         when(request.getParameter(ControllerConstants.PATIENT_ID)).thenReturn("5");
+        when(request.getParameter("from")).thenReturn("medic");
         when(request.getParameter(ControllerConstants.SUBMIT)).thenReturn("submit");
         when(request.getAttribute("schedule")).thenReturn(null);
         when(scheduleService.create(Mockito.any())).thenThrow(new ValidateException("Doctor"));

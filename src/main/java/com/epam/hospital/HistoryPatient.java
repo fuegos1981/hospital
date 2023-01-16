@@ -1,9 +1,10 @@
 package com.epam.hospital;
 
 import com.epam.hospital.dto.AppointmentDto;
-import com.epam.hospital.model.Appointment;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.repository.QueryRedactor;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.service.impl.AppointmentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,7 +71,7 @@ public class HistoryPatient {
         AppointmentService appointmentService = AppointmentService.getAppointmentService();
         Map<String,Object> selection = new HashMap<>();
         selection.put("patient_id",patient.getId());
-        List<AppointmentDto> list =appointmentService.getAll(selection, null, null);
+        List<AppointmentDto> list =appointmentService.getAll(QueryRedactor.getRedactor(selection, SortRule.DATE_CREATE_DESC, null));
         int pageHeight = (int)page.getTrimBox().getHeight()-200; //get height of the page
 
         contentStream.setStrokingColor(Color.DARK_GRAY);
@@ -123,7 +124,7 @@ public class HistoryPatient {
             writeTextInTable(contentStream, initX, initY, cellHeight,
                     list.get(i -1).getDoctorName());
         if (j ==3)
-            writeTextInTable(contentStream, initX, initY, cellHeight, list.get(i -1).getDiagnosisName().toString());
+            writeTextInTable(contentStream, initX, initY, cellHeight, list.get(i -1).getDiagnosisName());
         if (j ==4)
             writeTextInTable(contentStream, initX, initY, cellHeight, list.get(i -1).getDescription());
     }

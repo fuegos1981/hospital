@@ -11,7 +11,7 @@ import com.epam.hospital.exceptions.ValidateException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * The class implements a command for creating a simple command (category, diagnosis, etc)
+ * The class implements a command for creating a simple command (category, diagnosis...)
  *Please see the {@link com.epam.hospital.service.Service}  for true identity
  * Please see the {@link com.epam.hospital.model.SimpleModel}  for true identity
  * @author Sinkevych Olena
@@ -22,9 +22,9 @@ public class EditSimpleCommand implements ActionCommand {
     /**
      * <p>This method generates a page or path with a response to the client when creating a simple model (category, diagnosis, etc).
      * </p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request is as an argument to the servlet's service methods (doGet, doPost...).
      * @param currentMessageLocale is current locale, used to display error messages in the given locale.
-     * @return  String page or path with a response to the client when creating a simple model (category, diagnosis, etc).
+     * @return  String page or path with a response to the client when creating a simple model (category, diagnosis...).
      *
      */
     @Override

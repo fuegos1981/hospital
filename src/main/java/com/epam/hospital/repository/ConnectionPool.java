@@ -1,5 +1,6 @@
 package com.epam.hospital.repository;
 
+import com.epam.hospital.exceptions.DBException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -25,7 +26,7 @@ public class ConnectionPool {
      * </p>
      *
      */
-    private ConnectionPool(){
+    private ConnectionPool() throws DBException {
         Properties p=new Properties ();
         try {
             ClassLoader classLoader = ConnectionPool.class.getClassLoader();
@@ -33,7 +34,7 @@ public class ConnectionPool {
             FileInputStream inputStream = new FileInputStream(file);
             p.load (inputStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DBException(e.getMessage());
         }
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(p.getProperty("url"));
@@ -49,14 +50,13 @@ public class ConnectionPool {
         dataSource = new HikariDataSource(config);
     }
 
-    public static synchronized ConnectionPool getInstance() {
+    public static synchronized void getInstance() throws DBException {
         if(connectionPool == null) {
             connectionPool = new ConnectionPool();
         }
-        return connectionPool;
     }
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException, DBException {
         getInstance();
         return dataSource.getConnection();
     }

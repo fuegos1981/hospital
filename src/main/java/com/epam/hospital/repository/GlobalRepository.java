@@ -1,10 +1,6 @@
 package com.epam.hospital.repository;
 
-
 import com.epam.hospital.exceptions.DBException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -139,19 +135,20 @@ public abstract class GlobalRepository<T> {
      *
      */
     private void addFilters(PreparedStatement stmt, Object[] filters) throws SQLException {
-        int step = 1;
-        for (Object obj : filters) {
-            if (obj instanceof String) {
-                stmt.setString(step, (String) obj);
+        if (filters!= null) {
+            int step = 1;
+            for (Object obj : filters) {
+                if (obj instanceof String) {
+                    stmt.setString(step, (String) obj);
+                } else if (obj instanceof Date) {
+                    Date date = (Date) obj;
+                    java.sql.Timestamp sqlPackageDate = new Timestamp(date.getTime());
+                    stmt.setTimestamp(step, sqlPackageDate);
+                } else {
+                    stmt.setInt(step, (Integer) obj);
+                }
+                step++;
             }
-            else if (obj instanceof Date) {
-                Date date = (Date)obj;
-                java.sql.Timestamp sqlPackageDate = new Timestamp(date.getTime());
-                stmt.setTimestamp(step, sqlPackageDate);
-            } else {
-                stmt.setInt(step, (Integer) obj);
-            }
-            step++;
         }
     }
 

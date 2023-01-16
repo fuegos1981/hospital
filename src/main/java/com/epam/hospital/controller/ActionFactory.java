@@ -13,7 +13,7 @@ public class ActionFactory {
      * <p>This method extracts the value of the command parameter from the request and, based on it, extracts
      * command object corresponding to the request.
      * </p>
-     * @param request is as an argument to the servlet's service methods (doGet, doPost, etc).
+     * @param request is as an argument to the servlet's service methods (doGet, doPost...).
      * @return  command object corresponding to the request
      *
      */
