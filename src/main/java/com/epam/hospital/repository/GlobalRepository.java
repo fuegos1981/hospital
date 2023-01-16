@@ -13,17 +13,14 @@ import java.util.List;
  */
 public abstract class GlobalRepository<T> {
 
-
     public T read(String query, Object... filters) throws DBException {
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
             addFilters(stmt, filters);
-
             try (ResultSet rs = stmt.executeQuery()) {
                 return readByResultSet(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DBException("Trouble with method read by object " +e.getMessage());
         }
 
@@ -40,7 +37,6 @@ public abstract class GlobalRepository<T> {
                 else return 0;
              }
          catch (SQLException e) {
-            e.printStackTrace();
             throw new DBException("Trouble with method readSize by object " +e.getMessage());
         }
 
@@ -76,7 +72,6 @@ public abstract class GlobalRepository<T> {
             }
             return -1;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DBException("Trouble with method insert! " +e.getMessage());
         } finally {
             close(stmt);

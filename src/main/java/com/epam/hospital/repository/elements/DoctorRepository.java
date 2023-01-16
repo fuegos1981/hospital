@@ -31,7 +31,6 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     }
 
     public boolean create(Doctor doctor) throws DBException {
-
         Object[] objects = {doctor.getLastName(), doctor.getFirstName(), doctor.getCategory().getId(),
                 doctor.getLogin(), doctor.getPassword(), Role.getID(doctor.getRole())};
         int idDoctor = doctorRepository.insert(Constants.ADD_DOCTOR, objects);
@@ -39,7 +38,6 @@ public class DoctorRepository extends GlobalRepository<Doctor> {
     }
 
     public boolean updateDoctor(Doctor doctor) throws DBException {
-
         Object[] objects = {doctor.getLastName(), doctor.getFirstName(), doctor.getCategory().getId(),
                 doctor.getLogin(), doctor.getPassword(), Role.getID(doctor.getRole()), doctor.getId()};
         return doctorRepository.update(Constants.UPDATE_DOCTOR, objects);

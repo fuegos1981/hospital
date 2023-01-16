@@ -62,7 +62,7 @@ public class Controller extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            req.setAttribute("message", currentMessageLocale.getString("something_goes_wrong "));
+            req.setAttribute("message", currentMessageLocale.getString("something_goes_wrong"));
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(ControllerConstants.PAGE_ERROR);
             dispatcher.forward(req, resp);
         }
