@@ -55,7 +55,7 @@
                                 <input type="datetime-local" name="visit_time" id="visit_time" class="form-control" value="${visit_time}">
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='save'/>">
                                 <tf:errortag text="${message}"/>
                             </div>
                         </div>

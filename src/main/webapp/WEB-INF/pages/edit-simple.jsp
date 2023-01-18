@@ -29,7 +29,7 @@
                         <div id="base-column" class="col-md-6">
                             <div id="base-box" class="col-md-12">
                                 <br/><br/>
-                                <h3 class="text-center text-info"><fmt:message key="create"/> <fmt:message key="${name}"/></h3>
+                                <h3 class="text-center text-info"><fmt:message key="${name}"/></h3>
                                 <br/>
                                 <div class="form-group">
                                     <label for="simple" class="text-info"><fmt:message key="Name"/>:</label>

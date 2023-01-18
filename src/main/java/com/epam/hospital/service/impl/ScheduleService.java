@@ -97,11 +97,12 @@ public class ScheduleService implements Service<ScheduleDto> {
         Map<String, Object> selection = new HashMap<>();
         selection.put(Fields.DOCTOR_ID, schedule.getDoctorId());
         selection.put(Fields.VISIT_TIME, schedule.getDateVisit());
-        if (scheduleRepository.getSize(QueryRedactor.getRedactor(selection)) > 0)
+
+        if (scheduleRepository.getAllSchedules(QueryRedactor.getRedactor(selection)).stream().anyMatch(e -> e.getId() != schedule.getId()))
             throw new ValidateException("doctor_not_time");
         selection.remove(Fields.DOCTOR_ID);
         selection.put(Fields.PATIENT_ID, schedule.getPatientId());
-        if (scheduleRepository.getSize(QueryRedactor.getRedactor(selection)) > 0)
+        if (scheduleRepository.getAllSchedules(QueryRedactor.getRedactor(selection)).stream().anyMatch(e -> e.getId() != schedule.getId()))
             throw new ValidateException("patient_not_time");
 
     }
