@@ -15,11 +15,11 @@ import javax.servlet.http.HttpSessionBindingEvent;
  */
 @WebListener
 public class SessionListener implements HttpSessionAttributeListener {
-    private static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LogManager.getLogger();
     @Override
     public void attributeAdded(HttpSessionBindingEvent event) {
         if (event.getName().equals("user_name")||event.getName().equals("role")) {
-            logger.info("add: " + event.getClass().getSimpleName() + " : " + event.getName()
+            logger.info(event.getSession().getId()+"; come: " + event.getName()
                     + " : " + event.getValue());
         }
     }
@@ -27,7 +27,7 @@ public class SessionListener implements HttpSessionAttributeListener {
     @Override
     public void attributeRemoved(HttpSessionBindingEvent event) {
         if (event.getName().equals("user_name")||event.getName().equals("role")) {
-            logger.info("add: " + event.getClass().getSimpleName() + " : " + event.getName()
+            logger.info(event.getSession().getId()+"; exit: " + event.getName()
                     + " : " + event.getValue());
         }
     }

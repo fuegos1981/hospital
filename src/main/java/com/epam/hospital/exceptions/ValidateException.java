@@ -4,13 +4,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ValidateException extends Exception {
-    private static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LogManager.getLogger();
     public ValidateException(String message, Throwable cause) {
         super(message, cause);
-        logger.error(message);
+        logger.error("not correct: "+message);
     }
     public ValidateException(String message) {
         super(message);
-        logger.error(message);
+        logger.error("not correct: "+message);
     }
 }

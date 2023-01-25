@@ -165,7 +165,7 @@ INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id
 
 INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-12', '2', '3', '4','noshpa 3t in day, 7 days');
 INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-14', '2', '3', '4','loperamid 3t in day, 7 days');
-INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-15', '3', '3', '1', 'not use sugar');
+INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-15', '3', '3', '1', 'all without sugar');
 
 INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (1, 5,'2022-11-28');
 INSERT INTO schedule (doctor_id, patient_id, visit_time) VALUES (1, 6,'2022-11-29');

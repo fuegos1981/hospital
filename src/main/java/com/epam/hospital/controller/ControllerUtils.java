@@ -1,6 +1,7 @@
 package com.epam.hospital.controller;
 
 import com.epam.hospital.HistoryPatient;
+import com.epam.hospital.MessageManager;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
@@ -134,10 +135,10 @@ public class ControllerUtils {
      * @param resp {@link HttpServletResponse} is as an argument to the servlet's service methods (doGet, doPost...).
      *
      */
-    static void downloadHistory(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
+    static void downloadHistory(HttpServletRequest req, HttpServletResponse resp, MessageManager currentMessageLocale) throws DBException, SQLException {
 
         Patient patient = PatientService.getPatientService().readById(ControllerUtils.parseID(req, Fields.PATIENT_ID));
-        HistoryPatient.getHistoryPatient(patient, req.getServletContext().getRealPath("WEB-INF/pdf/info.pdf"));
+        HistoryPatient.getHistoryPatient(patient, req.getServletContext().getRealPath("WEB-INF/pdf/info.pdf"), currentMessageLocale);
         final int ARBITRARY_SIZE = 1048;
         resp.setContentType("application/pdf");
         resp.setHeader("Content-disposition", "attachment; filename=info.pdf");

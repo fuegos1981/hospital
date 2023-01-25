@@ -8,6 +8,6 @@ public class AccessException extends Exception{
 
     public AccessException(String message) {
         super(message);
-        logger.error(message);
+        logger.error("not rights: "+message);
     }
 }

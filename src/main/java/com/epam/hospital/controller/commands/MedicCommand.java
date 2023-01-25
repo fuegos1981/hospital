@@ -80,6 +80,7 @@ public class MedicCommand implements ActionCommand {
             request.setAttribute("patient", patientService.readById(patientId));
             selection.put(ControllerConstants.PATIENT_ID,patientId);
         }if (doctorId!=null) {
+            request.setAttribute("doctor", doctorService.readById(doctorId));
             selection.put(ControllerConstants.DOCTOR_ID,doctorId);
         }
         return selection;

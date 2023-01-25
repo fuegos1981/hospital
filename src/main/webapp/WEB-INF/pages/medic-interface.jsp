@@ -63,7 +63,7 @@
                         <div class="table-responsive col-md-6">
                             <div class="form-group">
                                 <br>
-                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&doctor_id=${user_id}&command=add_schedule&is_patient=false&from=medic"><fmt:message key="add_visit"/></a>
+                                <a class="btn btn-info btn-md" href ="/hospital/addSchedule?patient_id=${patient.getId()}&doctor_id=${doctor.getId()}&command=add_schedule&is_patient=false&from=medic"><fmt:message key="add_visit"/></a>
                             </div>
                             <table id = "AllSchedule" class="table table-bordered table-hover table-striped">
                                 <tr>

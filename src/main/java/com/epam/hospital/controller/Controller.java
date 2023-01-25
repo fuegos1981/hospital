@@ -2,6 +2,8 @@ package com.epam.hospital.controller;
 
 import com.epam.hospital.MessageManager;
 import com.epam.hospital.exceptions.DBException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,6 +27,7 @@ import java.sql.SQLException;
 public class Controller extends HttpServlet {
     // Property - current locale, used to display error messages in the given locale
     private MessageManager currentMessageLocale;
+    private final static Logger logger = LogManager.getLogger();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -62,6 +65,7 @@ public class Controller extends HttpServlet {
                 }
             }
         } catch (Exception e) {
+            logger.error(req.getSession().getId()+"; "+e.getMessage());
             req.setAttribute("message", currentMessageLocale.getString("something_goes_wrong"));
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(ControllerConstants.PAGE_ERROR);
             dispatcher.forward(req, resp);
@@ -99,7 +103,7 @@ public class Controller extends HttpServlet {
      */
     protected boolean isDownLoad(HttpServletRequest req, HttpServletResponse resp) throws DBException, SQLException {
         if (req.getParameter("download") != null) {
-            ControllerUtils.downloadHistory(req, resp);
+            ControllerUtils.downloadHistory(req, resp, currentMessageLocale);
             return true;
         }
         return false;
