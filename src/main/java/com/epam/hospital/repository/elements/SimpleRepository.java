@@ -32,7 +32,15 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
         return simpleRepository.read(queries[0],id);
     }
 
+    public List<SimpleModel> getAll(QueryRedactor qr) throws DBException{
+        return simpleRepository.findAll(qr.getQuery(queries[1]),
+                qr.getSelectionValues());
+    }
 
+    public int getSize(QueryRedactor qr) throws DBException {
+        return simpleRepository.readSize(qr.getQuery(queries[4]),
+                qr.getSelectionValues());
+    }
     public List<SimpleModel> getAll() throws DBException, SQLException {
         return simpleRepository.findAll(queries[1]);
     }
@@ -46,6 +54,10 @@ public class SimpleRepository extends GlobalRepository<SimpleModel> {
     }
     public SimpleModel readByName(String name) throws DBException {
         return simpleRepository.read(queries[5],name);
+    }
+    public boolean updateSimple(SimpleModel simpleModel) throws DBException {
+        Object[] objects = {simpleModel.getName(), simpleModel.getId()};
+        return simpleRepository.update(queries[6], objects);
     }
 
     @Override

@@ -93,7 +93,7 @@ public abstract class GlobalRepository<T> {
             return res;
         } catch (SQLException e) {
             rollback(con);
-            throw new DBException("Trouble with method update! ", e);
+            throw new DBException("Trouble with method update! " +e.getMessage(), e);
         } finally {
             close(stmt);
             close(con);
@@ -115,7 +115,7 @@ public abstract class GlobalRepository<T> {
             return res;
         } catch (SQLException e) {
             rollback(con);
-            throw new DBException("Trouble with method delete! ", e);
+            throw new DBException("Trouble with method delete! " +e.getMessage(), e);
         } finally {
             close(stmt);
             close(con);

@@ -48,18 +48,20 @@ public interface Constants {
 
     //category
     String GET_CATEGORY_BY_ID = "select * from category where id= ?";
-    String GET_ALL_CATEGORIES = "select * from category order by name";
+    String GET_ALL_CATEGORIES = "select * from category";
     String ADD_CATEGORY = "INSERT INTO category (name) VALUES (?)";
     String DELETE_CATEGORY = "DELETE from category where name= ?";
     String GET_SIZE_CATEGORY = "SELECT COUNT(id) FROM category";
     String GET_CATEGORY_BY_NAME = "select * from category where name= ?";
+    String UPDATE_CATEGORY = "UPDATE category Set name=? where id = ?";
     //diagnosis
     String GET_DIAGNOSIS_BY_ID = "select * from diagnosis where id= ?";
-    String GET_ALL_DIAGNOSISES = "select * from diagnosis order by name";
+    String GET_ALL_DIAGNOSISES = "select * from diagnosis";
     String ADD_DIAGNOSIS = "INSERT INTO diagnosis (name) VALUES (?)";
     String DELETE_DIAGNOSIS = "DELETE from diagnosis where name= ?";
     String GET_SIZE_DIAGNOSIS = "SELECT COUNT(id) FROM diagnosis";
     String GET_DIAGNOSIS_BY_NAME = "select * from diagnosis where name= ?";
+    String UPDATE_DIAGNOSIS = "UPDATE diagnosis Set name=? where id = ?";
     //role
     String GET_ROLE_BY_ID = "select * from roles where id= ?";
     String GET_ALL_ROLES = "select * from roles order by name";
@@ -70,9 +72,9 @@ public interface Constants {
 
     static String[] getQueries(String toString) {
         if (toString.equalsIgnoreCase(CATEGORY))
-            return new String[]{GET_CATEGORY_BY_ID, GET_ALL_CATEGORIES,ADD_CATEGORY,DELETE_CATEGORY,GET_SIZE_CATEGORY, GET_CATEGORY_BY_NAME};
+            return new String[]{GET_CATEGORY_BY_ID, GET_ALL_CATEGORIES,ADD_CATEGORY,DELETE_CATEGORY,GET_SIZE_CATEGORY, GET_CATEGORY_BY_NAME, UPDATE_CATEGORY};
         else if(toString.equalsIgnoreCase(DIAGNOSIS))
-            return new String[]{GET_DIAGNOSIS_BY_ID, GET_ALL_DIAGNOSISES,ADD_DIAGNOSIS,DELETE_DIAGNOSIS,GET_SIZE_DIAGNOSIS, GET_DIAGNOSIS_BY_NAME};
+            return new String[]{GET_DIAGNOSIS_BY_ID, GET_ALL_DIAGNOSISES,ADD_DIAGNOSIS,DELETE_DIAGNOSIS,GET_SIZE_DIAGNOSIS, GET_DIAGNOSIS_BY_NAME, UPDATE_DIAGNOSIS};
         else if(toString.equalsIgnoreCase(ROLE))
             return new String[]{GET_ROLE_BY_ID, GET_ALL_ROLES,null, null};
         return null;

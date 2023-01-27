@@ -6,6 +6,7 @@ import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.model.SimpleModel;
 import com.epam.hospital.exceptions.DBException;
+import com.epam.hospital.repository.Fields;
 import com.epam.hospital.service.impl.SimpleService;
 import com.epam.hospital.exceptions.ValidateException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,8 @@ public class EditSimpleCommand implements ActionCommand {
      */
     @Override
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException {
-        ControllerUtils.setAttributes(request,ControllerConstants.SIMPLE,ControllerConstants.NAME);
+        ControllerUtils.setAttributes(request,ControllerConstants.SIMPLE,ControllerConstants.NAME, Fields.ID);
+        Integer id = ControllerUtils.parseID(request, Fields.ID);
         String name_Class = request.getParameter(ControllerConstants.NAME);
         String simple =request.getParameter(ControllerConstants.SIMPLE);
         try {
@@ -40,12 +42,14 @@ public class EditSimpleCommand implements ActionCommand {
                 SimpleService simpleService= SimpleService.getSimpleService(name_Class);
                 SimpleModel simpleModel = SimpleModel.getSimpleInstance(name_Class);
                 simpleModel.setName(simple);
-                simpleService.create(simpleModel);
-                if (name_Class.equalsIgnoreCase("Category")) {
-                    return "/hospital/admin?command=admin";
+                if (id == null) {
+                    simpleService.create(simpleModel);
                 }
-                else
-                    return "/hospital/editAppointment?command=edit_appointment";
+                else {
+                    simpleModel.setId(id);
+                    simpleService.update(simpleModel);
+                }
+                return "/hospital/Simple?command=simple";
             }
 
         } catch (ValidateException e) {

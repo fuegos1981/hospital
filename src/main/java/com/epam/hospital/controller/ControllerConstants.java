@@ -39,6 +39,7 @@ public interface ControllerConstants{
     String PAGE_EDIT_APPOINTMENT = "/WEB-INF/pages/edit-appointment.jsp";
     String PAGE_PATIENT_INFO = "/WEB-INF/pages/patient-info.jsp";
     String PAGE_MEDIC = "/WEB-INF/pages/medic-interface.jsp";
+    String PAGE_SIMPLE = "/WEB-INF/pages/work_simple.jsp";
 
     int MAX_COUNT_ON_PAGE = 10;
 }

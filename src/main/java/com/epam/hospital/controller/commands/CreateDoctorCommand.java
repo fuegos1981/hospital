@@ -8,6 +8,8 @@ import com.epam.hospital.model.*;
 import com.epam.hospital.repository.Constants;
 import com.epam.hospital.exceptions.DBException;
 import com.epam.hospital.repository.Fields;
+import com.epam.hospital.repository.QueryRedactor;
+import com.epam.hospital.repository.SortRule;
 import com.epam.hospital.service.Service;
 import com.epam.hospital.service.impl.DoctorService;
 import com.epam.hospital.service.impl.SimpleService;
@@ -41,7 +43,7 @@ public class CreateDoctorCommand implements ActionCommand {
         try {
             Integer id = ControllerUtils.parseID(request, Fields.ID);
             ControllerUtils.setAttributes(request, Fields.ID, ControllerConstants.MESSAGE, ControllerConstants.ROLE);
-            request.setAttribute(ControllerConstants.CATEGORIES, categoryService.getAll());
+            request.setAttribute(ControllerConstants.CATEGORIES, categoryService.getAll(QueryRedactor.getRedactor(SortRule.NAME_SIMPLE_ASC)));
             Doctor doctor = getDoctor(request, id);
             if (request.getParameter(ControllerConstants.SUBMIT) == null) {
                 return ControllerConstants.PAGE_EDIT_DOCTOR;

@@ -62,7 +62,7 @@
                                <div class="form-group">
                                <br>
                                <a class="btn btn-info btn-md" href="/hospital/editDoctor?command=edit_doctor"><fmt:message key="create_doctor"/></a>
-                               <a class="btn btn-info btn-md" href="/hospital/editSimple?command=edit_simple&name=Category"><fmt:message key="add_new_category"/></a>
+                               <a class="btn btn-info btn-md" href="/hospital/simple?command=simple"><fmt:message key="Update_catalog"/></a>
                                </div>
                             <div class="form-group">
                                 <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="NAME_ASC" ${requestScope['sortDoctor'] == 'NAME_ASC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
@@ -76,7 +76,7 @@
                                 <tr>
                                   <th><fmt:message key="num"/></th>
                                   <th><fmt:message key="Name"/></th>
-                                  <th><fmt:message key="category"/></th>
+                                  <th><fmt:message key="Category"/></th>
                                   <th colspan ="3"><fmt:message key="operation"/></th>
                               </tr>
                                <c:forEach var="doctor" items="${doctors}" varStatus="status">

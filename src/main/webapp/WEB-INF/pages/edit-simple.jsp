@@ -22,6 +22,7 @@
             <c:import url="/WEB-INF/pages/header.jsp" />
             <input type="hidden" name="command" value="edit_simple" />
             <input type="hidden" name="name" value="${name}" />
+            <input type="hidden" name="id" value="${id}" />
             <div id="base">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
                 <div class="container">
@@ -37,7 +38,7 @@
                                 </div>
                                 <br/>
                                 <div class="form-group">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='create'/>">
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="<fmt:message key='save'/>">
                                     <tf:errortag text="${message}"/>
                                 </div>
                             </div>

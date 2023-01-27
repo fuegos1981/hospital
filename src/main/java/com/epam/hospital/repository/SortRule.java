@@ -10,7 +10,9 @@ public enum SortRule {
     BIRTHDAY_ASC(" order by birthday,last_Name,first_Name"),
     BIRTHDAY_DESC(" order by birthday desc,last_Name,first_Name"),
     DATE_CREATE_DESC(" order by date_create desc"),
+    NAME_SIMPLE_ASC (" order by name"),
     VISIT_TIME_DESC(" order by visit_time desc");
+
 
     private  final String query;
 

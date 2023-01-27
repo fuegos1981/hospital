@@ -38,6 +38,12 @@ public enum CommandEnum {
     MEDIC {
         {this.command = new MedicCommand();}
     },
+    SIMPLE {
+        {this.command = new SimpleCommand();}
+    },
+    DELETE_SIMPLE {
+        {this.command = new DeleteSimpleCommand();}
+    },
     EDIT_PATIENT {
         {this.command = new CreatePatientCommand();}
     };
