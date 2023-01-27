@@ -39,13 +39,13 @@ public class PaginationTag extends TagSupport {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class btn-group btn group-xs>")
             .append("<ul id=\"pagination_").append(name).append("\" class = \"pagination pagination-sm\">")
-            .append("<li class=\"disabled\"><input type=\"button\" onClick=\"click_page_").append(name).append("(1)\" name=\"").append(name).append("pag\" class=\"btn btn-info btn-md\" value=\"").append(begin).append("\"/></li>");
+            .append("<li class=\"disabled\"><input type=\"button\" onClick=\"click_page").append("(1").append(",'").append(name).append("')\" name=\"").append(name).append("pag\" class=\"btn btn-info btn-md\" value=\"").append(begin).append("\"/></li>");
 
         for (int i=1; i<=count_page;i++) {
             String act =i==current_page?"active":"";
-            sb.append("<li class=\"").append(act).append("\"><input type=\"button\" onClick=\"click_page_").append(name).append("(").append(i).append(")\" name=\"").append(name).append("pag\" class=\"btn btn-info btn-md\" value=\"").append(i).append("\"/></li>");
+            sb.append("<li class=\"").append(act).append("\"><input type=\"button\" onClick=\"click_page").append("(").append(i).append(",'").append(name).append("')\" name=\"").append(name).append("pag\" class=\"btn btn-info btn-md\" value=\"").append(i).append("\"/></li>");
         }
-        sb.append("<li><input type=\"button\" onClick=\"click_page_").append(name).append("(").append(count_page).append(")\" name=\"").append(name).append("pag\" class=\"btn btn-info btn-md\" value=\"").append(end).append("\"/></li>");
+        sb.append("<li><input type=\"button\" onClick=\"click_page").append("(").append(count_page).append(",'").append(name).append("')\" name=\"").append(name).append("pag\" class=\"btn btn-info btn-md\" value=\"").append(end).append("\"/></li>");
         sb.append("<input type=\"hidden\" id =\"pat_comment_").append(name).append("\" name=\"current_page_").append(name).append("\" value=\"").append(current_page).append("\" />");
         sb.append("</div>");
         JspWriter out = pageContext.getOut();

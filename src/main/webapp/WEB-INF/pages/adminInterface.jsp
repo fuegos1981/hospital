@@ -34,10 +34,10 @@
                                 </div>
                                 <div class="form-group">
                                        <input id = "sub" type="submit" name="submit" class="btn btn-info btn-md" value="sort">
-                                        <input type="radio" name="sortPatient" onClick="clickSort()"  value="NAME_ASC" ${requestScope['sortPatient'] == 'NAME_ASC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
-                                        <input type="radio" name="sortPatient" onClick="clickSort()" value="NAME_DESC" ${requestScope['sortPatient'] == 'NAME_DESC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠕</span>
-                                        <input type="radio" name="sortPatient" onClick="clickSort()" value="BIRTHDAY_ASC" ${requestScope['sortPatient'] == 'BIRTHDAY_ASC'? 'checked':''}/><fmt:message key="birthday"/><span class="dirrect"> 🠗</span>
-                                        <input type="radio" name="sortPatient" onClick="clickSort()"  value="BIRTHDAY_DESC" ${requestScope['sortPatient'] == 'BIRTHDAY_DESC'? 'checked':''}/><fmt:message key="birthday"/><span class="dirrect"> 🠕</span>
+                                        <input type="radio" name="sortPatient" onClick="clickSubmit()"  value="NAME_ASC" ${requestScope['sortPatient'] == 'NAME_ASC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
+                                        <input type="radio" name="sortPatient" onClick="clickSubmit()" value="NAME_DESC" ${requestScope['sortPatient'] == 'NAME_DESC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠕</span>
+                                        <input type="radio" name="sortPatient" onClick="clickSubmit()" value="BIRTHDAY_ASC" ${requestScope['sortPatient'] == 'BIRTHDAY_ASC'? 'checked':''}/><fmt:message key="birthday"/><span class="dirrect"> 🠗</span>
+                                        <input type="radio" name="sortPatient" onClick="clickSubmit()"  value="BIRTHDAY_DESC" ${requestScope['sortPatient'] == 'BIRTHDAY_DESC'? 'checked':''}/><fmt:message key="birthday"/><span class="dirrect"> 🠕</span>
                                 </div>
                                 <table id = "AllPatients" class="table table-bordered table-hover table-striped">
                                     <tr>
@@ -65,12 +65,12 @@
                                <a class="btn btn-info btn-md" href="/hospital/editSimple?command=edit_simple&name=Category"><fmt:message key="add_new_category"/></a>
                                </div>
                             <div class="form-group">
-                                <input type="radio" name="sortDoctor" onClick="clickSort()"  value="NAME_ASC" ${requestScope['sortDoctor'] == 'NAME_ASC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
-                                <input type="radio" name="sortDoctor" onClick="clickSort()"  value="NAME_DESC" ${requestScope['sortDoctor'] == 'NAME_DESC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠕</span>
-                                <input type="radio" name="sortDoctor" onClick="clickSort()"  value="CATEGORY_ASC" ${requestScope['sortDoctor'] == 'CATEGORY_ASC'? 'checked':''}/><fmt:message key="category"/><span class="dirrect"> 🠗</span>
-                                <input type="radio" name="sortDoctor" onClick="clickSort()"  value="CATEGORY_DESC" ${requestScope['sortDoctor'] == 'CATEGORY_DESC'? 'checked':''}/><fmt:message key="category"/><span class="dirrect"> 🠕</span>
-                                <input type="radio" name="sortDoctor" onClick="clickSort()"  value="COUNT_PATIENT_ASC" ${requestScope['sortDoctor'] == 'COUNT_PATIENT_ASC'? 'checked':''}/><fmt:message key="patients"/><span class="dirrect"> 🠗</span>
-                                <input type="radio" name="sortDoctor" onClick="clickSort()"  value="COUNT_PATIENT_DESC" ${requestScope['sortDoctor'] == 'COUNT_PATIENT_DESC'? 'checked':''}/><fmt:message key="patients"/><span class="dirrect"> 🠕</span>
+                                <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="NAME_ASC" ${requestScope['sortDoctor'] == 'NAME_ASC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
+                                <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="NAME_DESC" ${requestScope['sortDoctor'] == 'NAME_DESC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠕</span>
+                                <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="CATEGORY_ASC" ${requestScope['sortDoctor'] == 'CATEGORY_ASC'? 'checked':''}/><fmt:message key="category"/><span class="dirrect"> 🠗</span>
+                                <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="CATEGORY_DESC" ${requestScope['sortDoctor'] == 'CATEGORY_DESC'? 'checked':''}/><fmt:message key="category"/><span class="dirrect"> 🠕</span>
+                                <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="COUNT_PATIENT_ASC" ${requestScope['sortDoctor'] == 'COUNT_PATIENT_ASC'? 'checked':''}/><fmt:message key="patients"/><span class="dirrect"> 🠗</span>
+                                <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="COUNT_PATIENT_DESC" ${requestScope['sortDoctor'] == 'COUNT_PATIENT_DESC'? 'checked':''}/><fmt:message key="patients"/><span class="dirrect"> 🠕</span>
                             </div>
                             <table id = "AllDoctors" class="table table-bordered table-hover table-striped">
                                 <tr>

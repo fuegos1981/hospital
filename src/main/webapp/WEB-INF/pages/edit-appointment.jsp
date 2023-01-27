@@ -48,7 +48,7 @@
                                     <td><input  disabled type="label" name="id" id="id" class="form-control"value="${id}"></td>
                                     <td><input disabled type="date" name="date_create" id="date" class="form-control" value="${date_create}"></td>
                                     <td>
-                                        <select class="form-control" name="patient_id" id="patients" onchange="myReadPatientInfo(${patient.getId()})">
+                                        <select class="form-control" name="patient_id" id="patients">
                                             <option value=""><fmt:message key="select_patient"/>...</option>
                                             <c:forEach var="patient" items="${patients}" varStatus="status">
                                                 <option value="${patient.getId()}" ${appointment.getPatientId() == patient.getId()? 'selected':''}>

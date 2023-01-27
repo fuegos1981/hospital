@@ -33,7 +33,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <select class="form-control" name="doctor_id" id="doctors" onchange="myReadDoctor(${doctor.getId()})">
+                                        <select class="form-control" name="doctor_id" id="doctors" onchange="clickSubmit(${doctor.getId()})">
                                             <option value=""><fmt:message key="select_doctor"/>...</option>
                                             <c:forEach var="doctor" items="${doctors}" varStatus="status">
                                                 <option value="${doctor.getId()}" ${doctor_id == doctor.getId()? 'selected':''}>
@@ -43,7 +43,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="form-control" name="patient_id" id="patients" onchange="myReadPatientInfo(${patient.getId()})">
+                                        <select class="form-control" name="patient_id" id="patients" onchange="clickSubmit(${patient.getId()})">
                                             <option value=""><fmt:message key="select_patient"/>...</option>
                                             <c:forEach var="patient" items="${patients}" varStatus="status">
                                                 <option value="${patient.getId()}" ${patient_id == patient.getId()? 'selected':''}>
