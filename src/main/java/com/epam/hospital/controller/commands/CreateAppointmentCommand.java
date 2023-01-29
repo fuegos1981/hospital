@@ -45,7 +45,7 @@ public class CreateAppointmentCommand implements ActionCommand {
     public String execute(HttpServletRequest request, MessageManager currentMessageLocale) throws DBException, SQLException, ParseException {
         ControllerUtils.setPathReturn(request);
         Integer id = ControllerUtils.parseID(request,Fields.ID);
-        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID, Fields.DATE_CREATE);
+        ControllerUtils.setAttributes(request,ControllerConstants.ID, ControllerConstants.PATIENT_ID);
         try {
             request.setAttribute(ControllerConstants.PATIENTS, patientService.getAll());
             request.setAttribute(ControllerConstants.DOCTORS, doctorService.getAll());
@@ -95,11 +95,12 @@ public class CreateAppointmentCommand implements ActionCommand {
         AppointmentDto appointment;
         if (id!=null&&request.getParameter("isFirst")!=null){
             appointment = appointmentService.readById(id);
-            request.setAttribute(Fields.DATE_CREATE, appointment.getDateCreate().toString());
             request.setAttribute(Fields.PATIENT_ID,appointment.getPatientId());
             request.setAttribute(Fields.DOCTOR_ID,appointment.getDoctorId());
+            request.setAttribute(Fields.DATE_CREATE, appointment.getDateCreate().toString());
         }
         else {
+            ControllerUtils.setAttributes(request, Fields.DATE_CREATE);
             Date dateCreate = ControllerUtils.getDateByString(request.getParameter(Fields.DATE_CREATE),false);
             Integer diagnosisId= ControllerUtils.parseID(request,ControllerConstants.DIAGNOSIS_ID);
             Integer patientId= ControllerUtils.parseID(request,ControllerConstants.PATIENT_ID);
@@ -109,6 +110,7 @@ public class CreateAppointmentCommand implements ActionCommand {
             appointment.setProcedure(Optional.ofNullable(request.getParameter(Fields.PROCEDURE)).orElse(""));
             appointment.setOperation(Optional.ofNullable(request.getParameter(Fields.OPERATION)).orElse(""));
         }
+
         request.setAttribute("appointment", appointment);
         return appointment;
     }

@@ -84,15 +84,9 @@ public class ControllerUtils {
      */
     public static int[] setMasForPagination(HttpServletRequest request, int countList, String currentCountName, String countPageName){
 
-        int currentPage;
-        if (request.getParameter(currentCountName)==null||request.getParameter(currentCountName).isEmpty()){
-            currentPage=1;
-        }
-        else {
-            currentPage = Integer.parseInt(request.getParameter(currentCountName));
-        }
-
-        int countPage = (countList<ControllerConstants.MAX_COUNT_ON_PAGE)?1:(int)Math.ceil(1.00*countList/ControllerConstants.MAX_COUNT_ON_PAGE);
+        Integer currentPage = parseID(request, currentCountName);
+        currentPage = (currentPage==null)?1:currentPage;
+        int countPage =(int)Math.ceil(1.00*countList/ControllerConstants.MAX_COUNT_ON_PAGE);
         request.setAttribute(countPageName, countPage);
         request.setAttribute(currentCountName,currentPage);
         request.setAttribute("maxCountOnPage",ControllerConstants.MAX_COUNT_ON_PAGE);

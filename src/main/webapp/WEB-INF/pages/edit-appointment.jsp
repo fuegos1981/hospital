@@ -5,18 +5,14 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <style>
-        <%@include file="/WEB-INF/styles/main.css"%>
-    </style>
-    <script>
-        <%@include file="/WEB-INF/main.js"%>
-    </script>
-    <title>Appointment</title>
-</head>
 <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            <%@include file="/WEB-INF/styles/main.css"%>
+        </style>
+        <title>Appointment</title>
+    </head>
     <body>
         <fmt:requestEncoding value="UTF-8" />
         <c:if test="${not empty locale }">
@@ -31,8 +27,8 @@
             <div id="base3">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
                 <div class="container">
-                    <div class="row row-patient">
-                        <div id ="patient_table_info" class="col-md-12">
+                    <div class="row row-appointment">
+                        <div id ="appointment_table_info" class="col-md-12">
                             <br/>
                             <h3 class="text-center text-info"><fmt:message key="appointment"/></h3>
                             <br/>
@@ -45,8 +41,8 @@
                                     <th><fmt:message key="diagnosis"/></th>
                                 </tr>
                                 <tr>
-                                    <td><input  disabled type="label" name="id" id="id" class="form-control"value="${id}"></td>
-                                    <td><input disabled type="date" name="date_create" id="date" class="form-control" value="${date_create}"></td>
+                                    <td><input  disabled type="label" name="id" id="id" class="form-control"value="${id}"/></td>
+                                    <td><input type="date" name="date_create" id="date_create" class="form-control" lang ="${locale}" value="${date_create}"/></td>
                                     <td>
                                         <select class="form-control" name="patient_id" id="patients">
                                             <option value=""><fmt:message key="select_patient"/>...</option>
