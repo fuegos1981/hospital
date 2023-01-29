@@ -20,17 +20,19 @@ public class SimpleService implements Service<SimpleModel> {
     private SimpleRepository simpleRepository;
     private String classNameParam;
 
-    private SimpleService() {
+    public SimpleService() {
     }
 
     public static SimpleService getSimpleService(String className) {
-
         SimpleService simpleService = new SimpleService();
-        simpleService.classNameParam = className;
-        simpleService.simpleRepository = SimpleRepository.getRepository(className);
-
+        simpleService.setClassNameParam(className);
         return simpleService;
     }
+
+     public void setClassNameParam(String className){
+         classNameParam = className;
+         simpleRepository = SimpleRepository.getRepository(className);
+     }
 
     @Override
     public boolean create(SimpleModel simpleModel) throws DBException, ValidateException {

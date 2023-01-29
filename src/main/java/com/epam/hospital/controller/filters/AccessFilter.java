@@ -23,22 +23,28 @@ public class AccessFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+
+        String path = getPath(req);
+        if (path.isEmpty()) {
+            chain.doFilter(request, response);
+        }
+        else{
+            resp.sendRedirect(path);
+        }
+    }
+
+    private String getPath(HttpServletRequest req){
         HttpSession session = req.getSession();
         Role role = (Role) session.getAttribute(ControllerConstants.ROLE);
-
         if (role == null&&!req.getServletPath().equals("/login")) {
-            resp.sendRedirect("/hospital/login?command=login");
-            return;
+            return "/hospital/login?command=login";
         }
-
         else if(role==Role.DOCTOR|| role==Role.NURSE){
             if(req.getServletPath().equals("/admin")||req.getServletPath().equals("/editDoctor")||req.getServletPath().equals("/editPatient")) {
                 Integer userId = (Integer) session.getAttribute("user_id");
-                resp.sendRedirect("/hospital/medic?command=medic&doctor_id="+userId);
-                return;
+                return "/hospital/medic?command=medic&doctor_id="+userId;
             }
         }
-        // pass the request along the filter chain
-        chain.doFilter(request, response);
+        return "";
     }
 }

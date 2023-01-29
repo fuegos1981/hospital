@@ -5,23 +5,34 @@ import com.epam.hospital.controller.Controller;
 import com.epam.hospital.controller.ControllerConstants;
 import com.epam.hospital.controller.ControllerUtils;
 import com.epam.hospital.repository.Fields;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ControllerTest {
+    private static HttpServletRequest request;
+    private static HttpSession session;
+
+    @BeforeAll
+    static void testInit(){
+        request= mock(HttpServletRequest.class);
+        session= mock(HttpSession.class);
+        when(request.getSession(true)).thenReturn(session);
+    }
+
     @Test
     void testGetCurrentLocale() throws NoSuchFieldException, IllegalAccessException {
-        HttpServletRequest request= mock(HttpServletRequest.class);
-        HttpSession session= mock(HttpSession.class);
-        when(request.getSession(true)).thenReturn(session);
         when(request.getParameter(ControllerConstants.SUBMIT_US)).thenReturn(null);
         Mockito.lenient().doNothing().when(session).setAttribute(Mockito.isA(String.class), Mockito.isA(Object.class));
         Controller controller = new Controller();
@@ -34,9 +45,6 @@ public class ControllerTest {
 
     @Test
     void testGetCurrentLocaleUA() throws NoSuchFieldException, IllegalAccessException {
-        HttpServletRequest request= mock(HttpServletRequest.class);
-        HttpSession session= mock(HttpSession.class);
-        when(request.getSession(true)).thenReturn(session);
         when(session.getAttribute(ControllerConstants.LOCALE)).thenReturn(ControllerConstants.LOCALE_UA);
         Mockito.lenient().doNothing().when(session).setAttribute(Mockito.isA(String.class), Mockito.isA(Object.class));
         Controller controller = new Controller();
@@ -49,21 +57,18 @@ public class ControllerTest {
 
     @Test
     void testParseID(){
-        HttpServletRequest request= mock(HttpServletRequest.class);
         when(request.getParameter(Fields.ID)).thenReturn("5");
         assertEquals(ControllerUtils.parseID(request,Fields.ID),5);
     }
 
     @Test
     void testParseIDNull(){
-        HttpServletRequest request= mock(HttpServletRequest.class);
         when(request.getParameter(Fields.ID)).thenReturn(null);
         assertNull(ControllerUtils.parseID(request,Fields.ID));
     }
 
     @Test
     void testSetPathReturnMedic(){
-        HttpServletRequest request= mock(HttpServletRequest.class);
         when(request.getParameter("path_return")).thenReturn(null);
         when(request.getParameter("from")).thenReturn("medic");
         when(request.getParameter(ControllerConstants.PATIENT_ID)).thenReturn("5");
@@ -73,12 +78,20 @@ public class ControllerTest {
 
     @Test
     void testSetPathReturnAdmin(){
-        HttpServletRequest request= mock(HttpServletRequest.class);
         when(request.getParameter("path_return")).thenReturn(null);
         when(request.getParameter("from")).thenReturn("admin");
         when(request.getParameter(ControllerConstants.PATIENT_ID)).thenReturn("5");
         when(request.getParameter(ControllerConstants.DOCTOR_ID)).thenReturn(null);
         assertEquals(ControllerUtils.setPathReturn(request),"/hospital/admin?command=admin");
+    }
+
+    @Test
+    void testIsDownLoadNull() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        HttpServletResponse response= mock(HttpServletResponse.class);
+        when(request.getParameter("download")).thenReturn(null);
+        Method privateMethod = Controller.class.getDeclaredMethod("isDownLoad", HttpServletRequest.class, HttpServletResponse.class);
+        privateMethod.setAccessible(true);
+        assertFalse((Boolean) privateMethod.invoke(new Controller(),request, response));
     }
 
 

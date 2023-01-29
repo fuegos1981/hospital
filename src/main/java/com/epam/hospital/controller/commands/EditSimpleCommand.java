@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class EditSimpleCommand implements ActionCommand {
-
+    SimpleService simpleService= new SimpleService();
     /**
      * <p>This method generates a page or path with a response to the client when creating a simple model (category, diagnosis, etc).
      * </p>
@@ -39,7 +39,7 @@ public class EditSimpleCommand implements ActionCommand {
                     return ControllerConstants.PAGE_EDIT_SIMPLE;
             }
             else {
-                SimpleService simpleService= SimpleService.getSimpleService(name_Class);
+                simpleService.setClassNameParam(name_Class);
                 SimpleModel simpleModel = SimpleModel.getSimpleInstance(name_Class);
                 simpleModel.setName(simple);
                 if (id == null) {
