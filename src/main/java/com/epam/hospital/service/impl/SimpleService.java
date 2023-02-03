@@ -80,6 +80,7 @@ public class SimpleService implements Service<SimpleModel> {
     }
 
     public int getSize(QueryRedactor qr) throws DBException {
+        simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.getSize(qr);
     }
 
@@ -90,6 +91,7 @@ public class SimpleService implements Service<SimpleModel> {
     }
 
     public int getSize() throws DBException {
+        simpleRepository.setClassNameParam(classNameParam);
         return simpleRepository.getSize();
     }
 
