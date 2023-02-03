@@ -148,20 +148,20 @@ INSERT INTO patient (last_name, first_name, birthday, email, gender_id) VALUES (
 INSERT INTO patient (last_name, first_name, birthday, email, gender_id) VALUES ('Ivanov', 'Sergey','1993-10-10','ff@ab.com',1);
 INSERT INTO patient (last_name, first_name, birthday, email, gender_id) VALUES ('Korban', 'Evgeniy','1994-8-9','ff@ab.com',1);
 
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Ignat', 'Petr',1,'IgnatP','111',1);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Ignat', 'Vera',2,'IgnatV','111',2);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Arno', 'Sergey',1,'ArnoS','111',3);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Muhin', 'Oleg',3,'MuhinO','111',2);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Ignat', 'Petr',1,'IgnatP','698d51a19d8a121ce581499d7b701668',1);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Ignat', 'Vera',2,'IgnatV','698d51a19d8a121ce581499d7b701668',2);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Arno', 'Sergey',1,'ArnoS','698d51a19d8a121ce581499d7b701668',3);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Muhin', 'Oleg',3,'MuhinO','698d51a19d8a121ce581499d7b701668',2);
 
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Vetrov', 'Igor',1,'VetrovI','111',1);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Kostin', 'Ivan',2,'KostinI','111',2);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Ileev', 'Sergey',1,'IleevS','111',3);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Zubina', 'Olena',3,'ZubinaO','111',2);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Vetrov', 'Igor',1,'VetrovI','698d51a19d8a121ce581499d7b701668',1);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Kostin', 'Ivan',2,'KostinI','698d51a19d8a121ce581499d7b701668',2);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Ileev', 'Sergey',1,'IleevS','698d51a19d8a121ce581499d7b701668',3);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Zubina', 'Olena',3,'ZubinaO','698d51a19d8a121ce581499d7b701668',2);
 
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Orlova', 'Inna',1,'OrlovaI','111',2);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Coval', 'Andrey',2,'CovalA','111',2);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Sergeev', 'Denis',1,'SergeevD','111',3);
-INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Kuzin', 'Dmitriy',3,'KuzinD','111',2);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Orlova', 'Inna',1,'OrlovaI','698d51a19d8a121ce581499d7b701668',2);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Coval', 'Andrey',2,'CovalA','698d51a19d8a121ce581499d7b701668',2);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Sergeev', 'Denis',1,'SergeevD','698d51a19d8a121ce581499d7b701668',3);
+INSERT INTO doctor (last_name, first_name, category_id, login, password, role_id) VALUES ('Kuzin', 'Dmitriy',3,'KuzinD','698d51a19d8a121ce581499d7b701668',2);
 
 INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-12', '2', '3', '4','noshpa 3t in day, 7 days');
 INSERT INTO appointment (date_create, diagnosis_id, patient_id, doctor_id, medication) VALUES ('2022-10-14', '2', '3', '4','loperamid 3t in day, 7 days');
