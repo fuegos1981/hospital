@@ -29,7 +29,7 @@ import java.util.Map;
  *
  */
 public class PatientInfoCommand implements ActionCommand {
-    private final Service<Patient> patientService= PatientService.getPatientService();
+    private Service<Patient> patientService= PatientService.getPatientService();
     private final Service<ScheduleDto> scheduleService= ScheduleService.getScheduleService();
     private final Service<AppointmentDto> appointmentService= AppointmentService.getAppointmentService();
     private final static String CURRENT_PAGE_SCHEDULE = "current_page_schedule";
