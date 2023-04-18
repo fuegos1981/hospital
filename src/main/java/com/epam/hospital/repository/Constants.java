@@ -20,7 +20,7 @@ public interface Constants {
     String GET_DOCTOR_BY_LOGIN = "select doctor.id, last_name,first_name, login, password, roles.name as role_name, category.name as category_name  from doctor " +
             "join roles on roles.id=doctor.role_id " +
             "join category on category.id=doctor.category_id  where doctor.login= ?";
-    String GET_ALL_DOCTORS = "select doctor.id, last_name,first_name, login, password, roles.name as role_name, category.name as category_name, count_patients from doctor " +
+    String GET_ALL_DOCTORS = "select doctor.id, last_name,first_name, login, password, roles.name as role_name, category_id, category.name as category_name, count_patients from doctor " +
             "join category on category.id=doctor.category_id " +
             "join roles on roles.id=doctor.role_id "+
             " left join (select Count(distinct patient_id) as count_patients,doctor_id  from schedule group by doctor_id)as sch on sch.doctor_id= doctor.id";

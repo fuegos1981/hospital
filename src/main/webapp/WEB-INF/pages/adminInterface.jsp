@@ -23,6 +23,7 @@
         <form id="base-form" class="form" action="Admin" method="post">
             <c:import url="/WEB-INF/pages/header.jsp" />
             <input type="hidden" name="command" value="admin" />
+            <input id = "sub" type="submit" name="submit" class="btn btn-info btn-md" value="sub">
             <div id="base1">
                 <h3 class="text-center text-white pt-5"><fmt:message key="hospital"/></h3>
                     <div class="container">
@@ -63,6 +64,14 @@
                                <br>
                                <a class="btn btn-info btn-md" href="/hospital/editDoctor?command=edit_doctor"><fmt:message key="create_doctor"/></a>
                                <a class="btn btn-info btn-md" href="/hospital/simple?command=simple"><fmt:message key="Update_catalog"/></a>
+                               <select class="btn btn-info btn-md" name="category_id" id="categories" onchange="clickSubmit(${category.getId()})">
+                                   <option value=""><fmt:message key="select_category"/>...</option>
+                                   <c:forEach var="category" items="${categories}" varStatus="status">
+                                       <option value="${category.getId()}" ${category_id == category.getId()? 'selected':''}>
+                                           <c:out value="${category.toString()}"/>
+                                       </option>
+                                   </c:forEach>
+                               </select>
                                </div>
                             <div class="form-group">
                                 <input type="radio" name="sortDoctor" onClick="clickSubmit()"  value="NAME_ASC" ${requestScope['sortDoctor'] == 'NAME_ASC'? 'checked':''}/><fmt:message key="name"/><span class="dirrect"> 🠗</span>
