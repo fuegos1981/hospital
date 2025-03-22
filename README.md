@@ -1,31 +1,75 @@
+###### **HOSPITAL SERVICE**
 
-## Description
+## Overview
 
-The system administrator has access to a list of doctors by category (pediatrician, traumatologist, surgeon, ...) 
-and a list of patients. Implement the ability to sort:
-1) patients:
-- alphabetically;
-- by date of birth;
-2) doctors:
-- alphabetically;
-- by category;
-- by number of patients.
-  The administrator registers patients and doctors in the system and appoints a doctor to the patient.
-  The doctor determines the diagnosis, makes appointments to the patient (procedures, medications, operations), 
-- which are recorded in the Hospital Card. The appointment can be made by a Nurse (procedures, medications) or a Doctor 
-- (any appointment).
-  The patient can be discharged from the hospital, with a definitive diagnosis recorded.
-  (Optional: implement the ability to save / export a document with information about the patient's discharge).
+The **Hospital Service** system is designed to assist administrators in managing doctors and patients efficiently. The system provides functionalities such as sorting patients and doctors, assigning doctors to patients, recording diagnoses and treatments, and managing hospital discharge reports.
 
-### Details
-Used relational database MySQL
-Receive a connection using the following method:
-`ConnectionPool.getConnection()`
-connection string from the properties file `app.properties`.
+### Features
+- **Sorting options:**
+  - Patients:
+    - Alphabetically
+    - By date of birth
+  - Doctors:
+    - Alphabetically
+    - By category
+    - By number of patients
+- **Patient and doctor management:**
+  - The administrator registers patients and doctors.
+  - The administrator assigns doctors to patients.
+- **Medical records:**
+  - Doctors determine diagnoses and prescribe treatments (procedures, medications, surgeries).
+  - Nurses can administer prescribed procedures and medications.
+  - All treatments are recorded in the **Hospital Card**.
+- **Patient discharge:**
+  - The system allows discharging patients with a final recorded diagnosis.
+  - (Optional) Export discharge details as a document.
 
-***
+## Prerequisites
+To run this project, you need:
+- **Java 17**
+- **Gradle** (for building and running the project)
+- **Postgres** (relational database used by the system)
 
-### Details about the database
-In a `sql` directory at the root and save the database creation script in it (`db-create.sql`).
+## Running the Project
+
+1. **Ensure Java 17 is installed**
+   ```sh
+   java -version
+   ```
+   If Java is not installed, download it from [Oracle](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) or install via your package manager.
+
+2. **Build the service using Gradle**
+   ```sh
+   ./gradlew clean build
+   ```
+   **Build the service using Maven**
+   ```sh
+   mvn clean package
+   ```
+3. **Run the service**
+
+   After building the WAR file, you need to deploy it to your Tomcat server.
+
+   - Copy the generated WAR file from the target/ (Maven) or build/libs/ (Gradle) directory.
+
+   - Place the WAR file into the webapps/ directory of your Tomcat installation.
+
+   - Start or restart your Tomcat server.
+
+
+## Database Configuration
+
+The project uses a **MySQL** database.
+- **Database connection:**
+  - The connection string is retrieved from the `app.properties` file.
+
+- **Database initialization:**
+  - The SQL script to create the database is located in the `resources/sql` directory.
+  - File: `db-create.sql`
 
 ![img.png](img.png)
+
+---
+
+### Additional Information
+For further details on installation, configuration, or contributing to this project, please refer to the project documentation or contact the development team.

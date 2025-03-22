@@ -5,7 +5,7 @@
     <short-name>pagination TLD</short-name>
     <tag>
         <name>pgn</name>
-        <tag-class>com.epam.hospital.PaginationTag</tag-class>
+        <tag-class>com.hospital.app.PaginationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>name</name>
