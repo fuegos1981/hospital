@@ -59,7 +59,7 @@ To run this project, you need:
 
 ## Database Configuration
 
-The project uses a **MySQL** database.
+The project uses a **Postgres** database.
 - **Database connection:**
   - The connection string is retrieved from the `app.properties` file.
 
