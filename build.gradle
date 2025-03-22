@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     // Зависимости для работы с MySQL
-    implementation 'org.postgresql:postgresql:42.2.23'
+    implementation 'org.postgresql:postgresql:42.3.9'
 
     // Использование зависимостей только для компиляции
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
